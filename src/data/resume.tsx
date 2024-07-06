@@ -81,7 +81,7 @@ export const DATA = {
   projects: [
     {
       title: "CheggPy",
-      href: "https://pypi.org/project/cheggpy/",
+      href: "https://github.com/Harry-kp/cheggpy",
       dates: "Feb 2024 - April 2024",
       active: true,
       description:
@@ -92,9 +92,19 @@ export const DATA = {
       ],
       links: [
         {
-          type: "Website",
-          href: "https://chatcollect.com",
+          type: "PyPi",
+          href: "https://pypi.org/project/cheggpy/",
           icon: <Icons.globe className="size-3" />,
+        },
+        {
+          type: "Github",
+          href: "https://github.com/Harry-kp/cheggpy",
+          icon: <Icons.github className="size-3" />,
+        },
+        {
+          type: "Tutorial",
+          href: "https://www.youtube.com/watch?v=hZee5E0L9KQ",
+          icon: <Icons.youtube className="size-3" />,
         },
       ],
       image: "",

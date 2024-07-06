@@ -1,0 +1,104 @@
+---
+title: "Why Unit Testing"
+summary: "This blog highlights the significance of unit testing in software development, emphasizing bug catching, code reliability, debugging, refactoring, and documentation."
+publishedAt: "2023-07-07"
+image: "/why_unit_testing.jpg"
+---
+
+> The product features are crowded for the next round of funding, even with the code. Hidden in the project is a bug waiting to strike like a snake. And I'm there too, watching.
+>Two years of nights have turned me into a nocturnal animal. I must choose my new features carefully. It's a big project. I can't be coding everything. But they don't know which feature I will opt. We have a signal now for when I'm needed. When that sentry hits the weekend, it's not just a call - it's a warning to us.
+>Fear is a tool. They think it is a bug in the project, but the project is a bug. I wish I could say I'm making a difference, but I'm not. Sentry, New relic, Production Down - 4 years later, they're all up. And now this. This project is eating itself. Maybe it can't be saved, but I have to try. PUSH MYSELF. These nights all roll together in a rush, behind the mask. Sometimes on Monday morning, I have to force myself to fix the bug that let the production down.
+
+<details>
+  <summary><b>TL;DR</b></summary>
+  <ul>
+  <li>Helps catch bugs early</li>
+  <li>Increases code reliability</li>
+  <li>Simplifies debugging</li>
+  <li>Helps with refactoring</li>
+  <li>Provides documentation</li>
+  </ul>
+</details>
+
+### The Dark Night
+
+On any other night, I would be partying or doing other stuff, but this is a deployment night. I have to keep my mind intact for any bug that may appear and become the reason for the server being down. No developer wants their name on the list of people who brought the prod down. It is a hall of shame for them.
+
+"The manual testing was done rigorously," my fellow developer assures me. "Did you test the existing functionalities?" I asked him. He told me that the codebase is large, and doing the testing manually is a hell of a lot of effort. "Let's just pray that things don't go bad," he added.
+> I am that type of person who believes in worst case scenario.
+
+The next morning, I was awakened by Slack notifications that were flooding my DM. Apparently, the server was down. I joined the huddle with other developers, and after 30 minutes, we were able to get the production running. We found out it was a small edge case that messed with the legacy code.
+
+After this incident, a discussion was held on stopping these kinds of incidents from happening in the future. To summarize:
+
+- Let's not deploy on weekends.
+- Let's not change the legacy code.
+- The developer should do more testing on their side.
+- No deployment during the day.
+- Let's release the project in small chunks.
+
+Shocked and surprised, I stood in the corner and thought (as I was the culprit, and it was good at that time to remain silent). If this is your strategy, I dare you to stop the production from going down on the next release. Not a single person was talking about automated testing or unit testing. When I had enough, I spoke out. "Let's try writing some unit tests." Awkward silence......
+
+### Fear is a tool
+
+![fear is a tool](https://github.com/Harry-kp/Assets/assets/55315065/ecf99aee-9a6c-4b26-b7c9-8c9b81d6928c)
+
+After encountering my first bug, fear crept in. I became more cautious and began devoting more time to manual testing. However, it soon became apparent that it was futile to try and tackle a vast codebase through manual testing alone. It was a tedious and time-consuming task, and I couldn't justify spending an entire day testing a single feature during daily scrum calls.
+
+As a result, I followed the lead of my colleagues and avoided touching the legacy code. Instead, I focused on implementing new features on my own, even if it meant deviating from principles such as DRY and OOPs, as well as best coding practices. The fear of encountering bugs had overtaken my willingness to take risks.
+>"I find myself becoming the very thing I vowed to defeat - a lazy programmer who merely completes the tasks without prioritizing the code quality."
+
+### The Death of the Daredevil
+>
+> Nobody panics when the expected bug popped up. Nobody panics when project goes according to plan, even if the code is horrifying.
+
+>If I tell the developer that tomorrow shipment will affect the code quality or I skipped the unit tests for faster developement, nobody panics. – because it’s all part of the plan.
+
+>But when I say that one little old production server will stop working, everybody lose their minds.
+
+>Introduce a wrong code practice, you upset the established project and everything becomes chaos.
+
+>Bug is an agent of chaos. And you know the thing about bug? "It breaks the production”
+
+When I first joined the project, I successfully merged a PR of 120 file changes without breaking the production, which could have been either a beginner's luck or my risk-taking ability that helped me to ship things faster. However, after encountering a few bugs, my approach changed. I no longer wanted to take risks with the legacy code, and instead, I started selecting easier tasks and features. At times, we even handed over a project to another team due to our fear of failing.
+
+My dream of reviving the project started to fade away. Not only did my shipping speed decrease, but also the frustration and dislike for the job increased. We used to have daily meetings to complain about how the previous developers didn't prioritize unit testing, and now we're paying the price. Unfortunately, the upper management was unaware of this situation.....
+
+**<center> Several Months later...</center>**
+
+### When tech becomes the bottleneck
+
+"Oh God, not again," I shouted. This had become a daily routine for me and my fellow developer. We were fixing 2-3 bugs daily and barely keeping production running. I couldn't remember the last time I worked on a full-fledged feature. While I was reluctant to accept the reality that this project was beyond repair, other developers had already given up.
+
+One day, I witnessed the CEO shouting at the marketing, sales, and product manager for the lack of revenue and features. When I had had enough, I wrote an email to my team lead and manager about the importance of unit testing and why it was the need of the hour. But....
+
+> You will always find some developers that hates unit testing for no reason. When I talked to them, I found out they do not hate unit testing, they just hate writing unit tests.
+
+> Advice to HR:- If you are hiring these type of developers, it is a red flag for the company.
+
+> Advice to CTO:- If your company has these kind of developer, get rid of them ASAP.
+
+> Advice to developer:- Refrain the company of these developers, they will drag you to their level.
+
+### Who will bell the cat?
+
+The day arrived when we gathered in a meeting with the managerial team, the team lead, CTO, and other senior developers to discuss unit testing. The codebase had grown massive, and the sheer number of lines of code had struck fear into the hearts of every developer present. Everyone was questioning who would take the lead in writing test cases and how we should start.
+
+As I listened attentively, it became clear to me that not a single person present had ever written a test case in their tech career. Fortunately, I was the only one who knew how to write one. However, there were still some opponents of unit testing, using the old trick of delaying things by suggesting that we first need to refactor the code.
+
+> I'm not sure if I'm the only one, but I dislike people who don't offer solutions and instead question others' solutions. My advice is to focus on improving yourself instead of causing trouble for others.
+
+Unfortunately, the meeting did not go as planned. We were left uncertain about how to manage our bandwidth to write unit tests, how to ensure that all developers learned how to write them, and, most importantly, where to begin.
+
+### The Dark Knight Rises
+
+![the dark knight rises](https://github.com/Harry-kp/Assets/assets/55315065/e8ad9525-992e-4363-a198-741026d69bfb "the dark knight rises")
+> I remember a conversation I had with my CTO, where he advised me that in order to persuade others, I should present them with concrete facts or demos, rather than just talking without substance
+
+With a resolute look on my face, I sat down at my desk and said to myself, "Enough is enough. It's time to take matters into my own hands and do what needs to be done."
+
+As I opened up YouTube to start my research, I made a vow to myself. "Let's write some test cases, no matter what. Whether I succeed or not, whether anyone gives me credit or not, whether I fail or give up, I will have learned something new that my fellow developers did not realize is a crucial part of software engineering."
+
+Slowly but surely, our code coverage has begun to rise. From 0% to 21%, and still climbing. As I sit here now, writing this very blog, I am proud of what I have accomplished and I am confident that I can bring it to 100% code coverage.
+
+It hasn't been easy, but the satisfaction of knowing that I have made a difference is worth all the struggle and effort.
