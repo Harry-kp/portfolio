@@ -1,0 +1,92 @@
+---
+title: "Handling Write Conflicts in Collaborative Editing"
+summary: '"Handling Write Conflicts in Collaborative Editing" explores strategies and techniques for efficient conflict handling in distributed databases.'
+publishedAt: "2023-07-09"
+image: "/handling-write-conflicts-in-multi-leader-replication.jpg"
+tags: ["Distributed Systems", "Replication", "Multi Leader Replication"]
+---
+
+> This is a skimmed version of Chapter 5 'Replication' from the book design_data_intensive_applications. I would recommend you to first read the whole chapter and use these notes for revision purpose only.
+
+## INTRODUCTION
+
+- The biggest problem with multi-leader replication is that write conflicts can occur, which means that conflict resolution is required.
+- For example, consider a wiki page that is simultaneously being edited by two users.
+  - User 1 changes the title of the page from A to B, and user 2 changes the title from A to C at the same time.
+  - Each user’s change is successfully applied to their local leader.
+  - However, when the changes are asynchronously replicated, a conflict is detected. (This problem does not occur in a single-leader database).
+- Leader-based replication has one major downside: there is only one leader, and all writes must go through it.
+![image](https://github.com/Harry-kp/Cp/assets/55315065/368f4065-00fd-4409-8a91-7b157f6b2c1f)
+
+## Synchronous versus asynchronous conflict detection
+
+- In a single-leader database, the second writer will either block and wait for the first write to complete, or abort the second write transaction, forcing the user to retry the write.
+- On the other hand, in a multi-leader setup, both writes are successful, and the conflict is only detected asynchronously at some later point in time. At that time, it may be too late to ask the user to resolve the conflict.
+- In principle, you could make the conflict detection synchronous—i.e., wait for the write to be replicated to all replicas before telling the user that the write was successful.
+  - However, by doing so, you would lose the main advantage of multi-leader replication: allowing each replica to accept writes independently. If you want synchronous conflict detection, you might as well just use single-leader replication.
+
+## Conflict avoidance
+
+- The simplest strategy for dealing with conflicts is to avoid them: if the application can ensure that all writes for a particular record go through the same leader, then conflicts cannot occur. - - > Since many implementations of multi-leader replication handle conflicts quite poorly, avoiding conflicts is a frequently recommended approach
+- For example, in an application where a user can edit their own data, you can ensure that requests from a particular user are always routed to the same datacenter and use the leader in that datacenter for reading and writing.
+  - Different users may have different “home” datacenters (perhaps picked based on geographic proximity to the user), but from any one user’s point of view the configuration is essentially single-leader.
+  - However, sometimes you might want to change the designated leader for a record— perhaps because one datacenter has failed and you need to reroute traffic to another datacenter, or perhaps because a user has moved to a different location and is now closer to a different datacenter.
+  - In this situation, conflict avoidance breaks down, and you have to deal with the possibility of concurrent writes on different leaders.
+
+## Converging toward a consistent state
+
+- In a multi-leader configuration, there is no defined ordering of writes, so it’s not clear what the final value should be.
+- In Figure,
+  - leader 1 the title is first updated to B and then to C;
+  - at leader 2 it is first updated to C and then to B.
+  - Neither order is “more correct” than the other.
+
+> If each replica simply applied writes in the order that it saw the writes, the database would end up in an inconsistent state. Thus, the database must resolve the conflict in a convergent way, which means that all replicas must arrive at the same final value when all changes have been replicated.
+
+### There are various ways of achieving convergent conflict resolution
+
+- Give each write a unique ID (e.g., a timestamp, a long random number, a UUID, or a hash of the key and value), pick the write with the highest ID as the winner, and throw away the other writes
+  - **If a timestamp is used, this technique is known as last write wins (LWW)**.
+  - Although this approach is popular, it is dangerously prone to data loss.
+- Give each replica a unique ID, and let writes that originated at a higher numbered replica always take precedence over writes that originated at a lower numbered replica. This approach also implies data loss.
+- Somehow merge the values together—e.g., order them alphabetically and then concatenate them (in Figure the merged title might be something like “B/C”).
+- Record the conflict in an explicit data structure that preserves all information, and write application code that resolves the conflict at some later time (perhaps by prompting the user).
+
+## Custom conflict resolution logic
+
+- Most multi-leader replication tools let you write conflict resolution logic using application code. That code may be executed on write or on read:
+
+### On write
+
+- As soon as the database system detects a conflict in the log of replicated changes, it calls the conflict handler.
+- For example, Bucardo allows you to write a snippet of Perl for this purpose. This handler typically cannot prompt a user, it runs in a background process and it must execute quickly.
+
+### On read
+
+When a conflict is detected, all the conflicting writes are stored.
+
+- The next time the data is read, these multiple versions of the data are returned to the application.
+- The application may prompt the user or automatically resolve the conflict, and write the result back to the database.
+- **CouchDB works this way, for example.**
+- >Note that conflict resolution usually applies at the level of an individual row or document, not for an entire transaction. Thus, if you have a transaction that atomically makes several different writes, each write is still considered separately for the purposes of conflict resolution.
+
+## AUTOMATIC CONFLICT RESOLUTION
+
+- Conflict resolution rules can quickly become complicated, and custom code can be error-prone.
+- There has been some interesting research into automatically resolving conflicts caused by concurrent data modifications. A few lines of research are worth mentioning:
+
+### Conflict-free replicated datatypes (CRDTs)
+
+- These are a family of data structures for sets, maps, ordered lists, counters,
+etc. that can be concurrently edited by multiple users, and which automatically resolve conflicts
+in sensible ways.
+- **Some CRDTs have been implemented in Riak 2.0**
+
+### Mergeable persistent data structures
+
+- These track history explicitly, similarly to the Git version control system, and use a three-way merge function (whereas CRDTs use two-way merges).
+
+### Operational transformation
+
+- It is the conflict resolution algorithm behind collaborative editing applications such as **Etherpad and Google Docs**
+- It was designed particularly for concurrent editing of an ordered list of items, such as the list of characters that constitute a text document.

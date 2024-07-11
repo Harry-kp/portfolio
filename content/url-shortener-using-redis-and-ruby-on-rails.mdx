@@ -1,0 +1,68 @@
+---
+title: "URL shortener using ruby on rails and redis"
+summary: "Learn how to create a URL shortener using Ruby on Rails and Redis. This tutorial covers the basics of setting up a Rails project, integrating Redis, and building a simple URL shortener application."
+publishedAt: "2024-04-12"
+image: "/ruby-on-rails-resources.jpg"
+tags: ["ruby on rails", "learning ruby", "web development"]
+badge: "Draft"
+---
+
+**Feature Requirements:**
+
+1. **URL Shortening**:
+   - The user should be able to provide a long URL, and the application should generate a unique, short URL.
+   - The short URL should be stored in Redis, with the long URL as the value.
+   - The short URL should be generated based on a unique, sequential ID or a random string.
+
+2. **URL Redirection**:
+   - When a user visits the short URL, the application should retrieve the corresponding long URL from Redis and redirect the user to the long URL.
+
+3. **Custom URLs**:
+   - The user should be able to specify a custom short URL instead of using the automatically generated one.
+   - The custom short URL should also be stored in Redis, with the long URL as the value.
+   - The application should validate the uniqueness of the custom short URL.
+
+4. **URL Expiration**:
+   - The user should be able to set an expiration time for the short URL.
+   - The application should automatically remove the short URL and its associated long URL from Redis when the expiration time is reached.
+
+5. **URL Analytics**:
+   - The application should track the number of times each short URL is accessed.
+   - The user should be able to view the access statistics for their short URLs.
+
+6. **User Management**:
+   - The application should allow users to register and log in.
+   - Each user should have their own set of short URLs, which they can manage (create, view, edit, delete).
+
+**Edge Cases and Considerations:**
+
+1. **Duplicate Short URLs**:
+   - If a user tries to create a short URL that already exists, the application should handle the conflict gracefully.
+   - The application should either generate a new short URL or return an error message and ask the user to choose a different short URL.
+
+2. **Invalid URL Input**:
+   - The application should validate the input URL to ensure it is a valid URL format before attempting to shorten it.
+   - If the input URL is invalid, the application should return an error message and ask the user to provide a valid URL.
+
+3. **URL Encoding**:
+   - The application should handle URL encoding correctly when storing and retrieving the long URLs from Redis.
+   - This is important to ensure that the redirected URL preserves the original formatting and parameters.
+
+4. **Rate Limiting**:
+   - To prevent abuse and excessive URL shortening, the application should implement rate limiting for each user or IP address.
+   - The rate limiting can be implemented using Redis counters and expiration.
+
+5. **Concurrency and Race Conditions**:
+   - When multiple users attempt to create the same short URL simultaneously, the application should handle the race condition gracefully.
+   - This can be achieved by using Redis transactions or other concurrency control mechanisms.
+
+6. **Scalability and High Availability**:
+   - As the application grows, the Redis database may become a bottleneck.
+   - The application should be designed to scale horizontally by using a Redis cluster or sharding the data across multiple Redis instances.
+   - Additionally, the application should be highly available by implementing failover and recovery mechanisms.
+
+7. **Security Considerations**:
+   - The application should prevent users from creating short URLs that could be used for malicious purposes, such as phishing or redirecting to harmful content.
+   - The application should also implement proper input validation and sanitization to prevent SQL injection or other security vulnerabilities.
+
+By considering these feature requirements and edge cases, you can build a robust and scalable URL shortener using Ruby and Redis that provides a great user experience and ensures the security and reliability of the application.

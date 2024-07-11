@@ -1,0 +1,109 @@
+---
+title: "Distributed System - Replication(Multi Leader Replication)"
+summary: "This blog explores multi-leader replication in distributed systems, highlighting its advantages and challenges. Approach with caution."
+publishedAt: "2023-07-21"
+image: "/distributed-system-(Multi Leader Replication).jpg"
+tags: ["Distributed Systems", "Replication", "Multi Leader Replication"]
+---
+
+> This is a skimmed version of Chapter 5 'Replication' from the book design_data_intensive_applications. I would recommend you to first read the whole chapter and use these notes for revision purpose only.
+
+## <u>MULTI LEADER REPLICATION</u>
+
+- Leader-based replication has one major downside: there is only one leader, and all writes must go through it.
+- If you can’t connect to the leader for any reason, for example due to a network interruption between you and the leader, you can’t write to the database.
+- A natural extension of the leader-based replication model is to allow more than one node to accept writes.
+- Replication still happens in the same way: each node that processes a write must forward that data change to all the other nodes.
+- We call this a multi-leader configuration (also known as master–master or active/active replication).
+- In this setup, each leader simultaneously acts as a follower to the other leaders.
+
+## <u>SINGLE VS MULTI LEADER REPLICATION</u>
+
+### Performance
+
+- In a single-leader configuration, every write must go over the internet to the datacenter with the leader.
+- This can add significant latency to writes and might contravene the purpose of having multiple datacenters in the first place.
+- In a multi-leader configuration, every write can be processed in the local datacenter and is replicated asynchronously to the other datacenters.
+- Thus, the inter- datacenter network delay is hidden from users, which means the perceived performance may be better.
+
+### Tolerance of datacenter outages
+
+- In a single-leader configuration, if the datacenter with the leader fails, failover can promote a follower in another datacenter to be leader.
+- In a multi-leader configuration, each datacenter can continue operating independently of the others, and replication catches up when the failed datacenter comes back online.
+
+### Tolerance of network problems
+
+- Traffic between datacenters usually goes over the public internet, which may be less reliable than the local network within a datacenter.
+- A single-leader configuration is very sensitive to problems in this inter-datacenter link, because writes are made synchronously over this link.
+- A multi-leader configuration with asynchronous replication can usually tolerate network problems better: a temporary network interruption does not prevent writes being processed.
+
+> Multi-leader replication has a big downside: the same data may be concurrently modified in two different datacenters, and those write conflicts must be resolved (which is a hectic task).
+> Autoincrementing keys, triggers, and integrity constraints can be problematic. For this reason, multi-leader replication is often considered dangerous territory that should be avoided if possible.
+
+## <u>WHY MULTI LEADER REPLICATION</u>
+
+- The main reason for using multi-leader replication is to keep the data geographically close to the users who are accessing it, thereby reducing latency.
+
+### Multi-datacenter operation
+
+- Imagine you have a database with replicas in several different datacenters. With a normal leader-based replication setup, the leader has to be in one of the datacenters, and all writes must go through that datacenter.
+- In a multi-leader configuration, you can have a leader in each datacenter.
+- Within each datacenter, regular leader– follower replication is used; between datacenters, each datacenter’s leader replicates its changes to the leaders in other datacenters.
+![image](https://github.com/Harry-kp/Cp/assets/55315065/0b729ea6-5cea-403e-a48f-e69eac9fd67a)
+
+### Clients with offline operation
+
+- Another situation in which multi-leader replication is appropriate is if you have an application that needs to continue to work while it is disconnected from the internet.
+  - For example, consider the calendar apps on your mobile phone, your laptop, and other devices. You need to be able to see your meetings (make read requests) and enter new meetings (make write requests) at any time, regardless of whether your device currently has an internet connection. If you make any changes while you are offline, they need to be synced with a server and your other devices when the device is next online.
+  - In this case, every device has a local database that acts as a leader (it accepts write requests), and there is an asynchronous multi-leader replication process (sync) between the replicas of your calendar on all of your devices. The replication lag may be hours or even days, depending on when you have internet access available.
+- From an architectural point of view, this setup is essentially the same as multi-leader replication between datacenters, taken to the extreme: each device is a “datacenter,” and the network connection between them is extremely unreliable.
+
+### Collaborative editing
+
+- Real-time collaborative editing applications allow several people to edit a document simultaneously.
+  - For example, Google Docs allow multiple people to concurrently edit a text document or spreadsheet
+- We don’t usually think of collaborative editing as a database replication problem, but it has a lot in common with the previously mentioned offline editing use case. When one user edits a document, the changes are instantly applied to their local replica (the state of the document in their web browser or client application) and asynchronously replicated to the server and any other users who are editing the same document.
+- If you want to guarantee that there will be no editing conflicts, the application must obtain a lock on the document before a user can edit it.If another user wants to edit the same document, they first have to wait until the first user has committed their changes and released the lock.
+  - This collaboration model is equivalent to single-leader replication with transactions on the leader.
+- However, for faster collaboration, you may want to make the unit of change very small (e.g., a single keystroke) and avoid locking.
+- This approach allows multiple users to edit simultaneously, but it also brings all the challenges of multi-leader replication, including requiring conflict resolution.
+- You can read more about collaborative editing handling here: [Handling Write Conflicts in Collaborative Editing](../handling-write-conflicts-in-multi-leader-replication)
+
+## MULTI LEADER REPLICATION TOPOLOGIES
+
+- A replication topology describes the communication paths along which writes are propagated from
+one node to another.
+- If you have two leaders, , there is only one plausible topology: leader 1 must send all of its writes to leader 2, and vice versa.
+- With more than two leaders, various different topologies are possible as shown below
+![image](https://github.com/Harry-kp/Assets/assets/55315065/400c8bf5-a33f-41f2-ab17-2297425ae7ae)
+- > The most general topology is all-to-all in which every leader sends its writes to every other leader
+- “Another popular topology has the shape of a star one designated root node forwards writes to all of the other nodes.
+  - The star topology can be generalized to a tree.”
+
+### How to prevent infinite replication loops
+
+- To prevent infinite replication loops, each node is given a unique identifier, and in the replication log, each write is tagged with the identifiers of all the nodes it has passed through so far.
+- When a node receives a data change that is tagged with its own identifier, that data change is
+ignored, because the node knows that it has already been processed.
+
+### Problem with star and circular topologies
+
+- A problem with circular and star topologies is that if just one node fails, it can interrupt the
+flow of replication messages between other nodes, causing them to be unable to communicate until the
+node is fixed.
+- The topology could be reconfigured to work around the failed node, but in most deployments such reconfiguration would have to be done manually.
+
+> The fault tolerance of a more densely connected topology (such as all-to-all) is better because it allows messages to travel along different paths, avoiding a single point of failure.
+
+### Problem with ALL TO ALL topology
+
+- Some network links may be faster than others (e.g., due to network congestion), with the result that some replication
+messages may “overtake” others, as illustrated in Fig.
+![With multi-leader replication, writes may arrive in the wrong order at some replicas](<https://github.com/Harry-kp/Assets/assets/55315065/121dad4a-25c2-4383-a84e-21634d8dbcea>)
+- With multi-leader replication, writes may arrive in the wrong order at some replicas.
+- In Fig, client A inserts a row into a table on leader 1, and client B updates that row on leader 3.
+- However, leader 2 may receive the writes in a different order: it may first receive the update (which, from its point of view, is an update to a row that does not exist in the database) and only later receive the corresponding insert (which should have preceded the update).
+- This is a problem of causality, similar to the one we saw in “Consistent Prefix Reads”: the update depends on the prior insert, so we need to make sure that all nodes process the insert first, and then the update.
+- Simply attaching a timestamp to every write is not sufficient, because clocks cannot be trusted to be sufficiently in sync to correctly order these events at leader 2.
+
+> To order these events correctly, a technique called *version vectors* can be used, which we will discuss later in this chapter.

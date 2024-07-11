@@ -1,0 +1,166 @@
+---
+title: "Implementing Ordered Hash in Ruby"
+summary: "This article discusses the importance of naming conventions in Ruby and provides guidelines for consistent and readable code."
+publishedAt: "2023-07-18"
+image: "/implement-ordered-hash-in-ruby.jpg"
+tags: ["Ruby", "Naming Conventions", "Code Readability"]
+---
+
+An ordered hash is a data structure that combines the functionality of a hash and a list. It allows you to store key-value pairs while preserving the order of insertion. In this blog post, we'll explore how to implement an ordered hash in Ruby, step by step.
+
+## Step 1: Creating the OrderedHash Class
+
+Let's start by creating a new Ruby class called `OrderedHash` to encapsulate our ordered hash functionality. Open a new Ruby file, for example, `ordered_hash.rb`, and define the class as follows:
+
+```ruby
+class OrderedHash
+  # Our code implementation will go here
+end
+```
+
+## Step 2: Initializing the OrderedHash
+
+Inside the `OrderedHash` class, we need to initialize two instance variables: `@keys` and `@values`. The `@keys` array will store the keys in the order of insertion, and the `@values` hash will store the corresponding key-value pairs. Add the following code inside the class:
+
+```ruby
+class OrderedHash
+  def initialize
+    @keys = []
+    @values = {}
+  end
+end
+```
+
+## Step 3: Adding Key-Value Pairs
+
+To add a key-value pair to the ordered hash, we'll define the `[]=` method. This method will check if the key already exists in the hash. If it does, it will update the value; otherwise, it will add the key to the `@keys` array and store the key-value pair in the `@values` hash. Add the following code inside the class:
+
+```ruby
+class OrderedHash
+  def []=(key, value)
+    if @values.key?(key)
+      @values[key] = value
+    else
+      @keys << key
+      @values[key] = value
+    end
+  end
+end
+```
+
+## Step 4: Retrieving Values
+
+To retrieve the value for a given key, we'll define the `[]` method. This method will simply return the corresponding value from the `@values` hash. Add the following code inside the class:
+
+```ruby
+class OrderedHash
+  def [](key)
+    @values[key]
+  end
+end
+```
+
+## Step 5: Deleting Key-Value Pairs
+
+To remove a key-value pair from the ordered hash, we'll create a `delete` method. This method will remove the key from the `@keys` array and delete the corresponding entry from the `@values` hash. Add the following code inside the class:
+
+```ruby
+class OrderedHash
+  def delete(key)
+    @keys.delete(key)
+    @values.delete(key)
+  end
+end
+```
+
+## Step 6: Iterating Over the Ordered Hash
+
+To iterate over the ordered hash in the order of insertion, we'll define the `each` method. This method will iterate over the `@keys` array, fetch the corresponding value from the `@values` hash, and yield both the key and value to a block. Add the following code inside the class:
+
+```ruby
+class OrderedHash
+  def each
+    @keys.each do |key|
+      yield(key, @values[key])
+    end
+  end
+end
+```
+
+## Step 7: Retrieving Keys
+
+To retrieve the keys in the order of insertion, we'll define the `keys` method. This method will return a copy of the `@keys` array. Add the following code inside the class:
+
+```ruby
+class OrderedHash
+  def keys
+    @keys.dup
+  end
+end
+```
+
+## Step 8: Retrieving Values
+
+To retrieve the values in the order of insertion, we'll define the `values` method. This method will map over the `@keys` array and retrieve the corresponding values from the `@values` hash. Add the following code inside the class:
+
+```ruby
+class OrderedHash
+  def values
+    @keys.map { |key| @values[key] }
+  end
+end
+```
+
+## Step 9: Converting to a Hash Representation
+
+To convert the ordered hash into a regular Ruby hash representation, we'll define the `to_h` method. This method will iterate over the `@keys` array, constructing a new hash with the key-value pairs from the `@values` hash. Add the following code inside the class:
+
+```ruby
+class OrderedHash
+  def to_h
+    result = {}
+    @keys.each { |key| result[key] = @values[key] }
+    result
+  end
+end
+```
+
+## Example Usage
+
+Now that we have implemented the `OrderedHash` class, let's see it in action with an example:
+
+```ruby
+hash = OrderedHash.new
+hash["apple"] = 5
+hash["banana"] = 3
+hash["cherry"] = 8
+
+hash.each do |key, value|
+  puts "#{key}: #{value}"
+end
+
+puts "Keys: #{hash.keys}"
+puts "Values: #{hash.values}"
+puts "Hash representation: #{hash.to_h}"
+```
+
+Running the above code will produce the following output:
+
+```
+apple: 5
+banana: 3
+cherry: 8
+Keys: ["apple", "banana", "cherry"]
+Values: [5, 3, 8]
+Hash representation: {"apple"=>5, "banana"=>3, "cherry"=>8}
+```
+
+As you can see, the ordered hash maintains the order of insertion, allowing us to iterate over the elements in the same order they were added.
+
+## Conclusion
+
+In this blog post, we learned how to implement an ordered hash in Ruby. By combining the `Hash` class and the `Array` class, we created a data structure that preserves the order of its elements while providing key-value functionality.
+
+Implementing an ordered hash can be useful in various scenarios where maintaining insertion order is important, such as building ordered configurations, handling priority queues, or tracking historical events.
+
+Feel free to use the provided `OrderedHash` class as a starting point for your own projects. Happy coding!

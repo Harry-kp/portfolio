@@ -1,0 +1,97 @@
+---
+title: "Transaction"
+summary: "Transactions group database operations into atomic units ensuring consistency and isolation. Safely handling errors and aborts requires deduplication, backoff, separating transient errors, and managing external side effects to avoid data loss or duplication."
+publishedAt: "2024-04-21"
+image: "/transactions.jpg"
+tags: ["Distributed Systems", "Database Transactions","ACID"]
+---
+
+## Introduction
+- A transaction is a way for an application to group several reads and writes together into a logical unit.
+- Conceptually, all the reads and writes in a transaction are executed as one operation: either the entire transaction succeeds (commit) or it fails (abort, rollback).
+- Not every application needs transactions, and sometimes there are advantages to weakening transactional guarantees or abandoning them entirely (for example, to achieve higher performance or higher availability). Some safety properties can be achieved without transactions.”
+- In this chapter, we will examine many examples of things that can go wrong, and explore the algorithms that databases use to guard against those issues.
+- We will go especially deep in the area of concurrency control, discussing various kinds of race conditions that can occur and how databases implement isolation levels such as read committed, snapshot isolation, and serializability.
+
+
+## The meaning of ACID
+- ACID, which stands for Atomicity, Consistency, Isolation, and Durability.
+- There is a lot of ambiguity around the meaning of isolation The high-level idea is sound, but the devil is in the details. Today, when a system claims to be “ACID compliant,” it’s unclear what guarantees you can actually expect.
+- ACID has unfortunately become mostly a marketing term
+
+### Atomicity
+- In general, atomic refers to something that cannot be broken down into smaller parts.
+- The word means similar but subtly different things in different branches of computing.
+  - For example, in multi-threaded programming, if one thread executes an atomic operation, that means there is no way that another thread could see the half-finished result of the operation.
+  - The system can only be in the state it was before the operation or after the operation, not something in between.
+- ACID atomicity describes what happens if a client wants to make several writes, but a fault occurs after some of the writes have been processed—for example, a process crashes, a network connection is interrupted, a disk becomes full, or some integrity constraint is violated.
+- If the writes are grouped together into an atomic transaction, and the transaction cannot be completed (committed) due to a fault, then the transaction is aborted and the database must discard or undo any writes it has made so far in that transaction.
+- The ability to abort a transaction on error and have all writes from that transaction discarded is the defining feature of ACID atomicity.
+- Perhaps abortability would have been a better term than atomicity, but we will stick with atomicity since that’s the usual word.
+
+### Consistency
+- The idea of ACID consistency is that you have certain statements about your data (invariants) that must always be true.
+- For example, in an accounting system, credits and debits across all accounts must always be balanced.
+- If a transaction starts with a database that is valid according to these invariants, and any writes during the transaction preserve the validity, then you can be sure that the invariants are always satisfied.
+> Atomicity, isolation, and durability are properties of the database, whereas consistency (in the ACID sense) is a property of the application. The application may rely on the database’s atomicity and isolation properties in order to achieve consistency, but it’s not up to the database alone.
+> Thus, the letter C doesn’t really belong in ACID.
+
+
+### Isolation
+
+- Most databases are accessed by several clients at the same time.
+- If they are accessing the same database records, you can run into concurrency problems (race conditions).
+- For example,
+![Isolation](/isolation.jpg)
+  - Say you have two clients, simultaneously incrementing a counter that is stored in a database.
+  - Each client needs to read the current value, add 1, and write the new value back (assuming there is no increment operation built into the database). - In Figure 7-1 the counter should have increased from 42 to 44, because two increments happened, but it actually only went to 43 because of the race condition.
+
+- Isolation in the sense of ACID means that concurrently executing transactions are isolated from each other: they cannot step on each other’s toes.
+- The classic database textbooks formalize isolation as serializability, which means that each transaction can pretend that it is the only transaction running on the entire database.
+- The database ensures that when the transactions have committed, the result is the same as if they had run serially (one after another), even though in reality they may have run concurrently.
+
+
+### Durability
+
+- Durability is the promise that once a transaction has committed successfully, any data it has written will not be forgotten, even if there is a hardware fault or the database crashes.
+- In a single-node database, durability typically means that the data has been written to nonvolatile storage such as a hard drive or SSD.
+- It usually also involves a write-ahead log or similar (see “Making B-trees reliable”), which allows recovery in the event that the data structures on disk are corrupted.
+- In a replicated database, durability may mean that the data has been successfully copied to some number of nodes.
+- In order to provide a durability guarantee, a database must wait until these writes or replications are complete before reporting a transaction as successfully committed.
+
+
+## Single Object and Multi Object operation
+
+### Multi Object Operation
+- Multi-object transactions require some way of determining which read and write operations belong to the same transaction. In relational databases, that is typically done based on the client’s TCP connection to the database server: on any particular connection, everything between a BEGIN
+TRANSACTION and a COMMIT statement is considered to be part of the same
+transaction
+
+### Single Object write
+
+- Atomicity and isolation also apply when a single object is being changed.
+  - For example, imagine you are writing a 20 KB JSON document to a database:
+  - If the network connection is interrupted after the first 10 KB have been sent, does the database store that unparseable 10 KB fragment of JSON?
+  - If the power fails while the database is in the middle of overwriting the previous value on disk, do you end up with the old and new values spliced together?
+  - If another client reads that document while the write is in progress, will it see a partially updated value?
+- Those issues would be incredibly confusing, so storage engines almost universally aim to provide atomicity and isolation on the level of a single object (such as a key-value pair) on one node.
+  - Atomicity can be implemented using a log for crash recovery (see “Making B-trees reliable”), and isolation can be implemented using a lock on each object (allowing only one thread to access an object at any one time).
+- These single-object operations are useful, as they can prevent lost updates when several clients try to write to the same object concurrently (see “Preventing Lost Updates”). However, they are not transactions in the usual sense of the word.
+- A transaction is usually understood as a mechanism for grouping multiple operations on multiple objects into one unit of execution.
+
+
+### Handling errors and aborts
+
+- A key feature of a transaction is that it can be aborted and safely retried if an error occurred.
+- ACID databases are based on this philosophy: if the database is in danger of violating its guarantee of atomicity, isolation, or durability, it would rather abandon the transaction entirely than allow it to remain half-finished.
+
+> Not all systems follow that philosophy, though. In particular, datastores with leaderless replication (see “Leaderless Replication”) work much more on a “best effort” basis, which could be summarized as “the database will do as much as it can, and if it runs into an error, it won’t undo something it has already done”—so it’s the application’s responsibility to recover from errors.
+
+- Although retrying an aborted transaction is a simple and effective error handling mechanism, it isn’t perfect:
+  - If transaction succeeded but client thinks it failed, retrying causes duplication unless deduplication mechanism is in place.
+  - If error is due to overload, retrying worsens the problem; use retry limits, exponential backoff, and handle overload errors differently.
+  - Only retry for transient errors, not permanent errors like constraint violations.
+  - If the transaction also has side effects outside of the database, those side effects may happen even if the transaction is aborted.
+    - For example, if you’re sending an email, you wouldn’t want to send the email again every time you retry the transaction.
+  - If the client process fails while retrying, any data it was trying to write to the database is lost.
+

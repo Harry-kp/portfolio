@@ -1,0 +1,67 @@
+---
+title: "Distributed System - Quorums Reads and Writes"
+summary: "Quorums are the minimum number of votes required for the read or write to be valid. In distributed systems, quorums are used to ensure consistency and availability. This post explains how quorums are used in distributed systems."
+publishedAt: "2024-03-24"
+image: "/quorums-reads-and-writes.jpg"
+tags: ["Distributed Systems", "Replication", "Leaderless Replication"]
+---
+
+> This is a skimmed version of Chapter 5 'Replication' from the book design_data_intensive_applications. I would recommend you to first read the whole chapter and use these notes for revision purpose only.
+
+## QUORUMS FOR READING AND WRITING
+
+- If there are n replicas, every write must be confirmed by w nodes to be considered successful, and we must query at least r nodes for each read.
+- Example, n = 3, w = 2, r = 2. As long as w + r > n, we expect to get an up-to-date value when reading, because at least one of the r nodes we’re
+reading from must be up to date.
+- Reads and writes that obey these r and w values are called quorum reads and writes
+- **You can think of r and w as the minimum number of votes required for the read or write to be valid.**
+
+> In Dynamo-style databases, the parameters n, w, and r are typically configurable. A common choice is to make n an odd number (typically 3 or 5) and to set w = r = (n + 1) / 2 (rounded up).
+
+- The quorum condition, w + r > n, allows the system to tolerate unavailable nodes
+as follows:
+- If w < n, we can still process writes if a node is unavailable.
+- If r < n, we can still process reads if a node is unavailable.
+- With n = 3, w = 2, r = 2 we can tolerate one unavailable node.
+- With n = 5, w = 3, r = 3 we can tolerate two unavailable nodes.
+
+> Normally, reads and writes are always sent to all n replicas in parallel. The parameters w and
+r determine how many nodes we wait for—i.e., how many of the n nodes need to report success
+before we consider the read or write to be successful.
+
+## Limitations of Quorum Consistency
+
+- Often, r and w are chosen to be a majority (more than n/2) of nodes, because that ensures w + r > n while still tolerating up to n/2 node failures. But quorums are not necessarily majorities, it only matters that the sets of nodes used by the read and write operations overlap in at least one node.
+- Other quorum assignments are possible, which allows some flexibility in the design of distributed algorithms
+  - You may also set w and r to smaller numbers, so that w + r ≤ n (i.e., the quorum condition is not satisfied).
+    - In this case, reads and writes will still be sent to n nodes, but a smaller number of successful responses is required for the operation to succeed.
+    - With a smaller w and r you are more likely to read stale values
+    - On the upside, this configuration allows lower latency and higher availability.
+    Only after the number of reachable replicas falls below w or r does the database become unavailable for writing or reading, respectively
+- Even with w + r > n, there are likely to be edge cases where stale values are returned. These depend on the implementation, but possible scenarios include:
+  - If a sloppy quorum is used, the w writes may end up on different nodes than the r reads, so there is no longer a guaranteed overlap between the r nodes and the w nodes.
+  - If two writes occur concurrently, it is not clear which one happened first. In this case, the only
+safe solution is to merge the concurrent writes. If a winner is picked based on a timestamp (last write wins), writes can be lost due to clock skew.
+- If a write happens concurrently with a read, the write may be reflected on only some of the replicas. In this case, it’s undetermined whether the read returns the old or the new value.
+- If a write succeeded on some replicas but failed on others (for example because the disks on some
+nodes are full), and overall succeeded on “ fewer than w replicas, it is not rolled back on the
+replicas where it succeeded. This means that if a write was reported as failed, subsequent reads
+may or may not return the value from that write.
+- If a node carrying a new value fails, and its data is restored from a replica carrying an old
+value, the number of replicas storing the new value may fall below w, breaking the quorum
+condition.
+- Even if everything is working correctly, there are edge cases in which you can get unlucky with
+the timing, as we shall see in “Linearizability and quorums”.
+
+## Sloppy Quorums and Hinted Handoff
+
+- In a large cluster (with significantly more than n nodes) it’s likely that the client can connect to some database nodes during the network interruption, just not to the nodes that it needs to assemble a quorum for a particular value.
+- In that case, database designers face a trade-off:
+  - Is it better to return errors to all requests for which we cannot reach a quorum of w or r nodes?
+  - Or should we accept writes anyway, and write them to some nodes that are reachable but aren’t among the n nodes on which the value usually lives?
+- **The latter is known as a sloppy quorum**: writes and reads still require w and r successful responses, but those may include nodes that are not among the designated n “home” nodes for a value.
+  - By analogy, if you lock yourself out of your house, you may knock on the neighbor’s door and ask whether you may stay on their couch temporarily.
+  - Once the network interruption is fixed, any writes that one node temporarily accepted on behalf of another node are sent to the appropriate “home” nodes. **This is called hinted handoff**. (Once you find the keys to your house again, your neighbor politely asks you to get off their couch and go home).
+
+> Sloppy quorums are particularly useful for increasing write availability: as long as any w nodes are available, the database can accept writes. However, this means that even when w + r > n, you cannot be sure to read the latest.
+

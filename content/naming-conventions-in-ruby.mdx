@@ -1,0 +1,106 @@
+---
+title: "Naming Conventions in Ruby Language"
+summary: "This article discusses the importance of naming conventions in Ruby and provides guidelines for consistent and readable code."
+publishedAt: "2023-07-23"
+image: "/naming-conventions-in-ruby.jpg"
+tags: ["Ruby", "Ruby on Rails", "Web Development"]
+---
+
+> When it comes to writing clean and readable code, following consistent naming conventions is crucial. In this article, we will explore the recommended naming conventions in Ruby and discuss their importance.
+>
+## Why Naming Conventions Matter
+
+Consistent naming conventions improve code readability and maintainability. When you follow established conventions, it becomes easier for other developers to understand your code and collaborate effectively. Additionally, adhering to naming conventions helps your code integrate seamlessly with existing libraries and frameworks, making it more maintainable in the long run.
+
+## 1. Variable and Method Names
+
+In Ruby, variables and method names should be written in lowercase using snake_case. Snake case means that words are separated by underscores.
+
+```ruby
+# Good variable and method names
+first_name = "John"
+last_name = "Doe"
+
+def calculate_total_price(item_count)
+  # calculation logic here
+end
+```
+
+Using descriptive names that accurately convey the purpose of a variable or method is important for code clarity. Avoid using ambiguous or overly generic names that may lead to confusion.
+
+## 2. Class and Module Names
+
+Class and module names in Ruby should be written in CamelCase, also known as PascalCase. Camel case means that each word starts with an uppercase letter and has no separators.
+
+```ruby
+class Person
+  # class implementation
+end
+
+module DataProcessing
+  # module implementation
+end
+```
+
+By following this convention, it is easier to distinguish classes and modules from variables and methods in your codebase. This consistency contributes to the overall readability and maintainability of your code.
+
+## 3. Constants
+
+In Ruby, constants are written in uppercase. Although Ruby doesn't enforce true immutability for constants, it is a best practice not to change their values once assigned.
+
+```ruby
+MAX_RETRY_ATTEMPTS = 3
+PI = 3.14159
+```
+
+Using uppercase letters for constants makes them stand out and indicates their importance in the codebase. Constants are often used for values that are unlikely to change, such as configuration settings or mathematical constants.
+
+## 4. Predicate Methods
+
+Predicate methods, which return a Boolean value, often end with a question mark. This convention helps indicate that the method is expected to return a boolean result.
+
+```ruby
+def logged_in?
+  # logic to check if user is logged in
+end
+
+def even_number?(num)
+  num % 2 == 0
+end
+```
+
+By appending a question mark to the end of predicate methods, you provide a clear indication of their behavior and make your code more expressive.
+
+## 5. Private and Protected Methods
+
+In Ruby, private and protected methods are denoted by their visibility keywords. It is common practice to prefix these methods with an underscore to indicate their intended usage.
+
+```ruby
+class Person
+  def public_method
+    # public method implementation
+  end
+
+  private
+
+  def _private_method
+    # private method implementation
+  end
+
+  protected
+
+  def _protected_method
+    # protected method implementation
+  end
+end
+```
+
+By using the underscore prefix, you convey that these methods are not intended for external use and are part of the class's internal implementation.
+
+## Conclusion
+
+Following consistent naming conventions is essential for writing clean and maintainable Ruby code. By adopting these conventions, you enhance code readability and facilitate collaboration with other developers. Remember to use descriptive names that accurately convey the purpose of variables, methods, classes, and modules, making your code easier to understand.
+
+Using the appropriate naming conventions in your code is a crucial step towards writing high-quality Ruby applications.
+
+> Remember to stay up to date with the latest naming conventions and Ruby best practices in order to write efficient and maintainable code.

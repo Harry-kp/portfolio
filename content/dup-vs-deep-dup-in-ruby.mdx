@@ -1,0 +1,102 @@
+---
+
+title: "Dup vs Deep Dup in Ruby"
+summary: "Exploring the differences between Ruby's dup and deep_dup methods for object copying."
+publishedAt: "2023-07-07"
+image: "/dup-vs-deep-dup-in-ruby.jpg"
+tags: ["Ruby", "Ruby Methods", "Dup vs Deep Dup"]
+---
+
+In Ruby, the methods `dup` and `deep_dup` are used to create copies of objects. While both seem similar, there is a crucial difference that developers need to understand. In this blog post, we will delve into the differences between these methods, explore their use cases, and provide coding examples to illustrate their behaviors.
+
+### `dup` Method
+
+The `dup` method in Ruby creates a shallow copy of an object. A shallow copy means that the new object is a duplicate of the original one, but it does not duplicate the objects referenced by the original object. Let's take a look at some examples to understand this better.
+
+#### Example 1: Shallow Copy of Arrays
+
+```ruby
+original_array = [1, 2, [3, 4]]
+copied_array = original_array.dup
+
+copied_array[0] = 10
+copied_array[2][0] = 30
+
+puts original_array.inspect  # Output: [1, 2, [30, 4]]
+puts copied_array.inspect   # Output: [10, 2, [30, 4]]
+```
+
+In this example, we create an `original_array` with three elements: an integer, another integer, and a nested array. We then use the `dup` method to create a `copied_array`. When we modify the value of an element in `copied_array`, it doesn't affect the `original_array`. However, if we modify the nested array inside `copied_array`, it also affects the `original_array`.
+
+### `deep_dup` Method
+
+While Ruby has a `dup` method, it doesn't have a built-in `deep_dup` method. However, developers often implement their own version of the `deep_dup` method for custom objects that require deep copying. The purpose of `deep_dup` is to create a deep copy of an object, meaning it duplicates not only the object itself but also all objects referenced by it (recursively).
+
+#### Example 2: Deep Copy of Arrays (Custom Implementation)
+
+```ruby
+class Array
+  def deep_dup
+    map { |item| item.is_a?(Array) ? item.deep_dup : item.dup }
+  end
+end
+
+original_array = [1, 2, [3, 4]]
+copied_array = original_array.deep_dup
+
+copied_array[0] = 10
+copied_array[2][0] = 30
+
+puts original_array.inspect  # Output: [1, 2, [3, 4]]
+puts copied_array.inspect   # Output: [10, 2, [30, 4]]
+```
+
+In this example, we define a custom `deep_dup` method for the Array class. The method uses recursion to handle nested arrays. When we apply the `deep_dup` method to `original_array`, it creates a separate copy of all elements and nested arrays. Now, changing the values of both the top-level array and the nested array in `copied_array` doesn't affect the `original_array`.
+
+### Edge Cases and Considerations
+
+#### 1. Non-Array Objects
+
+When using `deep_dup` on objects that are not arrays, it behaves like `dup`, creating a shallow copy.
+
+```ruby
+original_number = 42
+copied_number = original_number.deep_dup
+
+copied_number += 10
+
+puts original_number.inspect  # Output: 42
+puts copied_number.inspect   # Output: 52
+```
+
+#### 2. Circular References
+
+Circular references in objects can lead to infinite recursion when using `deep_dup`. It is essential to handle such cases to avoid stack overflow errors.
+
+```ruby
+class Node
+  attr_accessor :data, :next_node
+
+  def initialize(data)
+    @data = data
+    @next_node = nil
+  end
+end
+
+node1 = Node.new(1)
+node2 = Node.new(2)
+
+node1.next_node = node2
+node2.next_node = node1
+
+# This will result in a SystemStackError (stack level too deep)
+copied_node = node1.deep_dup
+```
+
+### Conclusion
+
+In summary, `dup` creates a shallow copy of an object, while `deep_dup` creates a deep copy, duplicating all the objects referenced by the original object as well. It is essential to understand the distinction between these methods to avoid unintended side effects in your code.
+
+Keep in mind that `deep_dup` is not a built-in Ruby method, and you need to implement it yourself or use a library that provides such functionality if you need it. When using `deep_dup`, be cautious of circular references and ensure proper handling to prevent infinite recursion.
+
+Understanding the differences between `dup` and `deep_dup` will empower you to make informed decisions when dealing with object copying in your Ruby code. Happy coding!

@@ -1,0 +1,293 @@
+---
+title: "Implementing LRU Cache in Python"
+summary: "This blog post explores how to implement a Least Recently Used (LRU) cache in Python, taking reference from the provided code."
+publishedAt: "None"
+image: "/LRU-cache.jpg"
+tags: ["Python", "LRU Cache", "Data Structures"]
+
+---
+
+Least Recently Used (LRU) cache is a popular technique used in computer programming to manage a cache of fixed size. It discards the least recently used items first to make space for new ones. In this blog post, we'll explore how to implement an LRU cache in Python, taking reference from the provided code.
+
+<details>
+<summary>Click to expand the code</summary>
+
+```python
+# Node class to represent each item in the cache
+class Node:
+  def __init__(self, k, v, next = None, prev = None):
+    self.value = v  # Value of the node
+    self.key = k  # Key of the node
+    self.next = next  # Pointer to the next node
+    self.prev = prev  # Pointer to the previous node
+
+# LRU class to represent the Least Recently Used cache
+class LRU:
+  # Node class is defined inside the LRU class for better encapsulation
+  class Node:
+    def __init__(self, k, v, next = None, prev = None):
+      self.value = v  # Value of the node
+      self.key = k  # Key of the node
+      self.next = next  # Pointer to the next node
+      self.prev = prev  # Pointer to the previous node
+
+  # Initialization method for the LRU cache
+  def __init__(self, space):
+    self.head = Node(0,0)  # Dummy head node
+    self.tail = Node(0,0)  # Dummy tail node
+    self.head.next = self.tail  # Connect head and tail nodes
+    self.tail.prev = self.head
+    self.space = space  # Maximum size of the cache
+    self.store = {}  # Dictionary to store the nodes by their keys
+
+  # Method to insert a node at the head of the list
+  def insert(self, node):
+    node.next = self.head.next
+    node.prev = self.head
+    node.next.prev = node
+    self.head.next = node
+    self.store[node.key] = node  # Add the node to the dictionary
+
+  # Method to remove a node from the list
+  def remove(self, node):
+    del self.store[node.key]  # Remove the node from the dictionary
+    node.prev.next = node.next
+    node.next.prev = node.prev
+
+  # Method to add a key-value pair to the cache
+  def add(self,k,v):
+    if k in self.store:  # If the key already exists, remove the node
+      self.remove(self.store[k])
+    else:
+      if len(self.store) == self.space:  # If the cache is full, remove the least recently used node
+        self.remove(self.tail.prev)
+    self.insert(Node(k,v))  # Insert the new node at the head of the list
+    self.print()  # Print the current state of the cache
+
+  # Method to get the value associated with a key
+  def get(self, k):
+    if k not in self.store:  # If the key does not exist, return -1
+      self.print()
+      return -1
+    node = self.store[k]  # Get the node associated with the key
+    self.remove(node)  # Remove the node from its current position
+    self.insert(node)  # Insert the node at the head of the list
+    self.print()  # Print the current state of the cache
+    return node.value  # Return the value associated with the key
+
+  # Method to print the current state of the cache
+  def print(self):
+    tmp = self.head.next
+    c = 1
+    while tmp != self.tail:
+      print(f"At pos {c} | {tmp.key} -> {tmp.value}")  # Print the key-value pair at the current position
+      tmp = tmp.next  # Move to the next node
+      c+=1
+    print('------------------------')
+
+# Create an instance of the LRU cache with a maximum size of 3
+cache = LRU(space=3)
+
+# Add key-value pairs to the cache
+cache.add(1,'A')
+cache.add(2,'B')
+cache.add(3,'C')
+
+# Get the value associated with a key
+cache.get(2)
+cache.get(4)
+
+# Add more key-value pairs to the cache
+cache.add(4,'D')
+cache.add(3,'E')
+
+# Get the value associated with a key
+cache.get(4)
+
+# Add another key-value pair to the cache
+cache.add(1,'A')
+```
+</details>
+
+<details>
+<summary>Click to expand the output (Try in a code editor)</summary>
+```
+----------
+| 1 -> A |
+----------
+    |
+    V
+----------
+| 2 -> B |
+| 1 -> A |
+----------
+    |
+    V
+----------
+| 3 -> C |
+| 2 -> B |
+| 1 -> A |
+----------
+    |
+    V
+----------
+| 2 -> B |
+| 3 -> C |
+| 1 -> A |
+----------
+    |
+    V
+----------
+| 2 -> B |
+| 3 -> C |
+| 1 -> A |
+----------
+    |
+    V
+----------
+| 4 -> D |
+| 2 -> B |
+| 3 -> C |
+----------
+    |
+    V
+----------
+| 3 -> E |
+| 4 -> D |
+| 2 -> B |
+----------
+    |
+    V
+----------
+| 4 -> D |
+| 3 -> E |
+| 2 -> B |
+----------
+    |
+    V
+----------
+| 1 -> A |
+| 4 -> D |
+| 3 -> E |
+----------
+    |
+    V
+```
+</details>
+
+The provided code is a well-structured implementation of an LRU cache. It consists of two classes: `Node` and `LRU`. The `Node` class represents a single node in the doubly linked list, while the `LRU` class manages the cache.
+
+Let's start by understanding the `Node` class. This class has four attributes: `key`, `value`, `next`, and `prev`. The `next` and `prev` attributes are pointers to the next and previous nodes in the doubly linked list, respectively.
+
+```python
+class Node:
+  def __init__(self, k, v, next = None, prev = None):
+    self.value = v
+    self.key = k
+    self.next = None
+    self.prev = None
+```
+
+Now, let's move on to the `LRU` class. This class has five methods: `__init__`, `insert`, `remove`, `add`, and `get`.
+
+The `__init__` method initializes the cache with a fixed size, `space`. It also creates a dummy head and tail node to simplify the insertion and removal of nodes.
+
+```python
+def __init__(self, space):
+  self.head = Node(0,0)
+  self.tail = Node(0,0)
+  self.head.next = self.tail
+  self.space = space
+  self.store = {}
+```
+
+The `insert` method adds a node to the head of the list.
+
+```python
+def insert(self, node):
+  node.next = self.head.next
+  node.prev = self.head
+  node.next.prev = node
+  self.head.next = node
+  self.store[node.key] = node
+```
+
+The `remove` method removes a node from the list.
+
+```python
+def remove(self, node):
+  del self.store[node.key]
+  node.prev.next = node.next
+  node.next.prev = node.prev
+```
+
+The `add` method adds a key-value pair to the cache. If the key already exists, it updates the value. If the cache is full, it removes the least recently used item before adding the new item.
+
+```python
+def add(self,k,v):
+  if k in self.store:
+    self.remove(self.store[k])
+  else:
+    if len(self.store) == self.space:
+      self.remove(self.tail.prev)
+  self.insert(Node(k,v))
+  self.print()
+```
+
+The `get` method retrieves the value associated with a key. If the key is not found, it returns -1.
+
+```python
+def get(self, k):
+  if k not in self.store:
+    self.print()
+    return -1
+  node = self.store[k]
+  self.remove(node)
+  self.insert(node)
+  self.print()
+  return node.value
+```
+
+Now, let's walk through the example usage of the `LRU` class:
+
+```python
+cache = LRU(space=3)
+cache.add(1,'A')
+cache.add(2,'B')
+cache.add(3,'C')
+```
+
+In this example, we create an LRU cache with a size of 3. We then add three key-value pairs to the cache. The cache is currently full, so the least recently used item will be discarded when a new item is added.
+
+```python
+cache.get(2)
+```
+
+Here, we retrieve the value associated with key 2. Since we just accessed this item, it becomes the most recently used item in the cache.
+
+```python
+cache.get(4)
+```
+
+In this case, we try to retrieve the value associated with key 4, which is not in the cache. The `get` method returns -1 to indicate that the key was not found.
+
+```python
+cache.add(4,'D')
+```
+
+Since the cache is full, adding a new item will cause the least recently used item to be discarded. In this case, the item with key 1 will be discarded, as it was the least recently used item.
+
+```python
+cache.add(3,'E')
+```
+
+Here, we add a new item with key 3 and value 'E'. Since this item was already in the cache, its value is updated, and it becomes the most recently used item.
+
+```python
+cache.get(4)
+cache.add(1,'A')
+```
+
+Finally, we retrieve the value associated with key 4 and add a new item with key 1 and value 'A'. Since the cache is full, adding a new item will cause the least recently used item to be discarded. In this case, the item with key 2 will be discarded, as it was the least recently used item after retrieving the value associated with key 4.
+
+Implementing an LRU cache in Python can be a valuable skill to add to your toolkit.By following the explanations and code snippets provided in this blog post, you should be able to understand and implement your own LRU cache in Python with ease.
