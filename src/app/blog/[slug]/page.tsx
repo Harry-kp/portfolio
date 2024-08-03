@@ -60,7 +60,7 @@ export default async function Blog({
   }
 
   return (
-    <section id="blog">
+    <section id="blog" className="max-w-4xl mx-auto p-4 md:p-8">
       <script
         type="application/ld+json"
         suppressHydrationWarning
@@ -83,18 +83,21 @@ export default async function Blog({
           }),
         }}
       />
-      <h1 className="title font-medium text-2xl tracking-tighter max-w-[650px]">
+      <img 
+        src={post.metadata.image} 
+        alt={post.metadata.title} 
+        className="w-full h-auto rounded-lg shadow-md mb-8"
+      />
+      <h1 className="font-bold text-3xl md:text-4xl tracking-tight mb-4">
         {post.metadata.title}
       </h1>
-      <div className="flex justify-between items-center mt-2 mb-8 text-sm max-w-[650px]">
+      <div className="flex justify-between items-center mb-8 text-sm text-neutral-600 dark:text-neutral-400">
         <Suspense fallback={<p className="h-5" />}>
-          <p className="text-sm text-neutral-600 dark:text-neutral-400">
-            {formatDate(post.metadata.publishedAt)}
-          </p>
+          <p>{formatDate(post.metadata.publishedAt)}</p>
         </Suspense>
       </div>
       <article
-        className="prose dark:prose-invert"
+        className="prose dark:prose-invert lg:prose-lg mx-auto"
         dangerouslySetInnerHTML={{ __html: post.source }}
       ></article>
     </section>
