@@ -39,11 +39,13 @@ export default function Navbar() {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
-                href="/blog"
+                href="https://www.harrykp.tech/blog/"
                 className={cn(
                   buttonVariants({ variant: "ghost", size: "icon" }),
                   "size-12"
                 )}
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <NotebookIcon className="size-4" />
               </Link>
