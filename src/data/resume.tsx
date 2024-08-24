@@ -134,37 +134,24 @@ export const DATA = {
     }
     ,
     {
-      title: "llm.report",
-      href: "https://llm.report",
-      dates: "April 2023 - September 2023",
+      title: "Promptify",
+      href: "https://github.com/Harry-kp/promptify",
+      dates: "Aug 2024 - Aug 2024",
       active: true,
       description:
-        "Developed an open-source logging and analytics platform for OpenAI: Log your ChatGPT API requests, analyze costs, and improve your prompts.",
+        "Built a tool that consolidates text files from a directory into a single file, making it easier to use with AI models for prompting.",
       technologies: [
-        "Next.js",
-        "Typescript",
-        "PostgreSQL",
-        "Prisma",
-        "TailwindCSS",
-        "Shadcn UI",
-        "Magic UI",
-        "Stripe",
-        "Cloudflare Workers",
+       "Golang"
       ],
       links: [
         {
-          type: "Website",
-          href: "https://llm.report",
-          icon: <Icons.globe className="size-3" />,
-        },
-        {
           type: "Source",
-          href: "https://github.com/dillionverma/llm.report",
+          href: "https://github.com/Harry-kp/promptify",
           icon: <Icons.github className="size-3" />,
         },
       ],
       image: "",
-      video: "https://cdn.llm.report/openai-demo.mp4",
+      video: "https://github.com/user-attachments/assets/11bd8c58-1247-45fa-adb4-f7d4290f9140",
     },
     {
       title: "Automatic Chat",
