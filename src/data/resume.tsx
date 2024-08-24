@@ -12,6 +12,7 @@ export const DATA = {
     "At the end of 2022, I quit my job as a software engineer to go fulltime into building and scaling my own SaaS businesses. In the past, [I pursued a double degree in computer science and business](/#education), [interned at big tech companies in Silicon Valley](https://www.youtube.com/watch?v=d-LJ2e5qKdE), and [competed in over 21 hackathons for fun](/#hackathons). I also had the pleasure of being a part of the first ever in-person cohort of buildspace called [buildspace sf1](https://buildspace.so/sf1).",
   avatarUrl: "/me.png",
   skills: [
+    "Golang",
     "Ruby",
     "Rails",
     "Python",
@@ -80,6 +81,26 @@ export const DATA = {
   ],
   projects: [
     {
+      title: "Nebula",
+      href: "https://github.com/Harry-kp/nebula",
+      dates: "Aug 2024 - Aug 2024",
+      active: true,
+      description:
+        "Developed a Go-based command-line torrent client for downloading files, featuring HTTP tracker support and piece management.",
+      technologies: [
+        "Golang"
+      ],
+      links: [
+        {
+          type: "Github",
+          href: "https://github.com/Harry-kp/nebula",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "",
+      video: "https://github.com/user-attachments/assets/2fe05664-7e27-4ccf-b0bc-be45a54a3078",
+    },
+    {
       title: "CheggPy",
       href: "https://github.com/Harry-kp/cheggpy",
       dates: "Feb 2024 - April 2024",
@@ -110,39 +131,8 @@ export const DATA = {
       image: "",
       video:
         "https://pub-83c5db439b40468498f97946200806f7.r2.dev/chat-collect.mp4",
-    },
-    {
-      title: "Magic UI",
-      href: "https://magicui.design",
-      dates: "June 2023 - Present",
-      active: true,
-      description:
-        "Designed, developed and sold animated UI components for developers.",
-      technologies: [
-        "Next.js",
-        "Typescript",
-        "PostgreSQL",
-        "Prisma",
-        "TailwindCSS",
-        "Stripe",
-        "Shadcn UI",
-        "Magic UI",
-      ],
-      links: [
-        {
-          type: "Website",
-          href: "https://magicui.design",
-          icon: <Icons.globe className="size-3" />,
-        },
-        {
-          type: "Source",
-          href: "https://github.com/magicuidesign/magicui",
-          icon: <Icons.github className="size-3" />,
-        },
-      ],
-      image: "",
-      video: "https://cdn.magicui.design/bento-grid.mp4",
-    },
+    }
+    ,
     {
       title: "llm.report",
       href: "https://llm.report",
