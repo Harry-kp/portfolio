@@ -134,6 +134,26 @@ export const DATA = {
     }
     ,
     {
+      title: "DevStrologer",
+      href: "https://devstrologer.vercel.app/",
+      dates: "Aug 2024 - Aug 2024",
+      active: true,
+      description:
+        "DevStrologer is a fun app that combines horoscopes with developer personalities. It uses user input to generate personalized 'Dev Horoscopes' for tech enthusiasts. Built with Shadcn, Next.js, and powered by Gemini API.",
+      technologies: [
+       "NextJs", "Shadcn", "Gemini AI",""
+      ],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/Harry-kp/devstrologer",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "",
+      video: "https://github.com/user-attachments/assets/415480b1-f2aa-420a-96b1-9ce17b4378ce",
+    },
+    {
       title: "Promptify",
       href: "https://github.com/Harry-kp/promptify",
       dates: "Aug 2024 - Aug 2024",
