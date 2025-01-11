@@ -135,7 +135,7 @@ export const DATA = {
     ,
     {
       title: "DevStrologer",
-      href: "https://devstrologer.vercel.app/",
+      href: "https://devstrologer.harrykp.live/",
       dates: "Aug 2024 - Aug 2024",
       active: true,
       description:

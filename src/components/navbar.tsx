@@ -39,7 +39,7 @@ export default function Navbar() {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
-                href="https://www.harrykp.tech/blog/"
+                href="https://blog.harrykp.live/blog"
                 className={cn(
                   buttonVariants({ variant: "ghost", size: "icon" }),
                   "size-12"
