@@ -10,7 +10,7 @@ export const DATA = {
     "Software Engineer with knack of rails.",
   summary:
    "Backend Software Engineer specializing in AI at BrowserStack. I have a proven track record of leading teams in integrating complex ERP systems and enhancing product capabilities in Procurement Domain. Solved more than 700 problems on LeetCode. Open Source Contributor at Maybe, LeetCode and RubyForGood",
-  avatarUrl: "/me.png",
+  avatarUrl: "/me.jpg",
   skills: [
     "Golang",
     "Ruby",
