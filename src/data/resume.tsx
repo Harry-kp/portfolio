@@ -67,7 +67,7 @@ export const DATA = {
       title: "Senior Software Engineer",
       logoUrl: "/procol.png",
       start: "Jun 2022",
-      end: "Present",
+      end: "Dec 2024",
       description:
         "Implemented a custom Kubernetes controller in Go to automate the deployment of MySQL and ProxySQL custom resources in order to enable 2,000+ internal developers to instantly deploy their app databases to production. Wrote several scripts in Go to automate MySQL database failovers while maintaining master-slave replication topologies and keeping Zookeeper nodes consistent with changes.",
     },
