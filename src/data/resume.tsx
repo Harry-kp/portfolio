@@ -97,6 +97,29 @@ export const DATA = {
   projects: [
     {
       title: "Nebula",
+      href: "https://okayrai.harrykp.live/",
+      dates: "May 2025 - Present",
+      active: true,
+      description:
+        "OkayrAI is an AI-powered career advancement platform I developed that helps professionals track achievements, generate data-driven performance reviews, and secure promotions. The platform features smart work logging, OKR tracking, AI-generated reports. Built with Next.js, TypeScript, Prisma, and integrated with OpenAI for personalized career insights.",
+      technologies: [
+        "NextJS",
+        "Postgres",
+        "OpenAI",
+        "Gemini"
+      ],
+      links: [
+        {
+          type: "Github",
+          href: "https://github.com/Harry-kp/okayri",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "",
+      video: "",
+    },
+    {
+      title: "Nebula",
       href: "https://github.com/Harry-kp/nebula",
       dates: "Aug 2024 - Aug 2024",
       active: true,
