@@ -1,31 +1,53 @@
-import Navbar from "@/components/navbar";
-import { ThemeProvider } from "@/components/theme-provider";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { DATA } from "@/data/resume";
-import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
-import { Inter as FontSans } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
+import { DATA } from "@/data/resume";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import "./globals.css";
 
-const fontSans = FontSans({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-sans",
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL(DATA.url),
   title: {
-    default: DATA.name,
+    default: `${DATA.name} - Backend Engineer`,
     template: `%s | ${DATA.name}`,
   },
-  description: DATA.description,
+  description: DATA.summary,
+  keywords: [
+    "Backend Engineer",
+    "Software Engineer",
+    "Golang",
+    "Ruby",
+    "Rails",
+    "Kubernetes",
+    "AI",
+    DATA.name,
+  ],
+  authors: [{ name: DATA.name }],
+  creator: DATA.name,
   openGraph: {
-    title: `${DATA.name}`,
-    description: DATA.description,
-    url: DATA.url,
-    siteName: `${DATA.name}`,
-    locale: "en_US",
     type: "website",
+    locale: "en_US",
+    url: DATA.url,
+    title: DATA.name,
+    description: DATA.summary,
+    siteName: DATA.name,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: DATA.name,
+    description: DATA.summary,
+    creator: "@Harshitc007",
   },
   robots: {
     index: true,
@@ -38,14 +60,6 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  twitter: {
-    title: `${DATA.name}`,
-    card: "summary_large_image",
-  },
-  verification: {
-    google: "",
-    yandex: "",
-  },
 };
 
 export default function RootLayout({
@@ -55,17 +69,41 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={cn(
-          "min-h-screen bg-background font-sans antialiased max-w-2xl mx-auto py-12 sm:py-24 px-6",
-          fontSans.variable
-        )}
-      >
-        <ThemeProvider attribute="class" defaultTheme="light">
-          <TooltipProvider delayDuration={0}>
-            {children}
-            <Navbar />
-          </TooltipProvider>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                const stored = localStorage.getItem('theme');
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (stored === 'dark' || (!stored && prefersDark)) {
+                  document.documentElement.classList.add('dark');
+                }
+              })();
+            `,
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: DATA.name,
+              url: DATA.url,
+              jobTitle: DATA.work[0]?.title,
+              worksFor: {
+                "@type": "Organization",
+                name: DATA.work[0]?.company,
+              },
+              sameAs: Object.values(DATA.contact.social).map((s) => s.url),
+            }),
+          }}
+        />
+      </head>
+      <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased bg-background text-text-primary`}>
+        <ThemeProvider defaultTheme="system">
+          {children}
         </ThemeProvider>
       </body>
     </html>
