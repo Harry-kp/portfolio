@@ -45,9 +45,9 @@ export function getAllPosts(): BlogPostMeta[] {
       return {
         slug,
         title: data.title || slug,
-        summary: data.summary || "",
-        publishedAt: data.publishedAt || "",
-        image: data.image,
+        summary: data.summary || data.description || "",
+        publishedAt: data.publishedAt || data.pubDate || "",
+        image: data.image || data.heroImage,
         tags: data.tags || [],
         readingTime: stats.text,
       };
@@ -74,9 +74,9 @@ export function getPostBySlug(slug: string): BlogPost | null {
   return {
     slug,
     title: data.title || slug,
-    summary: data.summary || "",
-    publishedAt: data.publishedAt || "",
-    image: data.image,
+    summary: data.summary || data.description || "",
+    publishedAt: data.publishedAt || data.pubDate || "",
+    image: data.image || data.heroImage,
     tags: data.tags || [],
     readingTime: stats.text,
     content,

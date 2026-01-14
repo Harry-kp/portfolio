@@ -1,0 +1,100 @@
+---
+title: "Install PMKID Tools in Kali Linux"
+description: "Learn how to install PMKID tools in Kali Linux for performing PMKID attacks."
+pubDate: Aug 9 2025
+heroImage: "/pmkid_tool_not_found.jpg"
+tags: ["pmkid", "hcxdumptool", "hcxtools", "Wifite", "kali", "linux", "security", "networking"]
+toc: true
+---
+
+If you’ve tried running **Wifite** on Kali Linux and seen a warning or failure when attempting the **PMKID attack**, you’re not alone.
+
+By default, Kali does **not** ship with **hcxpcapngtool** and **hcxdumptool**, which are essential for performing this attack. Without them, Wifite will skip the PMKID method entirely.
+
+---
+
+## Quick Install — One Command Setup
+
+If you just want to get everything installed **fast**, you can run my ready-made installation script directly from GitHub Gist:
+> Make sure to run this script as root or with sudo privileges. You can use `Root Terminal Emulator`.
+
+```bash
+bash <(curl -s https://gist.githubusercontent.com/Harry-kp/76bcb13a27e3b08ba208df33a01108d6/raw/f90fa4ec28ac02ee13b9b0566581f939c80836b9/install_pmkid_tools.sh)
+```
+
+![Screenshot of terminal running quick install script](/installation_pmkid_tool_complete.jpg)
+
+**What this script does:**
+
+* Installs dependencies
+* Clones **hcxtools** & **hcxdumptool** from GitHub
+* Compiles & installs them
+* Prints versions to confirm installation
+
+---
+
+## What is Wifite?
+
+**Wifite** is an automated wireless attack tool designed to test the security of Wi-Fi networks.
+It supports multiple attack vectors like **WPA handshake capture**, **WPS PIN brute-forcing**, and **PMKID attacks**.
+
+It’s particularly useful because it chains together various tools under the hood (like `aircrack-ng`, `reaver`, and `hcxdumptool`) into a single automated workflow.
+
+## Step-by-Step Installation (Manual Method)
+
+If you prefer to install manually(if you are the one who don't want to run the unknown bash file 🕵️‍♂️) or want to understand the process, follow these steps:
+
+### **Step 1 — Update Package Lists and Install Dependencies**
+
+```bash
+sudo apt-get update
+sudo apt-get install libcurl4-openssl-dev libssl-dev zlib1g-dev libpcap-dev -y
+```
+
+### **Step 2 — Install hcxpcapngtool**
+
+```bash
+git clone https://github.com/ZerBea/hcxtools.git
+cd hcxtools
+sudo make && sudo make install
+```
+
+### **Step 3 — Install hcxdumptool**
+
+```bash
+cd ..
+git clone https://github.com/ZerBea/hcxdumptool.git
+cd hcxdumptool
+sudo make && sudo make install
+```
+
+### **Step 4 — Verify Installation**
+
+```bash
+hcxdumptool -h
+hcxtools -h
+```
+
+If both commands return help menus, you’re good to go!
+
+## Using Them with Wifite
+
+Once both tools are installed, Wifite will automatically detect them and enable the PMKID attack option.
+
+```bash
+sudo wifite
+```
+
+If your wireless card supports monitor mode and packet injection, Wifite will now be able to capture PMKIDs in addition to traditional WPA handshakes.
+
+## Legal Disclaimer
+
+> This guide is for **educational purposes only**.
+> You should only perform these attacks on networks you **own** or have **explicit permission** to test.
+> Unauthorized use of these tools is illegal and punishable under cybercrime laws.
+
+---
+
+💡 *Pro Tip:* Keep an eye on the official repos — both tools are actively updated, so pulling the latest commits regularly ensures you have new features and bug fixes.
+
+---

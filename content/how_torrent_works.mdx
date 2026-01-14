@@ -1,0 +1,170 @@
+---
+title: "How torrent works?"
+description: "This blog post will guide you through the intricate steps involved in downloading a file using the BitTorrent protocol."
+pubDate: Aug 18 2024
+heroImage: "/how-torrent-works.png"
+tags: ["bittorrent", "Decentralization", "Draft"]
+toc: true
+---
+
+## Decoding the BitTorrent Protocol
+
+**Table of Contents:**
+
+1. Introduction
+2. The Treasure Map: Decoding the .torrent File
+3. Connecting to the Tracker: Finding Fellow Adventurers
+4. The Handshake: Establishing a Connection
+5. The Bitfield: A Glimpse into the Peer's Inventory
+6. From Bitfield to Bytes: Navigating the Data Maze
+7. The Data Symphony: A Chorus of Messages
+8. The Grand Finale: Assembling the Masterpiece
+9. Conclusion: The Power of Decentralization
+
+---
+
+### 1. Introduction
+
+The BitTorrent protocol is a marvel of decentralized engineering, enabling efficient file sharing without the need for central servers. This blog post will guide you through the intricate steps involved in downloading a file using this revolutionary technology.
+
+### 2. The Treasure Map: Decoding the .torrent File
+
+Our journey begins with a `.torrent` file, a compact guide containing essential information about the file we seek. This file acts as a treasure map, leading us to the digital bounty:
+
+```
+.torrent file (The Treasure Map)
+-------------------------------
+ Tracker URL:   xXx.tracker.land:6969 (Address of a server that helps peers find each other)
+ Info Hash:     d9b6148819fb6760ff1ac2b823b5a239c9153831 (Unique identifier for the file)
+ File Name:     EpicCatVideo.mp4 (Name of the file)
+ File Size:     10485760 bytes (Total size of the file)
+ Piece Length:  262144 bytes (Size of each individual chunk of the file)
+ Piece Hashes:  [hash1, hash2, ..., hash40] (Cryptographic fingerprints of each piece)
+```
+
+<button onclick="toggleDetails('torrent_details')">Nerd Info</button>
+
+<div id="torrent_details" style="display:none;">
+  * **Tracker URL:** This URL points to a tracker server, which helps peers find each other.
+  * **Info Hash:** This is a unique identifier for the file, generated using a cryptographic hash function.
+  * **Piece Hashes:** These hashes are used to verify the integrity of each downloaded piece.
+</div>
+
+### 3. Connecting to the Tracker: Finding Fellow Adventurers
+
+Armed with the Tracker URL, our BitTorrent client contacts the tracker server:
+
+```
+Client -> Tracker:  "Hello! I'm looking for peers sharing the file with Info Hash d9b61488..."
+```
+
+The tracker responds with a list of IP addresses of other peers currently sharing the same file.
+
+<button onclick="toggleDetails('tracker_details')">Nerd Info</button>
+
+<div id="tracker_details" style="display:none;">
+  * The tracker maintains a list of peers for each torrent.
+  * It provides the client with a subset of these peers.
+  * The client can then connect to these peers to start downloading the file.
+</div>
+
+### 4. The Handshake: Establishing a Connection
+
+Before exchanging data, we must establish a connection with a peer. This is done through a handshake:
+
+```
+Client -> Peer: "Greetings! Are you a fellow seeker of EpicCatVideo.mp4? My handshake: [pstrlen=19, pstr="BitTorrent protocol", reserved, d9b61488..., MyPeerID]"
+
+Peer -> Client: "Indeed I am! My handshake: [pstrlen=19, pstr="BitTorrent protocol", reserved, d9b61488..., Peer'sPeerID]"
+```
+
+The matching Info Hash confirms they are both interested in the same file.
+
+<button onclick="toggleDetails('handshake_details')">Nerd Info</button>
+
+<div id="handshake_details" style="display:none;">
+  * The handshake message includes the protocol identifier, info hash, and peer ID.
+  * This ensures both peers are using the same protocol and are interested in the same file.
+</div>
+
+### 5. The Bitfield: A Glimpse into the Peer's Inventory
+
+Once connected, we need to know which pieces the peer possesses. This information is conveyed through the bitfield:
+
+```
+Client -> Peer: "Show me your inventory! Which pieces of EpicCatVideo.mp4 do you have?"
+
+Peer -> Client: "Here is my bitfield: 110010110101110..." (1 represents a possessed piece, 0 represents a missing one)
+```
+
+<button onclick="toggleDetails('bitfield_details')">Nerd Info</button>
+
+<div id="bitfield_details" style="display:none;">
+  * The bitfield is a compact representation of the pieces a peer has.
+  * Each bit in the bitfield corresponds to a piece of the file.
+</div>
+
+### 6. From Bitfield to Bytes: Navigating the Data Maze
+
+Armed with the bitfield, our client knows which pieces to request. However, it must first navigate the "choke/unchoke" protocol:
+
+```python
+client -> peer: "Interested!"
+client -> peer: "Unchoke me please!"
+
+peer -> client: "Unchoke"
+
+client -> peer:  "Piece 5, from byte 0, 262144 bytes please!"
+```
+
+<button onclick="toggleDetails('choke_unchoke_details')">Nerd Info</button>
+
+<div id="choke_unchoke_details" style="display:none;">
+  * The "choke" mechanism allows peers to control the rate of data transfer.
+  * A peer can "choke" another peer to temporarily stop sending data.
+  * The "unchoke" message grants permission to download data.
+</div>
+
+### 7. The Data Symphony: A Chorus of Messages
+
+As pieces are requested, various messages flow between peers:
+
+- **Keep-alive:** Ensures the connection stays active.
+- **Choke/Unchoke:** Controls the data flow.
+- **Have:** Announces that a peer has acquired a new piece.
+- **Piece:** Contains the actual data of a requested piece.
+
+<button onclick="toggleDetails('message_details')">Nerd Info</button>
+
+<div id="message_details" style="display:none;">
+  * These messages are defined in the BitTorrent protocol specification.
+  * They are used to manage the data transfer and ensure data integrity.
+</div>
+
+### 8. The Grand Finale: Assembling the Masterpiece
+
+Piece by piece, the client gathers the fragments of `EpicCatVideo.mp4`. Each piece is verified against its cryptographic hash. Finally, the complete video is assembled.
+
+<button onclick="toggleDetails('assembly_details')">Nerd Info</button>
+
+<div id="assembly_details" style="display:none;">
+  * The pieces are assembled in the order specified in the `.torrent` file.
+  * The cryptographic hashes are used to ensure that each piece is correct and has not been corrupted.
+</div>
+
+### 9. Conclusion: The Power of Decentralization
+
+The BitTorrent protocol demonstrates the power of decentralized systems. By connecting peers directly, it allows for efficient file sharing without relying on central servers.
+
+---
+
+<script>
+function toggleDetails(id) {
+  var x = document.getElementById(id);
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+</script>
