@@ -63,18 +63,6 @@ Building a native macOS app in 2026 is interesting. You have options:
 
 I went with **Tauri**.
 
-```
-├── src-tauri/          # Rust backend
-│   ├── src/
-│   │   └── main.rs     # System tray, timer logic, screen overlay
-│   └── Cargo.toml
-├── src/                # React frontend
-│   └── renderer/
-│       ├── App.tsx
-│       └── Settings.tsx
-└── package.json
-```
-
 ### Why Tauri?
 
 **Bundle Size:** The entire app is ~8MB. An equivalent Electron app would be 150MB+ (most of which is just Chromium sitting there, judging you).
