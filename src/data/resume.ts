@@ -158,7 +158,7 @@ export const DATA: Data = {
         { type: "Website", href: "https://afk-app.vercel.app" },
         { type: "Download", href: "https://github.com/Harry-kp/afk-releases/releases/latest" },
       ],
-      video: "https://github.com/Harry-kp/afk-releases/releases/download/v1.0.0/demo.gif",
+      video: "https://github.com/Harry-kp/afk-releases/releases/download/v1.0.0/demo.mp4",
     },
     {
       title: "Vortix",
