@@ -147,6 +147,20 @@ export const DATA: Data = {
   ],
   projects: [
     {
+      title: "AFK",
+      href: "https://afk-app.vercel.app",
+      dates: "Jan 2026 - Present",
+      active: true,
+      description:
+        "A minimal macOS break reminder for developers who forget to blink. Features fullscreen break overlays, customizable intervals, and respects your flow with smart pause detection.",
+      technologies: ["Tauri", "Rust", "React", "TypeScript"],
+      links: [
+        { type: "Website", href: "https://afk-app.vercel.app" },
+        { type: "Download", href: "https://github.com/Harry-kp/afk-releases/releases/latest" },
+      ],
+      video: "https://github.com/Harry-kp/afk-releases/releases/download/v1.0.0/demo.gif",
+    },
+    {
       title: "Vortix",
       href: "https://github.com/Harry-kp/vortix",
       dates: "Jan 2026 - Present",
