@@ -147,6 +147,21 @@ export const DATA: Data = {
   ],
   projects: [
     {
+      title: "Mercury",
+      href: "https://harry-kp.github.io/mercury",
+      dates: "Dec 2024 - Present",
+      active: true,
+      description:
+        "A blazingly fast, minimal API client built with Rust. Native 60fps UI with <300ms startup time and <30MB memory footprint. File-based workflow with Git integration, environment variables, and cURL/Postman/Insomnia import support.",
+      technologies: ["Rust", "egui", "reqwest", "Homebrew"],
+      links: [
+        { type: "Website", href: "https://harry-kp.github.io/mercury" },
+        { type: "Github", href: "https://github.com/Harry-kp/mercury" },
+        { type: "Download", href: "https://github.com/Harry-kp/mercury/releases/latest" },
+      ],
+      video: "https://raw.githubusercontent.com/Harry-kp/mercury/refs/heads/master/website/static/img/screenshot.png",
+    },
+    {
       title: "AFK",
       href: "https://afk-app.vercel.app",
       dates: "Jan 2026 - Present",
