@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, FileText } from "lucide-react";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { DATA } from "@/data/resume";
 import ThemeToggle from "@/components/ThemeToggle";
 import { cn } from "@/lib/utils";
@@ -17,6 +18,9 @@ const navItems = [
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
+  const isHome = pathname === "/";
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -24,9 +28,13 @@ export default function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToSection = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  const navigateToSection = (id: string) => {
     setIsMobileMenuOpen(false);
+    if (isHome) {
+      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    } else {
+      router.push(`/#${id}`);
+    }
   };
 
   return (
@@ -44,19 +52,29 @@ export default function Navigation() {
       >
         <div className="max-w-5xl mx-auto px-6">
           <div className="flex items-center justify-between h-16">
-            <button
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="font-bold text-lg text-text-primary hover:text-accent transition-colors tracking-tight"
-            >
-              {DATA.name.split(" ")[0]}
-              <span className="text-accent">.</span>
-            </button>
+            {isHome ? (
+              <button
+                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                className="font-bold text-lg text-text-primary hover:text-accent transition-colors tracking-tight"
+              >
+                {DATA.name.split(" ")[0]}
+                <span className="text-accent">.</span>
+              </button>
+            ) : (
+              <Link
+                href="/"
+                className="font-bold text-lg text-text-primary hover:text-accent transition-colors tracking-tight"
+              >
+                {DATA.name.split(" ")[0]}
+                <span className="text-accent">.</span>
+              </Link>
+            )}
 
             <div className="hidden md:flex items-center gap-8">
               {navItems.map((item) => (
                 <button
                   key={item.id}
-                  onClick={() => scrollToSection(item.id)}
+                  onClick={() => navigateToSection(item.id)}
                   className="text-sm text-text-secondary hover:text-text-primary transition-colors"
                 >
                   {item.label}
@@ -122,7 +140,7 @@ export default function Navigation() {
                 {navItems.map((item) => (
                   <button
                     key={item.id}
-                    onClick={() => scrollToSection(item.id)}
+                    onClick={() => navigateToSection(item.id)}
                     className="text-left text-lg text-text-secondary hover:text-text-primary transition-colors"
                   >
                     {item.label}
