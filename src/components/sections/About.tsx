@@ -19,7 +19,7 @@ export default function About() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="grid grid-cols-1 md:grid-cols-5 gap-12 md:gap-16"
+          className="grid grid-cols-1 md:grid-cols-5 gap-12 md:gap-16 md:items-center"
         >
           <div className="md:col-span-3">
             <p className="text-xs font-mono text-accent uppercase tracking-widest mb-4">
