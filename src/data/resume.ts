@@ -179,7 +179,8 @@ export const DATA: Data = {
         { type: "GitHub", href: "https://github.com/Harry-kp/mercury" },
         { type: "Website", href: "https://harry-kp.github.io/mercury/" },
       ],
-      video: "",
+      video:
+        "https://raw.githubusercontent.com/Harry-kp/mercury/master/website/static/img/screenshot.png",
     },
     {
       title: "Nebula",
