@@ -26,7 +26,7 @@ by Dynamo, so this kind of database is also known as *Dynamo-style.*
 ## WRITING TO THE DATABASE WHEN A NODE IS DOWN
 
 - In a leaderless configuration, failover does not exist.
-![A quorum write, quorum read, and read repair after a node outage](<https://github.com/Harry-kp/Assets/assets/55315065/507e7f4b-8728-4abc-91d9-d17dfd48c101>)
+![A quorum write, quorum read, and read repair after a node outage](/blog/quorum-write-read.png)
 - Figure shows what happens: the client (user 1234) sends the write to all three replicas in parallel, and the two available replicas accept the write but the unavailable replica misses it.
 - Let’s say that it’s sufficient for two out of three replicas to acknowledge the write: after user 1234 has received two ok responses, we consider the write to be
 successful.

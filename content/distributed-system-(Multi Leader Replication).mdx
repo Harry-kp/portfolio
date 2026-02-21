@@ -75,7 +75,7 @@ tags: ["Distributed Systems", "Replication", "Multi Leader Replication"]
 one node to another.
 - If you have two leaders, , there is only one plausible topology: leader 1 must send all of its writes to leader 2, and vice versa.
 - With more than two leaders, various different topologies are possible as shown below
-![image](https://github.com/Harry-kp/Assets/assets/55315065/400c8bf5-a33f-41f2-ab17-2297425ae7ae)
+![image](/blog/multi-leader-conflict.png)
 - > The most general topology is all-to-all in which every leader sends its writes to every other leader
 - “Another popular topology has the shape of a star one designated root node forwards writes to all of the other nodes.
   - The star topology can be generalized to a tree.”
@@ -99,7 +99,7 @@ node is fixed.
 
 - Some network links may be faster than others (e.g., due to network congestion), with the result that some replication
 messages may “overtake” others, as illustrated in Fig.
-![With multi-leader replication, writes may arrive in the wrong order at some replicas](<https://github.com/Harry-kp/Assets/assets/55315065/121dad4a-25c2-4383-a84e-21634d8dbcea>)
+![With multi-leader replication, writes may arrive in the wrong order at some replicas](/blog/multi-leader-wrong-order.png)
 - With multi-leader replication, writes may arrive in the wrong order at some replicas.
 - In Fig, client A inserts a row into a table on leader 1, and client B updates that row on leader 3.
 - However, leader 2 may receive the writes in a different order: it may first receive the update (which, from its point of view, is an update to a row that does not exist in the database) and only later receive the corresponding insert (which should have preceded the update).
