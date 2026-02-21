@@ -158,7 +158,7 @@ export const DATA: Data = {
       dates: "Jan 2026 - Present",
       active: true,
       description:
-        "Terminal UI for WireGuard and OpenVPN with real-time throughput/latency monitoring, IPv6/DNS leak detection, kill switch, and geo-location tracking. 300+ GitHub stars and published on crates.io.",
+        "Terminal UI for WireGuard and OpenVPN — real-time throughput/latency monitoring, IPv6/DNS leak detection, kill switch, and geo-location tracking. 340+ GitHub stars, 9 forks, published on crates.io.",
       technologies: ["Rust", "Ratatui", "WireGuard", "OpenVPN"],
       links: [
         { type: "GitHub", href: "https://github.com/Harry-kp/vortix" },
@@ -173,7 +173,7 @@ export const DATA: Data = {
       dates: "Feb 2026 - Present",
       active: true,
       description:
-        "A blazing-fast API client for purists — 5 MB binary, 50ms startup. Built as a lightweight Postman alternative with a focus on speed, keyboard-driven workflows, and minimal resource usage.",
+        "A blazing-fast API client for purists — 5 MB binary, 50ms cold start (vs Postman's 300 MB / 3s). Keyboard-driven workflows, collection management, and environment variables. Zero Electron overhead.",
       technologies: ["Rust", "TUI", "HTTP", "REST"],
       links: [
         { type: "GitHub", href: "https://github.com/Harry-kp/mercury" },
@@ -188,7 +188,7 @@ export const DATA: Data = {
       dates: "Aug 2024",
       active: true,
       description:
-        "BitTorrent client built from scratch in Go. Implements the full torrent protocol including tracker communication, peer handshakes, piece management, and concurrent downloads.",
+        "BitTorrent client built from scratch in Go — implements the full protocol: bencode parsing, HTTP tracker communication, peer handshakes, concurrent piece downloads across multiple peers, and SHA-1 integrity verification.",
       technologies: ["Go", "BitTorrent", "Networking", "Concurrency"],
       links: [
         { type: "GitHub", href: "https://github.com/Harry-kp/nebula" },
@@ -201,7 +201,7 @@ export const DATA: Data = {
       dates: "May 2025 - Present",
       active: true,
       description:
-        "AI-powered career advancement platform that helps professionals track achievements, generate data-driven performance reviews, and build promotion cases using OpenAI and Gemini.",
+        "AI-powered career advancement platform — tracks achievements, generates data-driven performance reviews, and builds promotion cases. Uses OpenAI and Gemini for intelligent summarization with PostgreSQL-backed persistence.",
       technologies: ["Next.js", "PostgreSQL", "OpenAI", "Gemini"],
       links: [
         { type: "GitHub", href: "https://github.com/Harry-kp/okayri" },
@@ -215,7 +215,7 @@ export const DATA: Data = {
       dates: "2025",
       active: true,
       description:
-        "Visual debugger for Agent-to-Agent (A2A) multi-agent systems. Provides real-time tracing and visualization of inter-agent communication flows for debugging complex AI agent orchestrations.",
+        "Visual debugger for Google's A2A protocol — provides real-time tracing and visualization of inter-agent communication flows. Helps debug complex multi-agent orchestrations by capturing task lifecycle, message payloads, and agent state transitions.",
       technologies: ["Go", "A2A Protocol", "Agents", "Visualization"],
       links: [
         { type: "GitHub", href: "https://github.com/Harry-kp/a2a-trace" },
@@ -228,7 +228,7 @@ export const DATA: Data = {
       dates: "Feb 2024 - Apr 2024",
       active: true,
       description:
-        "Published Python package on PyPI for automating API interactions. Features session management, keyword-based querying, and structured data extraction.",
+        "Published Python package on PyPI — automates Chegg Expert workflows with session management, keyword-based question filtering, and structured data extraction. Installable via pip with a clean CLI interface.",
       technologies: ["Python", "PyPI", "REST API", "Automation"],
       links: [
         { type: "PyPI", href: "https://pypi.org/project/cheggpy/" },

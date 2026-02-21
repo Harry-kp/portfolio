@@ -10,6 +10,12 @@ const metrics = [
   { value: `${DATA.work.length}`, label: "Companies" },
 ];
 
+const currentFocus = [
+  "Building AI-powered test management at BrowserStack",
+  "Shipping developer tools in Rust (Vortix, Mercury)",
+  "Exploring consensus protocols & distributed storage",
+];
+
 export default function About() {
   return (
     <section id="about" className="py-24 px-6">
@@ -28,6 +34,23 @@ export default function About() {
             <p className="text-xl md:text-2xl text-text-secondary leading-relaxed">
               {DATA.summary}
             </p>
+
+            <div className="mt-8 pt-6 border-t border-border/50">
+              <p className="text-xs font-mono text-text-secondary uppercase tracking-widest mb-3">
+                Currently focused on
+              </p>
+              <ul className="space-y-2">
+                {currentFocus.map((item) => (
+                  <li
+                    key={item}
+                    className="flex items-start gap-2 text-sm text-text-secondary"
+                  >
+                    <span className="text-accent mt-1.5 text-[8px]">&#9679;</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           <div className="md:col-span-2">
