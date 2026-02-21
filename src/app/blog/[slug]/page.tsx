@@ -4,6 +4,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import AnimatedBackground from "@/components/AnimatedBackground";
 import MDXContent from "@/components/blog/MDXContent";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import { Metadata } from "next";
@@ -98,6 +99,18 @@ export default async function BlogPostPage({ params }: PageProps) {
               </span>
             </div>
           </div>
+
+          {post.image && (
+            <div className="relative aspect-video rounded-2xl overflow-hidden mb-10 border border-border/50">
+              <Image
+                src={post.image}
+                alt={post.title}
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
+          )}
 
           {post.summary && (
             <div className="mb-10 p-6 rounded-2xl border border-border bg-surface">

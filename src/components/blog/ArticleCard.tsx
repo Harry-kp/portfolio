@@ -34,7 +34,7 @@ export default function ArticleCard({ post, index, featured }: ArticleCardProps)
         >
           <div className="grid grid-cols-1 md:grid-cols-2">
             {post.image && (
-              <div className="relative aspect-video md:aspect-auto bg-surface-hover overflow-hidden">
+              <div className="relative aspect-video bg-surface-hover overflow-hidden">
                 <Image
                   src={post.image}
                   alt={post.title}
