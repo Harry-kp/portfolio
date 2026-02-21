@@ -193,8 +193,7 @@ export const DATA: Data = {
       links: [
         { type: "GitHub", href: "https://github.com/Harry-kp/nebula" },
       ],
-      video:
-        "https://github.com/user-attachments/assets/2fe05664-7e27-4ccf-b0bc-be45a54a3078",
+      video: "",
     },
     {
       title: "OkayrAI",

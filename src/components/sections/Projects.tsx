@@ -4,7 +4,12 @@ import { motion } from "framer-motion";
 import { DATA, type Project } from "@/data/resume";
 import { ExternalLink, Github, Package, FolderGit2 } from "lucide-react";
 
-const isGif = (url: string) => url.toLowerCase().endsWith(".gif") || url.includes(".gif");
+const isImage = (url: string) => {
+  const lower = url.toLowerCase();
+  return [".gif", ".png", ".jpg", ".jpeg", ".webp", ".svg"].some(
+    (ext) => lower.endsWith(ext) || lower.includes(ext + "?")
+  );
+};
 
 function getLinkIcon(type: string) {
   switch (type.toLowerCase()) {
@@ -39,7 +44,7 @@ function ProjectCard({
       <div className="group h-full rounded-2xl border border-border bg-surface overflow-hidden transition-all duration-300 hover:border-accent/40 hover:shadow-[0_0_30px_-5px] hover:shadow-accent/10">
         {project.video ? (
           <div className={`relative overflow-hidden bg-surface-hover ${featured ? "aspect-video" : "aspect-[2/1]"}`}>
-            {isGif(project.video) ? (
+            {isImage(project.video) ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={project.video}
