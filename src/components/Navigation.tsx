@@ -1,55 +1,31 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Menu, X, Download, BookOpen } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X, FileText } from "lucide-react";
 import Link from "next/link";
 import { DATA } from "@/data/resume";
-import Button from "@/components/ui/Button";
 import ThemeToggle from "@/components/ThemeToggle";
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { id: "about", label: "About" },
   { id: "projects", label: "Projects" },
-  { id: "opensource", label: "Open Source" },
   { id: "experience", label: "Experience" },
-  { id: "skills", label: "Skills" },
   { id: "contact", label: "Contact" },
 ];
 
 export default function Navigation() {
-  const [activeSection, setActiveSection] = useState("");
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-
-      // Find active section
-      const sections = navItems.map((item) => item.id);
-      for (const section of sections.reverse()) {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          if (rect.top <= 100) {
-            setActiveSection(section);
-            break;
-          }
-        }
-      }
-    };
-
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     setIsMobileMenuOpen(false);
   };
 
@@ -58,126 +34,123 @@ export default function Navigation() {
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
           isScrolled
-            ? "bg-background/90 backdrop-blur-lg border-b border-border shadow-sm"
+            ? "bg-background/80 backdrop-blur-xl border-b border-border/50"
             : "bg-transparent"
         )}
       >
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="max-w-5xl mx-auto px-6">
           <div className="flex items-center justify-between h-16">
-            {/* Logo/Name */}
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="font-semibold text-text-primary hover:text-accent transition-colors"
+              className="font-bold text-lg text-text-primary hover:text-accent transition-colors tracking-tight"
             >
-              {DATA.initials}
+              {DATA.name.split(" ")[0]}
+              <span className="text-accent">.</span>
             </button>
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-1">
+            <div className="hidden md:flex items-center gap-8">
               {navItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className={cn(
-                    "px-3 py-2 text-sm rounded-lg transition-colors",
-                    activeSection === item.id
-                      ? "text-accent bg-accent/10"
-                      : "text-text-secondary hover:text-text-primary hover:bg-surface"
-                  )}
+                  className="text-sm text-text-secondary hover:text-text-primary transition-colors"
                 >
                   {item.label}
                 </button>
               ))}
               <Link
                 href="/blog"
-                className="px-3 py-2 text-sm rounded-lg transition-colors text-text-secondary hover:text-text-primary hover:bg-surface flex items-center gap-1"
+                className="text-sm text-text-secondary hover:text-text-primary transition-colors"
               >
-                <BookOpen className="w-4 h-4" />
                 Blog
               </Link>
             </div>
 
-            {/* Resume Download & Theme Toggle */}
-            <div className="hidden md:flex items-center gap-2">
+            <div className="hidden md:flex items-center gap-3">
               <ThemeToggle />
-              <Button 
-                variant="primary" 
-                size="sm" 
+              <a
                 href={DATA.resumeUrl}
-                target={DATA.resumeUrl.startsWith("/") ? undefined : "_blank"}
-                rel={DATA.resumeUrl.startsWith("/") ? undefined : "noopener noreferrer"}
-                download={DATA.resumeUrl.startsWith("/") ? true : undefined}
+                download
+                className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full border border-border text-text-primary hover:border-accent hover:text-accent transition-colors"
               >
-                <Download className="w-4 h-4" />
+                <FileText className="w-3.5 h-3.5" />
                 Resume
-              </Button>
+              </a>
             </div>
 
-            {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 text-text-secondary hover:text-text-primary"
+              className="md:hidden p-2 text-text-secondary hover:text-text-primary transition-colors"
               aria-label="Toggle menu"
             >
-              {isMobileMenuOpen ? (
-                <X className="w-6 h-6" />
-              ) : (
-                <Menu className="w-6 h-6" />
-              )}
+              {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
-
-        {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="md:hidden bg-background border-b border-border shadow-sm"
-          >
-            <div className="px-4 py-4 space-y-2">
-              {navItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className={cn(
-                    "block w-full text-left px-3 py-2 rounded-lg transition-colors",
-                    activeSection === item.id
-                      ? "text-accent bg-accent/10"
-                      : "text-text-secondary hover:text-text-primary hover:bg-surface"
-                  )}
-                >
-                  {item.label}
-                </button>
-              ))}
-              <Link
-                href="/blog"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center gap-2 w-full text-left px-3 py-2 rounded-lg text-text-secondary hover:text-text-primary hover:bg-surface transition-colors"
-              >
-                <BookOpen className="w-4 h-4" />
-                Blog
-              </Link>
-              <a
-                href={DATA.resumeUrl}
-                target={DATA.resumeUrl.startsWith("/") ? undefined : "_blank"}
-                rel={DATA.resumeUrl.startsWith("/") ? undefined : "noopener noreferrer"}
-                download={DATA.resumeUrl.startsWith("/") ? true : undefined}
-                className="flex items-center gap-2 px-3 py-2 text-accent"
-              >
-                <Download className="w-4 h-4" />
-                Download Resume
-              </a>
-            </div>
-          </motion.div>
-        )}
       </motion.nav>
+
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-40 bg-background/60 backdrop-blur-sm md:hidden"
+              onClick={() => setIsMobileMenuOpen(false)}
+            />
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="fixed top-0 right-0 bottom-0 z-50 w-72 bg-surface border-l border-border p-8 md:hidden"
+            >
+              <button
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="absolute top-5 right-5 p-2 text-text-secondary hover:text-text-primary"
+                aria-label="Close menu"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              <nav className="flex flex-col gap-6 mt-12">
+                {navItems.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => scrollToSection(item.id)}
+                    className="text-left text-lg text-text-secondary hover:text-text-primary transition-colors"
+                  >
+                    {item.label}
+                  </button>
+                ))}
+                <Link
+                  href="/blog"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-lg text-text-secondary hover:text-text-primary transition-colors"
+                >
+                  Blog
+                </Link>
+                <div className="pt-6 border-t border-border flex items-center justify-between">
+                  <a
+                    href={DATA.resumeUrl}
+                    download
+                    className="text-sm text-accent font-medium flex items-center gap-2"
+                  >
+                    <FileText className="w-4 h-4" />
+                    Download Resume
+                  </a>
+                  <ThemeToggle />
+                </div>
+              </nav>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </>
   );
 }
-

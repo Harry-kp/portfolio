@@ -1,7 +1,6 @@
 import Navigation from "@/components/Navigation";
 import AnimatedBackground from "@/components/AnimatedBackground";
 import Hero from "@/components/sections/Hero";
-import Stats from "@/components/sections/Stats";
 import About from "@/components/sections/About";
 import Projects from "@/components/sections/Projects";
 import OpenSource from "@/components/sections/OpenSource";
@@ -17,7 +16,6 @@ export default function Home() {
       <Navigation />
       <main>
         <Hero />
-        <Stats />
         <About />
         <Projects />
         <OpenSource />

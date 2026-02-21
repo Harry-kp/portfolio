@@ -22,18 +22,19 @@ type ButtonProps = ButtonAsButton | ButtonAsLink;
 
 const buttonStyles = (variant: string, size: string) =>
   cn(
-    "inline-flex items-center justify-center gap-2 font-medium transition-all duration-150 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-50 disabled:pointer-events-none",
+    "inline-flex items-center justify-center gap-2 font-medium transition-all duration-200 rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-50 disabled:pointer-events-none",
     {
-      "bg-accent text-white hover:bg-accent-hover": variant === "primary",
-      "bg-surface border border-border text-text-primary hover:bg-border/50":
+      "bg-accent text-black hover:bg-accent-hover shadow-sm hover:shadow-md":
+        variant === "primary",
+      "border border-border text-text-primary hover:border-accent/40 hover:text-accent":
         variant === "secondary",
-      "text-text-secondary hover:text-text-primary hover:bg-surface":
+      "text-text-secondary hover:text-text-primary":
         variant === "ghost",
     },
     {
-      "px-3 py-1.5 text-sm": size === "sm",
-      "px-4 py-2 text-sm": size === "md",
-      "px-6 py-3 text-base": size === "lg",
+      "px-3.5 py-1.5 text-sm": size === "sm",
+      "px-5 py-2.5 text-sm": size === "md",
+      "px-7 py-3 text-base": size === "lg",
     }
   );
 

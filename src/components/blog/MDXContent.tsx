@@ -21,27 +21,27 @@ export default function MDXContent({ content }: MDXContentProps) {
         remarkPlugins={[remarkGfm]}
         components={{
           h1: ({ children }) => (
-            <h1 className="text-3xl font-bold text-text-primary mt-8 mb-4 first:mt-0">
+            <h1 className="text-3xl font-bold text-text-primary mt-12 mb-4 first:mt-0 tracking-tight">
               {children}
             </h1>
           ),
           h2: ({ children }) => (
-            <h2 className="text-2xl font-semibold text-text-primary mt-8 mb-3 pb-2 border-b border-border">
+            <h2 className="text-2xl font-bold text-text-primary mt-12 mb-4 pb-3 border-b border-border/50 tracking-tight">
               {children}
             </h2>
           ),
           h3: ({ children }) => (
-            <h3 className="text-xl font-semibold text-text-primary mt-6 mb-2">
+            <h3 className="text-xl font-semibold text-text-primary mt-8 mb-3 tracking-tight">
               {children}
             </h3>
           ),
           h4: ({ children }) => (
-            <h4 className="text-lg font-semibold text-text-primary mt-4 mb-2">
+            <h4 className="text-lg font-semibold text-text-primary mt-6 mb-2">
               {children}
             </h4>
           ),
           p: ({ children }) => (
-            <p className="text-text-secondary leading-relaxed mb-4">
+            <p className="text-text-secondary leading-[1.8] mb-5 text-[16px]">
               {children}
             </p>
           ),
@@ -50,26 +50,26 @@ export default function MDXContent({ content }: MDXContentProps) {
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-accent hover:underline"
+              className="text-accent hover:underline underline-offset-4"
             >
               {children}
             </a>
           ),
           ul: ({ children }) => (
-            <ul className="list-disc list-inside space-y-2 mb-4 text-text-secondary">
+            <ul className="list-disc list-inside space-y-2 mb-5 text-text-secondary">
               {children}
             </ul>
           ),
           ol: ({ children }) => (
-            <ol className="list-decimal list-inside space-y-2 mb-4 text-text-secondary">
+            <ol className="list-decimal list-inside space-y-2 mb-5 text-text-secondary">
               {children}
             </ol>
           ),
           li: ({ children }) => (
-            <li className="leading-relaxed">{children}</li>
+            <li className="leading-[1.8]">{children}</li>
           ),
           blockquote: ({ children }) => (
-            <blockquote className="border-l-4 border-accent bg-accent/5 pl-4 py-2 my-4 italic text-text-secondary">
+            <blockquote className="border-l-2 border-accent bg-accent/5 pl-6 py-3 my-6 text-text-secondary italic rounded-r-lg">
               {children}
             </blockquote>
           ),
@@ -81,7 +81,7 @@ export default function MDXContent({ content }: MDXContentProps) {
               return (
                 <code
                   className={cn(
-                    "px-1.5 py-0.5 rounded text-sm font-mono",
+                    "px-1.5 py-0.5 rounded text-[13px] font-mono",
                     isDark
                       ? "bg-zinc-800 text-zinc-200"
                       : "bg-zinc-100 text-zinc-800"
@@ -99,9 +99,10 @@ export default function MDXContent({ content }: MDXContentProps) {
                 language={match[1]}
                 PreTag="div"
                 customStyle={{
-                  margin: "1rem 0",
-                  borderRadius: "0.5rem",
-                  fontSize: "0.875rem",
+                  margin: "1.5rem 0",
+                  borderRadius: "12px",
+                  fontSize: "0.85rem",
+                  border: `1px solid ${isDark ? "#23232a" : "#e4e4e7"}`,
                 }}
               >
                 {String(children).replace(/\n$/, "")}
@@ -110,8 +111,8 @@ export default function MDXContent({ content }: MDXContentProps) {
           },
           pre: ({ children }) => <>{children}</>,
           table: ({ children }) => (
-            <div className="overflow-x-auto my-4">
-              <table className="min-w-full border border-border rounded-lg overflow-hidden">
+            <div className="overflow-x-auto my-6">
+              <table className="min-w-full border border-border rounded-xl overflow-hidden">
                 {children}
               </table>
             </div>
@@ -120,31 +121,31 @@ export default function MDXContent({ content }: MDXContentProps) {
             <thead className="bg-surface">{children}</thead>
           ),
           th: ({ children }) => (
-            <th className="px-4 py-2 text-left text-text-primary font-semibold border-b border-border">
+            <th className="px-4 py-3 text-left text-sm text-text-primary font-semibold border-b border-border">
               {children}
             </th>
           ),
           td: ({ children }) => (
-            <td className="px-4 py-2 text-text-secondary border-b border-border">
+            <td className="px-4 py-3 text-sm text-text-secondary border-b border-border/50">
               {children}
             </td>
           ),
           img: ({ src, alt }) => (
-            <span className="block my-6">
+            <span className="block my-8">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={src}
                 alt={alt || ""}
-                className="rounded-lg shadow-md max-w-full h-auto mx-auto"
+                className="rounded-xl max-w-full h-auto mx-auto"
               />
               {alt && (
-                <span className="block text-center text-sm text-text-secondary mt-2">
+                <span className="block text-center text-sm text-text-secondary mt-3">
                   {alt}
                 </span>
               )}
             </span>
           ),
-          hr: () => <hr className="my-8 border-border" />,
+          hr: () => <hr className="my-10 border-border/50" />,
           strong: ({ children }) => (
             <strong className="font-semibold text-text-primary">{children}</strong>
           ),
@@ -156,4 +157,3 @@ export default function MDXContent({ content }: MDXContentProps) {
     </article>
   );
 }
-

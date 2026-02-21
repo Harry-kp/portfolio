@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { HTMLAttributes } from "react";
 
 interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
-  variant?: "default" | "accent";
+  variant?: "default" | "accent" | "outline";
 }
 
 export default function Badge({
@@ -20,6 +20,7 @@ export default function Badge({
         {
           "bg-surface border border-border text-text-secondary": variant === "default",
           "bg-accent/10 text-accent border border-accent/20": variant === "accent",
+          "border border-border text-text-secondary": variant === "outline",
         },
         className
       )}
@@ -29,4 +30,3 @@ export default function Badge({
     </span>
   );
 }
-

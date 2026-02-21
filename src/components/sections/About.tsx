@@ -1,50 +1,52 @@
 "use client";
 
-import { useState } from "react";
 import { motion } from "framer-motion";
 import { DATA } from "@/data/resume";
-import { ChevronDown, ChevronUp } from "lucide-react";
+
+const metrics = [
+  { value: "4+", label: "Years Experience" },
+  { value: "700+", label: "LeetCode Solved" },
+  { value: `${DATA.projects.length}+`, label: "Projects Shipped" },
+  { value: `${DATA.work.length}`, label: "Companies" },
+];
 
 export default function About() {
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  const shortSummary = DATA.summary.split(". ").slice(0, 2).join(". ") + ".";
-
   return (
-    <section id="about" className="py-20 px-4 sm:px-6">
-      <div className="max-w-4xl mx-auto">
+    <section id="about" className="py-24 px-6">
+      <div className="max-w-5xl mx-auto">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.6 }}
+          className="grid grid-cols-1 md:grid-cols-5 gap-12 md:gap-16"
         >
-          <h2 className="text-2xl md:text-3xl font-bold text-text-primary mb-2">
-            About Me
-          </h2>
-          <div className="w-16 h-1 bg-accent rounded-full mb-6" />
-
-          <div className="prose prose-lg dark:prose-invert max-w-none">
-            <p className="text-text-secondary text-lg leading-relaxed">
-              {isExpanded ? DATA.summary : shortSummary}
+          <div className="md:col-span-3">
+            <p className="text-xs font-mono text-accent uppercase tracking-widest mb-4">
+              About
             </p>
+            <p className="text-xl md:text-2xl text-text-secondary leading-relaxed">
+              {DATA.summary}
+            </p>
+          </div>
 
-            {DATA.summary.length > shortSummary.length && (
-              <button
-                onClick={() => setIsExpanded(!isExpanded)}
-                className="flex items-center gap-1 text-accent hover:text-accent-hover transition-colors mt-4 text-sm font-medium"
-              >
-                {isExpanded ? (
-                  <>
-                    Show less <ChevronUp className="w-4 h-4" />
-                  </>
-                ) : (
-                  <>
-                    Read more <ChevronDown className="w-4 h-4" />
-                  </>
-                )}
-              </button>
-            )}
+          <div className="md:col-span-2">
+            <div className="grid grid-cols-2 gap-6">
+              {metrics.map((metric, i) => (
+                <motion.div
+                  key={metric.label}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: i * 0.1 }}
+                >
+                  <p className="text-3xl md:text-4xl font-bold text-text-primary tracking-tight">
+                    {metric.value}
+                  </p>
+                  <p className="text-sm text-text-secondary mt-1">{metric.label}</p>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </motion.div>
       </div>
