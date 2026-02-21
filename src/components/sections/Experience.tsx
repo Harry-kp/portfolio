@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { DATA } from "@/data/resume";
 
 export default function Experience() {
@@ -39,18 +40,30 @@ export default function Experience() {
                 <div className={`absolute left-0 top-2.5 w-[11px] h-[11px] rounded-full border-2 ${isPresent ? "border-accent bg-accent/20" : "border-border bg-background"}`} />
 
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-1 mb-3">
-                  <div>
-                    <h3 className="text-lg font-semibold text-text-primary">
-                      {work.title}
-                    </h3>
-                    <a
-                      href={work.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm text-text-secondary hover:text-accent transition-colors"
-                    >
-                      {work.company}
-                    </a>
+                  <div className="flex items-center gap-3">
+                    {work.logoUrl && (
+                      <div className="relative w-10 h-10 rounded-lg overflow-hidden border border-border bg-white shrink-0">
+                        <Image
+                          src={work.logoUrl}
+                          alt={work.company}
+                          fill
+                          className="object-contain p-1"
+                        />
+                      </div>
+                    )}
+                    <div>
+                      <h3 className="text-lg font-semibold text-text-primary">
+                        {work.title}
+                      </h3>
+                      <a
+                        href={work.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-text-secondary hover:text-accent transition-colors"
+                      >
+                        {work.company}
+                      </a>
+                    </div>
                   </div>
                   <p className="text-sm text-text-secondary font-mono shrink-0">
                     {work.start} &mdash; {work.end}
@@ -76,10 +89,22 @@ export default function Experience() {
             Education
           </p>
           {DATA.education.map((edu) => (
-            <div key={edu.school} className="flex items-baseline justify-between gap-4">
-              <div>
-                <p className="font-medium text-text-primary">{edu.school}</p>
-                <p className="text-sm text-text-secondary">{edu.degree}</p>
+            <div key={edu.school} className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                {edu.logoUrl && (
+                  <div className="relative w-10 h-10 rounded-lg overflow-hidden border border-border bg-white shrink-0">
+                    <Image
+                      src={edu.logoUrl}
+                      alt={edu.school}
+                      fill
+                      className="object-contain p-1"
+                    />
+                  </div>
+                )}
+                <div>
+                  <p className="font-medium text-text-primary">{edu.school}</p>
+                  <p className="text-sm text-text-secondary">{edu.degree}</p>
+                </div>
               </div>
               <p className="text-sm text-text-secondary font-mono shrink-0">
                 {edu.start} &mdash; {edu.end}
