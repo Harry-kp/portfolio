@@ -7,7 +7,7 @@ import { Briefcase, Code, FolderGit2, Building2 } from "lucide-react";
 const stats = [
   {
     icon: Briefcase,
-    value: "3+",
+    value: "4+",
     label: "Years Experience",
   },
   {

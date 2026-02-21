@@ -24,6 +24,7 @@ export interface BlogPostMeta {
   image?: string;
   tags?: string[];
   readingTime: string;
+  badge?: string;
 }
 
 export function getAllPosts(): BlogPostMeta[] {
@@ -50,7 +51,14 @@ export function getAllPosts(): BlogPostMeta[] {
         image: data.image || data.heroImage,
         tags: data.tags || [],
         readingTime: stats.text,
+        badge: data.badge,
       };
+    })
+    .filter((post) => {
+      const isDraft =
+        post.badge?.toLowerCase().includes("draft") ||
+        post.tags?.some((t: string) => t.toLowerCase() === "draft");
+      return !isDraft;
     })
     .sort((a, b) => {
       if (!a.publishedAt || !b.publishedAt) return 0;
@@ -69,6 +77,14 @@ export function getPostBySlug(slug: string): BlogPost | null {
 
   const fileContent = fs.readFileSync(filePath, "utf-8");
   const { data, content } = matter(fileContent);
+
+  const isDraft =
+    data.badge?.toLowerCase().includes("draft") ||
+    data.tags?.some((t: string) => t.toLowerCase() === "draft");
+  if (isDraft) {
+    return null;
+  }
+
   const stats = readingTime(content);
 
   return {
@@ -91,6 +107,15 @@ export function getAllSlugs(): string[] {
   return fs
     .readdirSync(contentDirectory)
     .filter((file) => file.endsWith(".mdx"))
+    .filter((file) => {
+      const filePath = path.join(contentDirectory, file);
+      const fileContent = fs.readFileSync(filePath, "utf-8");
+      const { data } = matter(fileContent);
+      const isDraft =
+        data.badge?.toLowerCase().includes("draft") ||
+        data.tags?.some((t: string) => t.toLowerCase() === "draft");
+      return !isDraft;
+    })
     .map((file) => file.replace(".mdx", ""));
 }
 

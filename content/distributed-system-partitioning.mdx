@@ -39,7 +39,7 @@ call it **skewed**.
 
 > The ranges of keys are not necessarily evenly spaced, because your data may not be evenly distributed.
 
-- Within each partition, we can keep keys in sorted order [SSTables and LSM-Trees](./storage-and-retreival).
+- Within each partition, we can keep keys in sorted order [SSTables and LSM-Trees](/blog/storage_and_retrieval).
 - This has the advantage that range scans are easy, and you can treat the key as a concatenated index in order to fetch several related records in one query.
 
 #### Downside of Key Range Partitioning

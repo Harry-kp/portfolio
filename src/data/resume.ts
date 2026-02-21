@@ -54,26 +54,32 @@ interface Data {
 export const DATA: Data = {
   name: "Harshit Chaudhary",
   initials: "HC",
-  url: "https://harrykp.tech",
+  url: "https://harrykp.vercel.app",
   location: "Gurugram, Haryana, India",
   locationLink: "",
-  description: "Software Engineer with knack of rails.",
-  // Add your resume URL here - can be "/resume.pdf" (local) or a Google Drive/Dropbox link
+  description:
+    "Backend engineer building scalable distributed systems and AI-powered products. I ship open-source tools in Rust and Go, contribute to projects like Maybe Finance, and have solved 700+ problems on LeetCode.",
   resumeUrl: "/resume.pdf",
   summary:
-    "Backend Software Engineer specializing in AI at BrowserStack. I have a proven track record of leading teams in integrating complex ERP systems and enhancing product capabilities in Procurement Domain. Solved more than 700 problems on LeetCode. Open Source Contributor at Maybe, LeetCode and RubyForGood",
+    "Backend Software Engineer at BrowserStack building AI-powered test management features at scale. Previously built a custom Kubernetes controller at Procol that automated database provisioning for 2,000+ developers. Passionate about distributed systems, infrastructure automation, and developer tooling. Open-source contributor to Maybe Finance, LeetCode, and RubyForGood. Creator of Vortix (300+ GitHub stars) — a terminal UI for VPN management built in Rust.",
   avatarUrl: "/me.jpg",
   skills: [
-    "Golang",
+    "Go",
+    "Rust",
     "Ruby",
-    "Rails",
     "Python",
-    "Postgres",
-    "Docker",
     "C++",
+    "TypeScript",
     "Kubernetes",
-    "NodeJS",
+    "Docker",
     "AWS",
+    "PostgreSQL",
+    "Redis",
+    "gRPC",
+    "Rails",
+    "System Design",
+    "Distributed Systems",
+    "LLMs / AI",
   ],
   contact: {
     email: "chaudharyharshit9@gmail.com",
@@ -99,31 +105,31 @@ export const DATA: Data = {
   },
   work: [
     {
-      company: "Browserstack",
-      badges: [],
+      company: "BrowserStack",
+      badges: ["AI"],
       href: "https://www.browserstack.com/",
-      location: "Mumbai",
-      title: "Software Engineer-Backend[AI]",
+      location: "Mumbai, India",
+      title: "Software Engineer — Backend (AI)",
       logoUrl: "/bstack.png",
       start: "Dec 2024",
       end: "Present",
       description:
-        "Implemented and scaled AI features in the Test Management Product using LLMs like Claude, OpenAI embedding, and Kubernetes for deployment and monitoring.",
+        "Building AI-powered features for the Test Management platform used by thousands of QA teams globally. Designed and deployed LLM pipelines using Claude and OpenAI embeddings to auto-generate test cases, reducing manual test authoring time. Architected inference services on Kubernetes with auto-scaling to handle variable workloads while keeping latency under SLA targets.",
     },
     {
       company: "Procol",
-      badges: [],
+      badges: ["Infrastructure"],
       href: "https://www.procol.io/",
-      location: "Gurugram, Haryana",
+      location: "Gurugram, India",
       title: "Senior Software Engineer",
       logoUrl: "/procol.png",
       start: "Jun 2022",
       end: "Dec 2024",
       description:
-        "Implemented a custom Kubernetes controller in Go to automate the deployment of MySQL and ProxySQL custom resources in order to enable 2,000+ internal developers to instantly deploy their app databases to production.",
+        "Built a custom Kubernetes controller in Go to automate MySQL and ProxySQL provisioning, enabling 2,000+ developers to self-serve production database deployments — reducing setup time from days to minutes. Led the design and integration of ERP systems (SAP, Oracle) for enterprise procurement workflows processing millions in transactions. Owned end-to-end feature development across Ruby on Rails microservices with PostgreSQL, Redis, and Sidekiq.",
     },
     {
-      company: "Hashedin By Deloitte",
+      company: "Hashedin by Deloitte",
       href: "https://hashedin.com/",
       badges: [],
       location: "Remote",
@@ -132,7 +138,7 @@ export const DATA: Data = {
       start: "Jan 2022",
       end: "Jun 2022",
       description:
-        "Designed and implemented an API for a Parking Management System. Used Swagger for clear API documentation. Restricted API access to authorized individuals using JWT Authentication.",
+        "Designed and shipped a RESTful API for a Parking Management System handling real-time slot allocation and booking. Implemented JWT-based authentication and role-based access control. Created comprehensive API documentation using Swagger/OpenAPI, adopted by the frontend team for rapid integration.",
     },
   ],
   education: [
@@ -147,60 +153,74 @@ export const DATA: Data = {
   ],
   projects: [
     {
-      title: "Mercury",
-      href: "https://harry-kp.github.io/mercury",
-      dates: "Dec 2024 - Present",
-      active: true,
-      description:
-        "A blazingly fast, minimal API client built with Rust. Native 60fps UI with <300ms startup time and <30MB memory footprint. File-based workflow with Git integration, environment variables, and cURL/Postman/Insomnia import support.",
-      technologies: ["Rust", "egui", "reqwest", "Homebrew"],
-      links: [
-        { type: "Website", href: "https://harry-kp.github.io/mercury" },
-        { type: "Github", href: "https://github.com/Harry-kp/mercury" },
-        { type: "Download", href: "https://github.com/Harry-kp/mercury/releases/latest" },
-      ],
-      video: "https://raw.githubusercontent.com/Harry-kp/mercury/refs/heads/master/website/static/img/screenshot.png",
-    },
-    {
-      title: "AFK",
-      href: "https://afk-app.vercel.app",
-      dates: "Jan 2026 - Present",
-      active: true,
-      description:
-        "A minimal macOS break reminder for developers who forget to blink. Features fullscreen break overlays, customizable intervals, and respects your flow with smart pause detection.",
-      technologies: ["Tauri", "Rust", "React", "TypeScript"],
-      links: [
-        { type: "Website", href: "https://afk-app.vercel.app" },
-        { type: "Download", href: "https://github.com/Harry-kp/afk-releases/releases/latest" },
-      ],
-      video: "https://github.com/Harry-kp/afk-releases/releases/download/v1.0.0/demo.mp4",
-    },
-    {
       title: "Vortix",
       href: "https://github.com/Harry-kp/vortix",
       dates: "Jan 2026 - Present",
       active: true,
       description:
-        "A terminal UI for WireGuard and OpenVPN with real-time telemetry and leak guarding. Features include advanced throughput/latency monitoring, IPv6/DNS leak detection, kill switch, and geo-location tracking.",
+        "Terminal UI for WireGuard and OpenVPN with real-time throughput/latency monitoring, IPv6/DNS leak detection, kill switch, and geo-location tracking. 300+ GitHub stars and published on crates.io.",
       technologies: ["Rust", "Ratatui", "WireGuard", "OpenVPN"],
       links: [
-        { type: "Github", href: "https://github.com/Harry-kp/vortix" },
+        { type: "GitHub", href: "https://github.com/Harry-kp/vortix" },
         { type: "Crates.io", href: "https://crates.io/crates/vortix" },
       ],
-      video: "https://raw.githubusercontent.com/Harry-kp/vortix/refs/heads/main/assets/demo.gif",
+      video:
+        "https://raw.githubusercontent.com/Harry-kp/vortix/refs/heads/main/assets/demo.gif",
     },
-    
+    {
+      title: "Mercury",
+      href: "https://github.com/Harry-kp/mercury",
+      dates: "Feb 2026 - Present",
+      active: true,
+      description:
+        "A blazing-fast API client for purists — 5 MB binary, 50ms startup. Built as a lightweight Postman alternative with a focus on speed, keyboard-driven workflows, and minimal resource usage.",
+      technologies: ["Rust", "TUI", "HTTP", "REST"],
+      links: [
+        { type: "GitHub", href: "https://github.com/Harry-kp/mercury" },
+        { type: "Website", href: "https://harry-kp.github.io/mercury/" },
+      ],
+      video: "",
+    },
     {
       title: "Nebula",
       href: "https://github.com/Harry-kp/nebula",
       dates: "Aug 2024",
       active: true,
       description:
-        "Go-based command-line torrent client for downloading files, featuring HTTP tracker support and piece management.",
-      technologies: ["Golang"],
-      links: [{ type: "Github", href: "https://github.com/Harry-kp/nebula" }],
+        "BitTorrent client built from scratch in Go. Implements the full torrent protocol including tracker communication, peer handshakes, piece management, and concurrent downloads.",
+      technologies: ["Go", "BitTorrent", "Networking", "Concurrency"],
+      links: [
+        { type: "GitHub", href: "https://github.com/Harry-kp/nebula" },
+      ],
       video:
         "https://github.com/user-attachments/assets/2fe05664-7e27-4ccf-b0bc-be45a54a3078",
+    },
+    {
+      title: "OkayrAI",
+      href: "https://okayrai.harrykp.live/",
+      dates: "May 2025 - Present",
+      active: true,
+      description:
+        "AI-powered career advancement platform that helps professionals track achievements, generate data-driven performance reviews, and build promotion cases using OpenAI and Gemini.",
+      technologies: ["Next.js", "PostgreSQL", "OpenAI", "Gemini"],
+      links: [
+        { type: "GitHub", href: "https://github.com/Harry-kp/okayri" },
+        { type: "Live", href: "https://okayrai.harrykp.live/" },
+      ],
+      video: "",
+    },
+    {
+      title: "A2A Trace",
+      href: "https://github.com/Harry-kp/a2a-trace",
+      dates: "2025",
+      active: true,
+      description:
+        "Visual debugger for Agent-to-Agent (A2A) multi-agent systems. Provides real-time tracing and visualization of inter-agent communication flows for debugging complex AI agent orchestrations.",
+      technologies: ["Go", "A2A Protocol", "Agents", "Visualization"],
+      links: [
+        { type: "GitHub", href: "https://github.com/Harry-kp/a2a-trace" },
+      ],
+      video: "",
     },
     {
       title: "CheggPy",
@@ -208,53 +228,14 @@ export const DATA: Data = {
       dates: "Feb 2024 - Apr 2024",
       active: true,
       description:
-        "Python package to simplify interactions with the Chegg API. Automates logging in, fetching, and analyzing questions based on keywords.",
-      technologies: ["Python", "pip"],
+        "Published Python package on PyPI for automating API interactions. Features session management, keyword-based querying, and structured data extraction.",
+      technologies: ["Python", "PyPI", "REST API", "Automation"],
       links: [
-        { type: "PyPi", href: "https://pypi.org/project/cheggpy/" },
-        { type: "Github", href: "https://github.com/Harry-kp/cheggpy" },
+        { type: "PyPI", href: "https://pypi.org/project/cheggpy/" },
+        { type: "GitHub", href: "https://github.com/Harry-kp/cheggpy" },
       ],
       video:
         "https://github.com/user-attachments/assets/0cf7f8fa-3805-4068-beab-a1510bb4c256",
-    },
-    {
-        title: "OkayrAI",
-        href: "https://okayrai.harrykp.live/",
-        dates: "May 2025 - Present",
-        active: true,
-        description:
-          "AI-powered career advancement platform that helps professionals track achievements, generate data-driven performance reviews, and secure promotions.",
-        technologies: ["NextJS", "Postgres", "OpenAI", "Gemini"],
-        links: [{ type: "Github", href: "https://github.com/Harry-kp/okayri" }],
-        video: "",
-      },
-    {
-      title: "DevStrologer",
-      href: "https://devstrologer.harrykp.live/",
-      dates: "Aug 2024",
-      active: true,
-      description:
-        "Fun app combining horoscopes with developer personalities. Generates personalized 'Dev Horoscopes' for tech enthusiasts.",
-      technologies: ["NextJS", "Shadcn", "Gemini AI"],
-      links: [
-        { type: "Source", href: "https://github.com/Harry-kp/devstrologer" },
-      ],
-      video:
-        "https://github.com/user-attachments/assets/415480b1-f2aa-420a-96b1-9ce17b4378ce",
-    },
-    {
-      title: "Promptify",
-      href: "https://github.com/Harry-kp/promptify",
-      dates: "Aug 2024",
-      active: true,
-      description:
-        "Tool that consolidates text files from a directory into a single file for easier AI prompting.",
-      technologies: ["Golang"],
-      links: [
-        { type: "Source", href: "https://github.com/Harry-kp/promptify" },
-      ],
-      video:
-        "https://github.com/user-attachments/assets/11bd8c58-1247-45fa-adb4-f7d4290f9140",
     },
   ],
 };

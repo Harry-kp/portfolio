@@ -1,12 +1,12 @@
 ---
-title: "Storage and Retreival"
+title: "Storage and Retrieval"
 summary: "This chapter discusses log-structured and page-oriented storage engines, their advantages, trade-offs, and considerations when choosing a storage engine."
 publishedAt: "2023-03-07"
 image: "/storage_and_retrieval.jpg"
 tags: ["Storage", "Log-Structured Storage", "Page-Oriented Storage", "B-Tree"]
 ---
 
-> This is a skimmed version of Chapter 'Storage and Retreival' from the book design_data_intensive_applications. I would recommend you to first read the whole chapter and use these notes for revision purpose only.
+> This is a skimmed version of Chapter 'Storage and Retrieval' from the book design_data_intensive_applications. I would recommend you to first read the whole chapter and use these notes for revision purpose only.
 
 # INTRODUCTION
 
@@ -75,7 +75,7 @@ tags: ["Storage", "Log-Structured Storage", "Page-Oriented Storage", "B-Tree"]
 - If the database is restarted, the inmemory hash maps are lost.
   - In principle, you can restore each segment’s hash map by reading the entire segment file from beginning to end and noting the offset of the most recent value for every key as you go along.
     - However, that might take a long time if the segment files are large, which would make server restarts painful.
-    - Bitcask speeds up recovery by storinga snapshot of each segment’s hash map on disk, which can be loaded into memory more quickly.
+    - Bitcask speeds up recovery by storing a snapshot of each segment’s hash map on disk, which can be loaded into memory more quickly.
 
 #### Partially written records
 

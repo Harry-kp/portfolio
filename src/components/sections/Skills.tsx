@@ -6,15 +6,15 @@ import { DATA } from "@/data/resume";
 const skillCategories = [
   {
     name: "Languages",
-    skills: ["Golang", "Ruby", "Python", "C++"],
+    skills: ["Go", "Rust", "Ruby", "Python", "C++", "TypeScript"],
   },
   {
     name: "Frameworks & Libraries",
-    skills: ["Rails", "NodeJS"],
+    skills: ["Rails", "gRPC", "LLMs / AI"],
   },
   {
     name: "Infrastructure & Tools",
-    skills: ["Docker", "Kubernetes", "AWS", "Postgres"],
+    skills: ["Kubernetes", "Docker", "AWS", "PostgreSQL", "Redis"],
   },
 ];
 

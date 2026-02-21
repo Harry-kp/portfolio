@@ -58,7 +58,7 @@ from another.
 
 ## HOW THE WRITE IS CONSIDERED SUCCESSFULL?
 
-You can read about this in detail here: [Quorums for reading and writing](./distributed-system---quorums-reads-and-writes)
+You can read about this in detail here: [Quorums for reading and writing](/blog/quorums-reads-and-writes)
 
 ## Detecting Concurrent Writes
 
@@ -74,7 +74,7 @@ You can read about this in detail here: [Quorums for reading and writing](./dist
 
 - If each node simply overwrote the value for a key whenever it received a write request from a client, the nodes would become permanently inconsistent, as shown by the final get request in node 2 thinks that the final value of X is B, whereas the other nodes think that the value is A.
 
-> We briefly touched on some techniques for conflict resolution in [Handling Write Conflicts](/blog/handling-write-conflicts-in-collaborative-editing)
+> We briefly touched on some techniques for conflict resolution in [Handling Write Conflicts](/blog/handling-write-conflicts-in-multi-leader-replication)
 
 ### Concurrency, Time, and Relativity
 
@@ -130,4 +130,4 @@ structure).
 
 ### Version vectors
 
-[Here](distributed-system---version-vectors)
+[Read about Version Vectors](/blog/version-vectors)
