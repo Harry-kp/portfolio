@@ -85,6 +85,42 @@ export async function fetchOpenSourceContributions(): Promise<{
   }
 }
 
+export async function fetchProjectStars(
+  githubUrls: string[]
+): Promise<Record<string, number>> {
+  const results: Record<string, number> = {};
+
+  await Promise.all(
+    githubUrls.map(async (url) => {
+      try {
+        const match = url.match(/github\.com\/([^/]+)\/([^/]+)/);
+        if (!match) return;
+        const [, owner, repo] = match;
+        const res = await fetch(
+          `https://api.github.com/repos/${owner}/${repo}`,
+          {
+            headers: {
+              Accept: "application/vnd.github.v3+json",
+              ...(process.env.GITHUB_TOKEN && {
+                Authorization: `token ${process.env.GITHUB_TOKEN}`,
+              }),
+            },
+            next: { revalidate: 3600 },
+          }
+        );
+        if (res.ok) {
+          const data = await res.json();
+          results[url] = data.stargazers_count ?? 0;
+        }
+      } catch {
+        // silently skip failed requests
+      }
+    })
+  );
+
+  return results;
+}
+
 // Fallback data for when API fails or for SSG
 export const FALLBACK_CONTRIBUTIONS = {
   prs: [

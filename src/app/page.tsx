@@ -9,8 +9,34 @@ import Skills from "@/components/sections/Skills";
 import FeaturedWriting from "@/components/sections/FeaturedWriting";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/Footer";
+import { getAllPosts } from "@/lib/mdx";
+import { fetchOpenSourceContributions, FALLBACK_CONTRIBUTIONS } from "@/lib/github";
+import { fetchProjectStars } from "@/lib/github";
+import { DATA } from "@/data/resume";
 
-export default function Home() {
+export default async function Home() {
+  const allPosts = getAllPosts();
+  const featuredPosts = allPosts.slice(0, 3).map((p) => ({
+    slug: p.slug,
+    title: p.title,
+    summary: p.summary,
+    image: p.image,
+    tags: p.tags,
+  }));
+
+  let contributions;
+  try {
+    contributions = await fetchOpenSourceContributions();
+  } catch {
+    contributions = FALLBACK_CONTRIBUTIONS;
+  }
+
+  const githubLinks = DATA.projects
+    .flatMap((p) => p.links)
+    .filter((l) => l.type.toLowerCase() === "github")
+    .map((l) => l.href);
+  const starCounts = await fetchProjectStars(githubLinks);
+
   return (
     <>
       <AnimatedBackground />
@@ -18,11 +44,11 @@ export default function Home() {
       <main>
         <Hero />
         <About />
-        <Projects />
-        <OpenSource />
+        <Projects starCounts={starCounts} />
+        <OpenSource contributions={contributions} />
         <Experience />
         <Skills />
-        <FeaturedWriting />
+        <FeaturedWriting posts={featuredPosts} />
         <Contact />
       </main>
       <Footer />

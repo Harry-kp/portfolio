@@ -9,38 +9,11 @@ interface FeaturedPost {
   slug: string;
   title: string;
   summary: string;
-  image: string;
-  tag: string;
+  image?: string;
+  tags?: string[];
 }
 
-const featuredPosts: FeaturedPost[] = [
-  {
-    slug: "redlock-distributed-lock-manager",
-    title: "Redlock — Distributed Lock Manager",
-    summary:
-      "How the Redlock algorithm solves distributed locking across multiple Redis instances, its safety guarantees, and Martin Kleppmann's critique.",
-    image: "/redlock.jpg",
-    tag: "Distributed Systems",
-  },
-  {
-    slug: "how_torrent_works",
-    title: "How Torrent Works",
-    summary:
-      "A deep dive into the BitTorrent protocol — from .torrent files and tracker communication to peer handshakes and piece assembly.",
-    image: "/how-torrent-works.png",
-    tag: "Networking",
-  },
-  {
-    slug: "weak-isolation-levels",
-    title: "Weak Isolation Levels",
-    summary:
-      "Weak isolation levels in databases can lead to anomalies like dirty reads and phantom reads. Understanding these helps you choose the right isolation level.",
-    image: "/weak-isolation-levels.jpg",
-    tag: "Databases",
-  },
-];
-
-export default function FeaturedWriting() {
+export default function FeaturedWriting({ posts }: { posts: FeaturedPost[] }) {
   return (
     <section className="py-24 px-6">
       <div className="max-w-5xl mx-auto">
@@ -67,7 +40,7 @@ export default function FeaturedWriting() {
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {featuredPosts.map((post, index) => (
+          {posts.map((post, index) => (
             <motion.div
               key={post.slug}
               initial={{ opacity: 0, y: 20 }}
@@ -80,16 +53,22 @@ export default function FeaturedWriting() {
                 className="group block h-full rounded-2xl border border-border bg-surface overflow-hidden transition-all duration-300 hover:border-accent/40 hover:shadow-[0_0_30px_-5px] hover:shadow-accent/10"
               >
                 <div className="relative aspect-[2/1] bg-surface-hover overflow-hidden">
-                  <Image
-                    src={post.image}
-                    alt={post.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
+                  {post.image ? (
+                    <Image
+                      src={post.image}
+                      alt={post.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-text-secondary/30 text-4xl font-bold">
+                      {post.title[0]}
+                    </div>
+                  )}
                 </div>
                 <div className="p-5">
                   <span className="text-[10px] font-mono uppercase tracking-wider text-accent">
-                    {post.tag}
+                    {post.tags?.[0] ?? "Blog"}
                   </span>
                   <h3 className="text-base font-semibold text-text-primary group-hover:text-accent transition-colors mt-2 mb-2 line-clamp-2">
                     {post.title}

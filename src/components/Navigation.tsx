@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, FileText } from "lucide-react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { DATA } from "@/data/resume";
 import ThemeToggle from "@/components/ThemeToggle";
 import { cn } from "@/lib/utils";
@@ -19,7 +19,6 @@ export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
-  const router = useRouter();
   const isHome = pathname === "/";
 
   useEffect(() => {
@@ -27,15 +26,6 @@ export default function Navigation() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  const navigateToSection = (id: string) => {
-    setIsMobileMenuOpen(false);
-    if (isHome) {
-      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-    } else {
-      router.push(`/#${id}`);
-    }
-  };
 
   return (
     <>
@@ -53,13 +43,17 @@ export default function Navigation() {
         <div className="max-w-5xl mx-auto px-6">
           <div className="flex items-center justify-between h-16">
             {isHome ? (
-              <button
-                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
                 className="font-bold text-lg text-text-primary hover:text-accent transition-colors tracking-tight"
               >
                 {DATA.name.split(" ")[0]}
                 <span className="text-accent">.</span>
-              </button>
+              </a>
             ) : (
               <Link
                 href="/"
@@ -72,13 +66,13 @@ export default function Navigation() {
 
             <div className="hidden md:flex items-center gap-8">
               {navItems.map((item) => (
-                <button
+                <a
                   key={item.id}
-                  onClick={() => navigateToSection(item.id)}
+                  href={isHome ? `#${item.id}` : `/#${item.id}`}
                   className="text-sm text-text-secondary hover:text-text-primary transition-colors"
                 >
                   {item.label}
-                </button>
+                </a>
               ))}
               <Link
                 href="/blog"
@@ -105,7 +99,11 @@ export default function Navigation() {
               className="md:hidden p-2 text-text-secondary hover:text-text-primary transition-colors"
               aria-label="Toggle menu"
             >
-              {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {isMobileMenuOpen ? (
+                <X className="w-5 h-5" />
+              ) : (
+                <Menu className="w-5 h-5" />
+              )}
             </button>
           </div>
         </div>
@@ -138,13 +136,14 @@ export default function Navigation() {
 
               <nav className="flex flex-col gap-6 mt-12">
                 {navItems.map((item) => (
-                  <button
+                  <a
                     key={item.id}
-                    onClick={() => navigateToSection(item.id)}
+                    href={isHome ? `#${item.id}` : `/#${item.id}`}
+                    onClick={() => setIsMobileMenuOpen(false)}
                     className="text-left text-lg text-text-secondary hover:text-text-primary transition-colors"
                   >
                     {item.label}
-                  </button>
+                  </a>
                 ))}
                 <Link
                   href="/blog"

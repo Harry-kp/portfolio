@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { DATA, type Project } from "@/data/resume";
-import { ExternalLink, Github, Package, FolderGit2 } from "lucide-react";
+import { ExternalLink, Github, Package, FolderGit2, Star } from "lucide-react";
 
 const isImage = (url: string) => {
   const lower = url.toLowerCase();
@@ -28,10 +28,12 @@ function ProjectCard({
   project,
   index,
   featured,
+  stars,
 }: {
   project: Project;
   index: number;
   featured?: boolean;
+  stars?: number;
 }) {
   return (
     <motion.div
@@ -76,11 +78,19 @@ function ProjectCard({
               </h3>
               <p className="text-xs text-text-secondary mt-0.5">{project.dates}</p>
             </div>
-            {project.active && (
-              <span className="text-[10px] font-mono uppercase tracking-wider text-accent bg-accent/10 px-2 py-0.5 rounded-full">
-                Active
-              </span>
-            )}
+            <div className="flex items-center gap-2">
+              {stars !== undefined && stars > 0 && (
+                <span className="inline-flex items-center gap-1 text-[10px] font-mono text-text-secondary bg-surface-hover px-2 py-0.5 rounded-full">
+                  <Star className="w-3 h-3 text-amber-400" />
+                  {stars.toLocaleString()}
+                </span>
+              )}
+              {project.active && (
+                <span className="text-[10px] font-mono uppercase tracking-wider text-accent bg-accent/10 px-2 py-0.5 rounded-full">
+                  Active
+                </span>
+              )}
+            </div>
           </div>
 
           <p className={`text-text-secondary leading-relaxed mb-4 ${featured ? "text-sm" : "text-sm line-clamp-2"}`}>
@@ -118,7 +128,7 @@ function ProjectCard({
   );
 }
 
-export default function Projects() {
+export default function Projects({ starCounts }: { starCounts: Record<string, number> }) {
   return (
     <section id="projects" className="py-24 px-6">
       <div className="max-w-5xl mx-auto">
@@ -137,14 +147,20 @@ export default function Projects() {
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {DATA.projects.map((project: Project, index: number) => (
-            <ProjectCard
-              key={project.title}
-              project={project}
-              index={index}
-              featured={index === 0}
-            />
-          ))}
+          {DATA.projects.map((project: Project, index: number) => {
+            const ghLink = project.links.find(
+              (l) => l.type.toLowerCase() === "github"
+            );
+            return (
+              <ProjectCard
+                key={project.title}
+                project={project}
+                index={index}
+                featured={index === 0}
+                stars={ghLink ? starCounts[ghLink.href] : undefined}
+              />
+            );
+          })}
         </div>
       </div>
     </section>

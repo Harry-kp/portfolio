@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { DATA } from "@/data/resume";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import CommandPalette from "@/components/CommandPalette";
+import { getAllPosts } from "@/lib/mdx";
 import "./globals.css";
 
 const inter = Inter({
@@ -71,6 +73,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const posts = getAllPosts().map((p) => ({
+    slug: p.slug,
+    title: p.title,
+    tags: p.tags,
+  }));
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -107,6 +115,7 @@ export default function RootLayout({
       </head>
       <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased bg-background text-text-primary`}>
         <ThemeProvider defaultTheme="system">
+          <CommandPalette blogPosts={posts} />
           {children}
         </ThemeProvider>
       </body>

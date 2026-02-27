@@ -1,18 +1,18 @@
 import { getAllPosts } from "@/lib/mdx";
-import ArticleCard from "@/components/blog/ArticleCard";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import AnimatedBackground from "@/components/AnimatedBackground";
+import BlogFilters from "@/components/blog/BlogFilters";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Blog",
-  description: "Articles about distributed systems, Ruby, Go, and software engineering.",
+  description:
+    "Articles about distributed systems, Ruby, Go, and software engineering.",
 };
 
 export default function BlogPage() {
   const posts = getAllPosts();
-  const [featured, ...rest] = posts;
 
   return (
     <>
@@ -28,29 +28,12 @@ export default function BlogPage() {
               Writing
             </h1>
             <p className="text-text-secondary text-lg max-w-2xl">
-              Thoughts on distributed systems, backend engineering, and software development.
+              Thoughts on distributed systems, backend engineering, and software
+              development.
             </p>
           </div>
 
-          {posts.length > 0 ? (
-            <div className="space-y-12">
-              {featured && (
-                <ArticleCard post={featured} index={0} featured />
-              )}
-
-              {rest.length > 0 && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  {rest.map((post, index) => (
-                    <ArticleCard key={post.slug} post={post} index={index + 1} />
-                  ))}
-                </div>
-              )}
-            </div>
-          ) : (
-            <div className="text-center py-20">
-              <p className="text-text-secondary">No posts yet. Check back soon!</p>
-            </div>
-          )}
+          <BlogFilters posts={posts} />
         </div>
       </main>
       <Footer />

@@ -4,6 +4,9 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import AnimatedBackground from "@/components/AnimatedBackground";
 import MDXContent from "@/components/blog/MDXContent";
+import ReadingProgress from "@/components/blog/ReadingProgress";
+import TableOfContents from "@/components/blog/TableOfContents";
+import { extractHeadings } from "@/lib/toc";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
@@ -18,10 +21,12 @@ export async function generateStaticParams() {
   return slugs.map((slug) => ({ slug }));
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const post = getPostBySlug(slug);
-  
+
   if (!post) {
     return { title: "Post Not Found" };
   }
@@ -53,13 +58,15 @@ export default async function BlogPostPage({ params }: PageProps) {
       })
     : "";
 
+  const headings = extractHeadings(post.content);
+
   return (
     <>
       <AnimatedBackground />
       <Navigation />
+      <ReadingProgress />
       <main className="min-h-screen pt-28 pb-16 px-6">
         <article className="max-w-3xl mx-auto">
-          {/* Header */}
           <div className="mb-12">
             <Link
               href="/blog"
@@ -119,6 +126,8 @@ export default async function BlogPostPage({ params }: PageProps) {
               </p>
             </div>
           )}
+
+          <TableOfContents headings={headings} />
 
           <MDXContent content={post.content} />
 

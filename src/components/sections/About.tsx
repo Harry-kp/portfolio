@@ -1,13 +1,20 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion, useInView } from "framer-motion";
 import { DATA } from "@/data/resume";
 
-const metrics = [
-  { value: "4+", label: "Years Experience" },
-  { value: "700+", label: "LeetCode Solved" },
-  { value: `${DATA.projects.length}+`, label: "Projects Shipped" },
-  { value: `${DATA.work.length}`, label: "Companies" },
+interface Metric {
+  numericValue: number;
+  suffix: string;
+  label: string;
+}
+
+const metrics: Metric[] = [
+  { numericValue: 4, suffix: "+", label: "Years Experience" },
+  { numericValue: 700, suffix: "+", label: "LeetCode Solved" },
+  { numericValue: DATA.projects.length, suffix: "+", label: "Projects Shipped" },
+  { numericValue: DATA.work.length, suffix: "", label: "Companies" },
 ];
 
 const currentFocus = [
@@ -15,6 +22,36 @@ const currentFocus = [
   "Shipping developer tools in Rust (Vortix, Mercury)",
   "Exploring consensus protocols & distributed storage",
 ];
+
+function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
+  const ref = useRef<HTMLParagraphElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const [display, setDisplay] = useState(0);
+
+  useEffect(() => {
+    if (!isInView) return;
+    let start = 0;
+    const duration = 1200;
+    const step = Math.max(1, Math.floor(value / (duration / 16)));
+    const timer = setInterval(() => {
+      start += step;
+      if (start >= value) {
+        setDisplay(value);
+        clearInterval(timer);
+      } else {
+        setDisplay(start);
+      }
+    }, 16);
+    return () => clearInterval(timer);
+  }, [isInView, value]);
+
+  return (
+    <p ref={ref} className="text-3xl md:text-4xl font-bold text-text-primary tracking-tight tabular-nums">
+      {display}
+      {suffix}
+    </p>
+  );
+}
 
 export default function About() {
   return (
@@ -45,7 +82,9 @@ export default function About() {
                     key={item}
                     className="flex items-start gap-2 text-sm text-text-secondary"
                   >
-                    <span className="text-accent mt-1.5 text-[8px]">&#9679;</span>
+                    <span className="text-accent mt-1.5 text-[8px]">
+                      &#9679;
+                    </span>
                     {item}
                   </li>
                 ))}
@@ -63,10 +102,13 @@ export default function About() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: i * 0.1 }}
                 >
-                  <p className="text-3xl md:text-4xl font-bold text-text-primary tracking-tight">
-                    {metric.value}
+                  <AnimatedCounter
+                    value={metric.numericValue}
+                    suffix={metric.suffix}
+                  />
+                  <p className="text-sm text-text-secondary mt-1">
+                    {metric.label}
                   </p>
-                  <p className="text-sm text-text-secondary mt-1">{metric.label}</p>
                 </motion.div>
               ))}
             </div>

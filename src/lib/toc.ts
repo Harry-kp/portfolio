@@ -1,0 +1,28 @@
+export interface TOCItem {
+  id: string;
+  text: string;
+  level: number;
+}
+
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .trim();
+}
+
+export function extractHeadings(content: string): TOCItem[] {
+  const headingRegex = /^(#{2,3})\s+(.+)$/gm;
+  const items: TOCItem[] = [];
+  let match;
+  while ((match = headingRegex.exec(content)) !== null) {
+    items.push({
+      id: slugify(match[2]),
+      text: match[2],
+      level: match[1].length,
+    });
+  }
+  return items;
+}

@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { DATA } from "@/data/resume";
 import { Github, Linkedin, Twitter, ArrowDown } from "lucide-react";
 import Image from "next/image";
@@ -13,8 +14,30 @@ const socialLinks = [
 ];
 
 export default function Hero() {
+  const ref = useRef<HTMLElement>(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const springConfig = { stiffness: 80, damping: 30 };
+  const sx = useSpring(mouseX, springConfig);
+  const sy = useSpring(mouseY, springConfig);
+
+  const avatarX = useTransform(sx, [-0.5, 0.5], [12, -12]);
+  const avatarY = useTransform(sy, [-0.5, 0.5], [12, -12]);
+
+  const handleMouse = (e: React.MouseEvent<HTMLElement>) => {
+    const rect = ref.current?.getBoundingClientRect();
+    if (!rect) return;
+    mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
+    mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
+  };
+
   return (
-    <section className="min-h-[100dvh] flex flex-col justify-center px-6 pt-20 pb-12">
+    <section
+      ref={ref}
+      onMouseMove={handleMouse}
+      className="min-h-[100dvh] flex flex-col justify-center px-6 pt-20 pb-12"
+    >
       <div className="max-w-5xl mx-auto w-full flex flex-col md:flex-row md:items-center md:gap-16">
         <div className="flex-1">
           <motion.p
@@ -71,6 +94,9 @@ export default function Hero() {
             >
               Read my blog &rarr;
             </Link>
+            <span className="hidden sm:inline text-[11px] text-text-secondary/50 font-mono border border-border/50 rounded px-1.5 py-0.5">
+              &#8984;K
+            </span>
           </motion.div>
         </div>
 
@@ -78,6 +104,7 @@ export default function Hero() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.3 }}
+          style={{ x: avatarX, y: avatarY }}
           className="hidden md:block flex-shrink-0"
         >
           <div className="relative w-48 h-48 lg:w-56 lg:h-56 rounded-2xl overflow-hidden border-2 border-border/50 shadow-lg">
@@ -99,7 +126,11 @@ export default function Hero() {
         className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:block"
       >
         <button
-          onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
+          onClick={() =>
+            document
+              .getElementById("about")
+              ?.scrollIntoView({ behavior: "smooth" })
+          }
           className="text-text-secondary hover:text-accent transition-colors"
           aria-label="Scroll down"
         >
