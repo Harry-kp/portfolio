@@ -61,7 +61,7 @@ export const DATA: Data = {
     "Backend engineer building scalable distributed systems and AI-powered products. I ship open-source tools in Rust and Go, contribute to projects like Maybe Finance, and have solved 700+ problems on LeetCode.",
   resumeUrl: "/resume.pdf",
   summary:
-    "Backend Software Engineer at BrowserStack building AI-powered test management features at scale. Previously built a custom Kubernetes controller at Procol that automated database provisioning for 2,000+ developers. Passionate about distributed systems, infrastructure automation, and developer tooling. Open-source contributor to Maybe Finance, LeetCode, and RubyForGood. Creator of Vortix (300+ GitHub stars) — a terminal UI for VPN management built in Rust.",
+    "Backend Software Engineer at BrowserStack building AI-powered test management features at scale. Previously built a custom Kubernetes controller at Procol that automated database provisioning for 2,000+ developers. Passionate about distributed systems, infrastructure automation, and developer tooling. Open-source contributor to Maybe Finance, LeetCode, and RubyForGood. Creator of Vortix (300+ GitHub stars) and AFK — developer tools built in Rust and Tauri.",
   avatarUrl: "/me.jpg",
   skills: [
     "Go",
@@ -166,6 +166,21 @@ export const DATA: Data = {
       ],
       video:
         "https://raw.githubusercontent.com/Harry-kp/vortix/refs/heads/main/assets/demo.gif",
+    },
+    {
+      title: "AFK",
+      href: "https://github.com/Harry-kp/afk",
+      dates: "Jan 2026 - Present",
+      active: true,
+      description:
+        "Break reminder for developers who forget to blink — follows the 20-20-20 rule with fullscreen reminders, statistics dashboard, health exercises, and global shortcuts. Under 5 MB, built with Tauri + Rust.",
+      technologies: ["Rust", "Tauri", "React", "TypeScript", "Tailwind CSS"],
+      links: [
+        { type: "GitHub", href: "https://github.com/Harry-kp/afk" },
+        { type: "Website", href: "https://afk-app.vercel.app" },
+      ],
+      video:
+        "https://raw.githubusercontent.com/Harry-kp/afk/main/landing/assets/demo.gif",
     },
     {
       title: "Mercury",
