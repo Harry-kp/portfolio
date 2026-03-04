@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { Command } from "cmdk";
 import { useRouter, usePathname } from "next/navigation";
 import { DATA } from "@/data/resume";
@@ -32,6 +32,7 @@ export default function CommandPalette({
   blogPosts: BlogPostItem[];
 }) {
   const [open, setOpen] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const pathname = usePathname();
   const { theme, setTheme, resolvedTheme } = useTheme();
@@ -41,11 +42,22 @@ export default function CommandPalette({
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
         setOpen((prev) => !prev);
+        return;
+      }
+      if (e.key === "Escape" && open) {
+        e.preventDefault();
+        setOpen(false);
       }
     };
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, []);
+  }, [open]);
+
+  useEffect(() => {
+    if (open) {
+      requestAnimationFrame(() => inputRef.current?.focus());
+    }
+  }, [open]);
 
   const navigate = useCallback(
     (path: string) => {
@@ -93,6 +105,7 @@ export default function CommandPalette({
               loop
             >
               <Command.Input
+                ref={inputRef}
                 placeholder="Type a command or search..."
                 className="w-full px-5 py-4 text-base text-text-primary bg-transparent border-b border-border outline-none placeholder:text-text-secondary/60"
               />
