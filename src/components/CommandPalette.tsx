@@ -184,10 +184,10 @@ export default function CommandPalette({
                     icon={<FileText className="w-4 h-4" />}
                     onSelect={() => {
                       setOpen(false);
-                      window.open(DATA.resumeUrl, "_blank");
+                      router.push("/resume");
                     }}
                   >
-                    Download resume
+                    View resume
                   </CommandItem>
                 </Command.Group>
 
