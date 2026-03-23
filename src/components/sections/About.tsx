@@ -18,9 +18,9 @@ const metrics: Metric[] = [
 ];
 
 const currentFocus = [
-  "Building AI-powered test management at BrowserStack",
-  "Shipping developer tools in Rust (Vortix, Mercury)",
-  "Exploring consensus protocols & distributed storage",
+  "Building AI accessibility agents at BrowserStack (40+ WCAG criteria)",
+  "Shipping developer tools in Rust (Vortix, Mercury, AFK)",
+  "Contributing to open source — Grafana Tempo, Maybe Finance, Lima VM",
 ];
 
 function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {

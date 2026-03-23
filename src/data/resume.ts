@@ -55,13 +55,13 @@ export const DATA: Data = {
   name: "Harshit Chaudhary",
   initials: "HC",
   url: "https://harrykp.vercel.app",
-  location: "Gurugram, Haryana, India",
+  location: "Mumbai, India",
   locationLink: "",
   description:
-    "Backend engineer building scalable distributed systems and AI-powered products. I ship open-source tools in Rust and Go, contribute to projects like Maybe Finance, and have solved 700+ problems on LeetCode.",
+    "Backend engineer building AI accessibility agents at BrowserStack covering 40+ WCAG criteria. I ship open-source tools in Rust and Go, contribute to Grafana Tempo, Maybe Finance & Lima VM, and have solved 700+ problems on LeetCode.",
   resumeUrl: "/resume.pdf",
   summary:
-    "Backend Software Engineer at BrowserStack building AI-powered test management features at scale. Previously built a custom Kubernetes controller at Procol that automated database provisioning for 2,000+ developers. Passionate about distributed systems, infrastructure automation, and developer tooling. Open-source contributor to Maybe Finance, LeetCode, and RubyForGood. Creator of Vortix (300+ GitHub stars) and AFK — developer tools built in Rust and Tauri.",
+    "Backend Software Engineer at BrowserStack, architecting AI accessibility agents covering 40+ WCAG criteria across web, mobile, and design. Previously led ERP integrations and core platform development at Procol. Passionate about distributed systems, infrastructure automation, and developer tooling. Open-source contributor to Grafana Tempo, Maybe Finance, Lima VM, and RubyForGood with 12 merged PRs across 8 repos. Creator of Vortix (395+ GitHub stars) and AFK — developer tools built in Rust and Tauri.",
   avatarUrl: "/me.jpg",
   skills: [
     "Go",
@@ -72,14 +72,20 @@ export const DATA: Data = {
     "TypeScript",
     "Kubernetes",
     "Docker",
+    "Kafka",
     "AWS",
+    "GCP",
     "PostgreSQL",
     "Redis",
     "gRPC",
+    "Helm",
     "Rails",
-    "System Design",
-    "Distributed Systems",
-    "LLMs / AI",
+    "Prometheus",
+    "Grafana",
+    "BigQuery",
+    "LLM Pipelines",
+    "Prompt Engineering",
+    "VertexAI",
   ],
   contact: {
     email: "chaudharyharshit9@gmail.com",
@@ -114,11 +120,11 @@ export const DATA: Data = {
       start: "Dec 2024",
       end: "Present",
       description:
-        "Building AI-powered features for the Test Management platform used by thousands of QA teams globally. Designed and deployed LLM pipelines using Claude and OpenAI embeddings to auto-generate test cases, reducing manual test authoring time. Architected inference services on Kubernetes with auto-scaling to handle variable workloads while keeping latency under SLA targets.",
+        "Architected and built BrowserStack's AI accessibility agents — Issue Detection, Remediation, and Design A11y Color Contrast Agent on the Spectra™ rule engine, covering 40+ WCAG criteria across web, mobile, and design. Designed multi-model LLM inference pipelines (Gemini, GPT-4, Claude) with semantic DOM chunking, achieving 87.69% heading detection accuracy. Built App A11y Issue Detection Agent, reducing false-positives by 64% and cutting P90 latency from 20s to 10.1s. Led TestOps observability integration across 7 AI features with Redis-based phased rollout and K8s Kafka consumers with auto-scaling.",
     },
     {
       company: "Procol",
-      badges: ["Infrastructure"],
+      badges: ["Backend"],
       href: "https://www.procol.io/",
       location: "Gurugram, India",
       title: "Senior Software Engineer",
@@ -126,7 +132,7 @@ export const DATA: Data = {
       start: "Jun 2022",
       end: "Dec 2024",
       description:
-        "Built a custom Kubernetes controller in Go to automate MySQL and ProxySQL provisioning, enabling 2,000+ developers to self-serve production database deployments — reducing setup time from days to minutes. Led the design and integration of ERP systems (SAP, Oracle) for enterprise procurement workflows processing millions in transactions. Owned end-to-end feature development across Ruby on Rails microservices with PostgreSQL, Redis, and Sidekiq.",
+        "Led a team of 3 to productise ERP integrations (SAP, Oracle), resulting in a 25% increase in product value and enterprise client onboarding. Core engineer on the Lighthouse and Checkmate team, responsible for architectural decisions and quality assurance. Designed a form system as the core data source layer for all Procol microservices. Developed Flexi data source and view, inspired by Notion, eliminating repetitive development. Set up RSpec testing framework achieving 52% code coverage. Launched internationalization, time zone localization, approval flows, and reporting. Tech Stack: Ruby on Rails, PostgreSQL.",
     },
     {
       company: "Hashedin by Deloitte",
@@ -158,7 +164,7 @@ export const DATA: Data = {
       dates: "Jan 2026 - Present",
       active: true,
       description:
-        "Terminal UI for WireGuard and OpenVPN — real-time throughput/latency monitoring, IPv6/DNS leak detection, kill switch, and geo-location tracking. 340+ GitHub stars, 9 forks, published on crates.io.",
+        "Terminal UI for WireGuard and OpenVPN — real-time throughput/latency monitoring, IPv6/DNS leak detection, kill switch, and geo-location tracking. 395+ GitHub stars, published on crates.io.",
       technologies: ["Rust", "Ratatui", "WireGuard", "OpenVPN"],
       links: [
         { type: "GitHub", href: "https://github.com/Harry-kp/vortix" },
