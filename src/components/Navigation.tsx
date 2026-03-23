@@ -84,14 +84,13 @@ export default function Navigation() {
 
             <div className="hidden md:flex items-center gap-3">
               <ThemeToggle />
-              <a
-                href={DATA.resumeUrl}
-                download
+              <Link
+                href="/resume"
                 className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full border border-border text-text-primary hover:border-accent hover:text-accent transition-colors"
               >
                 <FileText className="w-3.5 h-3.5" />
                 Resume
-              </a>
+              </Link>
             </div>
 
             <button
@@ -153,14 +152,14 @@ export default function Navigation() {
                   Blog
                 </Link>
                 <div className="pt-6 border-t border-border flex items-center justify-between">
-                  <a
-                    href={DATA.resumeUrl}
-                    download
+                  <Link
+                    href="/resume"
+                    onClick={() => setIsMobileMenuOpen(false)}
                     className="text-sm text-accent font-medium flex items-center gap-2"
                   >
                     <FileText className="w-4 h-4" />
-                    Download Resume
-                  </a>
+                    View Resume
+                  </Link>
                   <ThemeToggle />
                 </div>
               </nav>
