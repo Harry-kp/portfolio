@@ -49,6 +49,14 @@ interface Data {
   work: Work[];
   education: Education[];
   projects: Project[];
+  recruiter: {
+    timezone: string;
+    workAuth: string;
+    visaRequired: boolean;
+    salary: string;
+    leetcode: string;
+    leetcodeProblems: number;
+  };
 }
 
 export const DATA: Data = {
@@ -157,6 +165,14 @@ export const DATA: Data = {
       end: "2022",
     },
   ],
+  recruiter: {
+    timezone: "Mumbai, India (IST/UTC+5:30)",
+    workAuth: "Indian Citizen",
+    visaRequired: true,
+    salary: "$150-180k USD",
+    leetcode: "https://leetcode.com/u/Harrykp/",
+    leetcodeProblems: 700,
+  },
   projects: [
     {
       title: "Vortix",

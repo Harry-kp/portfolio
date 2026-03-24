@@ -1,6 +1,7 @@
 import Navigation from "@/components/Navigation";
 import AnimatedBackground from "@/components/AnimatedBackground";
 import Hero from "@/components/sections/Hero";
+import RecruiterInfo from "@/components/sections/RecruiterInfo";
 import About from "@/components/sections/About";
 import Projects from "@/components/sections/Projects";
 import OpenSource from "@/components/sections/OpenSource";
@@ -56,6 +57,7 @@ export default async function Home() {
       <Navigation />
       <main>
         <Hero stats={heroStats} />
+        <RecruiterInfo />
         <About />
         <Projects starCounts={starCounts} />
         <OpenSource contributions={contributions} />
