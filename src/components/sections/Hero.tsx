@@ -6,6 +6,15 @@ import { DATA } from "@/data/resume";
 import { Github, Linkedin, Twitter, ArrowDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import GitHubStats from "./GitHubStats";
+
+interface HeroProps {
+  stats?: {
+    stars: number;
+    prs: number;
+    contributions: number;
+  };
+}
 
 const socialLinks = [
   { name: "GitHub", icon: Github, url: DATA.contact.social.GitHub.url },
@@ -13,7 +22,7 @@ const socialLinks = [
   { name: "X", icon: Twitter, url: DATA.contact.social.X.url },
 ];
 
-export default function Hero() {
+export default function Hero({ stats }: HeroProps) {
   const ref = useRef<HTMLElement>(null);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -98,6 +107,8 @@ export default function Hero() {
               &#8984;K
             </span>
           </motion.div>
+
+          {stats && <GitHubStats {...stats} />}
         </div>
 
         <motion.div

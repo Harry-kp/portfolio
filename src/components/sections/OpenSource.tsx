@@ -31,8 +31,29 @@ function groupByRepo(prs: GitHubPR[]) {
     .slice(0, 6);
 }
 
+function groupByRepoWithDetails(prs: GitHubPR[]) {
+  const map = new Map<string, { prs: GitHubPR[]; url: string; prUrls: string[] }>();
+  for (const pr of prs) {
+    const existing = map.get(pr.repo_full_name);
+    if (existing) {
+      existing.prs.push(pr);
+      existing.prUrls.push(pr.html_url);
+    } else {
+      map.set(pr.repo_full_name, {
+        prs: [pr],
+        url: `https://github.com/${pr.repo_full_name}`,
+        prUrls: [pr.html_url],
+      });
+    }
+  }
+  return [...map.entries()]
+    .sort((a, b) => b[1].prs.length - a[1].prs.length)
+    .slice(0, 6);
+}
+
 export default function OpenSource({ contributions }: OpenSourceProps) {
   const grouped = groupByRepo(contributions.prs);
+  const groupedWithDetails = groupByRepoWithDetails(contributions.prs);
   const hasPRs = grouped.length > 0;
 
   return (
@@ -59,7 +80,7 @@ export default function OpenSource({ contributions }: OpenSourceProps) {
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
-          {grouped.map(([repoName, { prs, url }], index) => (
+          {groupedWithDetails.map(([repoName, { prs, url, prUrls }], index) => (
             <motion.a
               key={repoName}
               href={url}
@@ -78,9 +99,25 @@ export default function OpenSource({ contributions }: OpenSourceProps) {
               <h3 className="font-semibold text-text-primary group-hover:text-accent transition-colors mb-2 truncate">
                 {repoName}
               </h3>
-              <p className="text-sm text-text-secondary leading-relaxed mb-4 line-clamp-2">
-                {prs[0].title}
-              </p>
+              <div className="space-y-1 mb-4">
+                {prs.slice(0, 2).map((pr, i) => (
+                  <a
+                    key={pr.id}
+                    href={pr.html_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block text-sm text-text-secondary leading-relaxed line-clamp-1 hover:text-accent transition-colors"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    {pr.title}
+                  </a>
+                ))}
+                {prs.length > 2 && (
+                  <span className="text-xs text-text-secondary/60">
+                    +{prs.length - 2} more PRs
+                  </span>
+                )}
+              </div>
               <div className="flex items-center gap-1.5 text-xs text-text-secondary">
                 <GitMerge className="w-3 h-3 text-green-500" />
                 {prs.length} merged PR{prs.length > 1 ? "s" : ""}

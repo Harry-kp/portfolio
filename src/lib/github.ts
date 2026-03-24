@@ -1,5 +1,73 @@
 const GITHUB_USERNAME = "Harry-kp";
 
+export interface GitHubUserStats {
+  followers: number;
+  following: number;
+  publicRepos: number;
+  totalStars: number;
+}
+
+// Fetch GitHub user stats
+export async function fetchGitHubUserStats(): Promise<GitHubUserStats> {
+  try {
+    const response = await fetch(
+      `https://api.github.com/users/${GITHUB_USERNAME}`,
+      {
+        headers: {
+          Accept: "application/vnd.github.v3+json",
+          ...(process.env.GITHUB_TOKEN && {
+            Authorization: `token ${process.env.GITHUB_TOKEN}`,
+          }),
+        },
+        next: { revalidate: 3600 },
+      }
+    );
+
+    if (!response.ok) {
+      console.error("GitHub API error:", response.status);
+      return { followers: 0, following: 0, publicRepos: 0, totalStars: 0 };
+    }
+
+    const data = await response.json();
+    return {
+      followers: data.followers || 0,
+      following: data.following || 0,
+      publicRepos: data.public_repos || 0,
+      totalStars: 0, // Calculated separately
+    };
+  } catch (error) {
+    console.error("Error fetching GitHub user stats:", error);
+    return { followers: 0, following: 0, publicRepos: 0, totalStars: 0 };
+  }
+}
+
+// Fetch total stars across user's repositories
+export async function fetchTotalStars(): Promise<number> {
+  try {
+    const response = await fetch(
+      `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=100&type=owner`,
+      {
+        headers: {
+          Accept: "application/vnd.github.v3+json",
+          ...(process.env.GITHUB_TOKEN && {
+            Authorization: `token ${process.env.GITHUB_TOKEN}`,
+          }),
+        },
+        next: { revalidate: 3600 },
+      }
+    );
+
+    if (!response.ok) {
+      return 0;
+    }
+
+    const repos = await response.json();
+    return repos.reduce((total: number, repo: any) => total + (repo.stargazers_count || 0), 0);
+  } catch {
+    return 0;
+  }
+}
+
 export interface GitHubPR {
   id: number;
   title: string;
