@@ -4,7 +4,6 @@ import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
 import Projects from "@/components/sections/Projects";
 import OpenSource from "@/components/sections/OpenSource";
-import CurrentlyContributing from "@/components/sections/CurrentlyContributing";
 import Skills from "@/components/sections/Skills";
 import LookingFor from "@/components/sections/LookingFor";
 import Experience from "@/components/sections/Experience";
@@ -60,11 +59,9 @@ export default async function Home() {
         <About />
         <Projects starCounts={starCounts} />
         <OpenSource contributions={contributions} />
-        <CurrentlyContributing />
         <Skills />
         <LookingFor />
         <Experience />
-        <Skills />
         <FeaturedWriting posts={featuredPosts} />
         <Contact />
       </main>
