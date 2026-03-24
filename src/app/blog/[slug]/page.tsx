@@ -1,4 +1,4 @@
-import { getPostBySlug, getAllSlugs } from "@/lib/mdx";
+import { getPostBySlug, getAllSlugs, getAllPosts } from "@/lib/mdx";
 import { notFound } from "next/navigation";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -6,6 +6,9 @@ import AnimatedBackground from "@/components/AnimatedBackground";
 import MDXContent from "@/components/blog/MDXContent";
 import ReadingProgress from "@/components/blog/ReadingProgress";
 import TableOfContents from "@/components/blog/TableOfContents";
+import ShareButtons from "@/components/blog/ShareButtons";
+import AuthorCard from "@/components/blog/AuthorCard";
+import RelatedPosts from "@/components/blog/RelatedPosts";
 import { extractHeadings } from "@/lib/toc";
 import Image from "next/image";
 import Link from "next/link";
@@ -50,6 +53,8 @@ export default async function BlogPostPage({ params }: PageProps) {
     notFound();
   }
 
+  const allPosts = getAllPosts();
+
   const formattedDate = post.publishedAt
     ? new Date(post.publishedAt).toLocaleDateString("en-US", {
         year: "numeric",
@@ -93,17 +98,20 @@ export default async function BlogPostPage({ params }: PageProps) {
               {post.title}
             </h1>
 
-            <div className="flex items-center gap-4 text-sm text-text-secondary">
-              {formattedDate && (
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-center gap-4 text-sm text-text-secondary">
+                {formattedDate && (
+                  <span className="flex items-center gap-1.5">
+                    <Calendar className="w-3.5 h-3.5" />
+                    {formattedDate}
+                  </span>
+                )}
                 <span className="flex items-center gap-1.5">
-                  <Calendar className="w-3.5 h-3.5" />
-                  {formattedDate}
+                  <Clock className="w-3.5 h-3.5" />
+                  {post.readingTime}
                 </span>
-              )}
-              <span className="flex items-center gap-1.5">
-                <Clock className="w-3.5 h-3.5" />
-                {post.readingTime}
-              </span>
+              </div>
+              <ShareButtons title={post.title} url={`/blog/${slug}`} />
             </div>
           </div>
 
@@ -130,6 +138,9 @@ export default async function BlogPostPage({ params }: PageProps) {
           <TableOfContents headings={headings} />
 
           <MDXContent content={post.content} />
+
+          <AuthorCard />
+          <RelatedPosts posts={allPosts} currentSlug={slug} />
 
           <footer className="mt-16 pt-8 border-t border-border/50">
             <Link
