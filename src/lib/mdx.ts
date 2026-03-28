@@ -25,6 +25,7 @@ export interface BlogPost {
   readingTime: string;
   content: string;
   isDraft?: boolean;
+  aiGenerated?: boolean;
 }
 
 export interface BlogPostMeta {
@@ -37,6 +38,7 @@ export interface BlogPostMeta {
   readingTime: string;
   badge?: string;
   isDraft?: boolean;
+  aiGenerated?: boolean;
 }
 
 export function getAllPosts(includeDrafts = false): BlogPostMeta[] {
@@ -65,6 +67,7 @@ export function getAllPosts(includeDrafts = false): BlogPostMeta[] {
         readingTime: stats.text,
         badge: data.badge,
         isDraft: isDraftPost(data),
+        aiGenerated: !!data.aiGenerated,
       };
     })
     .filter((post) => includeDrafts || !post.isDraft)
@@ -103,6 +106,7 @@ export function getPostBySlug(slug: string, includeDrafts = false): BlogPost | n
     readingTime: stats.text,
     content,
     isDraft: draft,
+    aiGenerated: !!data.aiGenerated,
   };
 }
 

@@ -12,7 +12,7 @@ import RelatedPosts from "@/components/blog/RelatedPosts";
 import { extractHeadings } from "@/lib/toc";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, Calendar, Clock } from "lucide-react";
+import { ArrowLeft, Calendar, Clock, Bot } from "lucide-react";
 import { Metadata } from "next";
 
 interface PageProps {
@@ -134,6 +134,15 @@ export default async function BlogPostPage({ params }: PageProps) {
                 className="object-cover"
                 priority
               />
+            </div>
+          )}
+
+          {post.aiGenerated && (
+            <div className="mb-6 px-4 py-3 rounded-xl border border-blue-500/20 bg-blue-500/5 flex items-center gap-3">
+              <Bot className="w-4 h-4 text-blue-400 shrink-0" />
+              <p className="text-sm text-blue-300/90">
+                Written with AI, verified and reviewed by a human.
+              </p>
             </div>
           )}
 

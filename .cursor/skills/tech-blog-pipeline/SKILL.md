@@ -89,10 +89,13 @@ publishedAt: "{today's date in YYYY-MM-DD}"
 image: "/{slug}.png"
 tags: [{tags}]
 badge: "draft"
+aiGenerated: true
 ---
 ```
 
 **CRITICAL**: Always include `badge: "draft"`. This prevents the post from showing on the live site until the user reviews and removes the badge.
+
+**CRITICAL**: Always include `aiGenerated: true`. This triggers a transparency banner on the blog post page ("Written with AI, verified and reviewed by a human"). This is a non-negotiable transparency requirement for all AI-generated content.
 
 ### Step 5: Confirm & Provide Review Instructions
 
