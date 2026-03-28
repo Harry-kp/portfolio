@@ -136,7 +136,7 @@ export default function MDXContent({ content }: MDXContentProps) {
               <img
                 src={src}
                 alt={alt || ""}
-                className="rounded-xl max-w-full h-auto mx-auto"
+                className="rounded-xl w-full h-auto"
               />
               {alt && (
                 <span className="block text-center text-sm text-text-secondary mt-3">

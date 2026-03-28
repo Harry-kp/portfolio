@@ -2,30 +2,50 @@
 
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Eye, EyeOff } from "lucide-react";
 import ArticleCard from "@/components/blog/ArticleCard";
 import type { BlogPostMeta } from "@/lib/mdx";
 
-export default function BlogFilters({ posts }: { posts: BlogPostMeta[] }) {
+interface BlogFiltersProps {
+  posts: BlogPostMeta[];
+  draftPosts?: BlogPostMeta[];
+}
+
+export default function BlogFilters({ posts, draftPosts = [] }: BlogFiltersProps) {
   const [activeTag, setActiveTag] = useState<string | null>(null);
+  const [showDrafts, setShowDrafts] = useState(false);
+
+  const hasDrafts = draftPosts.length > 0;
+
+  const allPosts = useMemo(() => {
+    if (!showDrafts) return posts;
+    const drafts = draftPosts.filter(
+      (d) => !posts.some((p) => p.slug === d.slug)
+    );
+    return [...posts, ...drafts].sort((a, b) => {
+      if (!a.publishedAt || !b.publishedAt) return 0;
+      return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
+    });
+  }, [posts, draftPosts, showDrafts]);
 
   const allTags = useMemo(() => {
     const tagCount = new Map<string, number>();
-    posts.forEach((p) =>
+    allPosts.forEach((p) =>
       p.tags?.forEach((t) => tagCount.set(t, (tagCount.get(t) || 0) + 1))
     );
     return [...tagCount.entries()]
       .sort((a, b) => b[1] - a[1])
       .map(([tag]) => tag);
-  }, [posts]);
+  }, [allPosts]);
 
   const filtered = activeTag
-    ? posts.filter((p) => p.tags?.includes(activeTag))
-    : posts;
+    ? allPosts.filter((p) => p.tags?.includes(activeTag))
+    : allPosts;
   const [featured, ...rest] = filtered;
 
   return (
     <>
-      <div className="flex flex-wrap gap-2 mb-12">
+      <div className="flex flex-wrap items-center gap-2 mb-12">
         <button
           onClick={() => setActiveTag(null)}
           className={`px-3 py-1.5 text-xs font-mono rounded-full border transition-colors ${
@@ -49,6 +69,23 @@ export default function BlogFilters({ posts }: { posts: BlogPostMeta[] }) {
             {tag}
           </button>
         ))}
+
+        {hasDrafts && (
+          <>
+            <span className="w-px h-5 bg-border mx-1" />
+            <button
+              onClick={() => setShowDrafts(!showDrafts)}
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono rounded-full border transition-colors ${
+                showDrafts
+                  ? "border-amber-500/60 bg-amber-500/10 text-amber-400"
+                  : "border-border text-text-secondary hover:border-amber-500/40 hover:text-amber-400"
+              }`}
+            >
+              {showDrafts ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
+              Drafts ({draftPosts.length})
+            </button>
+          </>
+        )}
       </div>
 
       {filtered.length > 0 ? (

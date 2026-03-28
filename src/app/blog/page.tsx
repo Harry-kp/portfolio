@@ -1,4 +1,4 @@
-import { getAllPosts } from "@/lib/mdx";
+import { getAllPosts, isDev } from "@/lib/mdx";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import AnimatedBackground from "@/components/AnimatedBackground";
@@ -13,6 +13,7 @@ export const metadata: Metadata = {
 
 export default function BlogPage() {
   const posts = getAllPosts();
+  const draftPosts = isDev ? getAllPosts(true).filter((p) => p.isDraft) : [];
 
   return (
     <>
@@ -33,7 +34,7 @@ export default function BlogPage() {
             </p>
           </div>
 
-          <BlogFilters posts={posts} />
+          <BlogFilters posts={posts} draftPosts={draftPosts} />
         </div>
       </main>
       <Footer />

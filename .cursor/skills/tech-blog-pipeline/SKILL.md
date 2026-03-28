@@ -24,14 +24,18 @@ Read the skill at `~/.cursor/skills/staff-engineer-deep-dive/SKILL.md` and follo
 
 Transform the deep-dive output into MDX. The content stays at maximum depth — only the formatting changes.
 
-1. **Title**: Convert the question into a definitive technical title. Not clickbait — authority.
-   - Question: "what is erasure coding" → Title: "Erasure Coding — Reed-Solomon over GF(2^8), Repair Bandwidth, and Why Facebook Ditched Replication"
-   - Question: "how does S3 presigned URL work" → Title: "S3 Presigned URLs — HMAC-SHA256 Signature Chains, Clock Skew, and the Complete Threat Model"
-   - The title should signal to a staff engineer: "this post has the details I actually need."
+1. **Title**: Simple and direct — like an interviewer asking a question. The reader should instantly know the topic. No jargon-packed subtitles, no "— The Complete Guide" suffixes.
+   - Good: "How S3 Presigned URLs Work"
+   - Good: "Erasure Coding in Distributed Storage"
+   - Good: "Redlock — Distributed Lock Manager"
+   - Bad: "S3 Presigned URLs — HMAC-SHA256 Signature Chains, Clock Skew, and the Complete Threat Model" (too long, too dense for a title)
+   - Bad: "Everything You Need to Know About Erasure Coding" (clickbait)
+   - The depth belongs in the body, not the title. Keep it 3-8 words.
 
-2. **Summary**: One sentence that names the specific technical concepts covered. Not a marketing hook — a technical abstract.
-   - Good: "Galois Field arithmetic, Vandermonde vs Cauchy matrices, ISA-L SIMD encoding at 40 GB/s, tail latency amplification, and the repair bandwidth problem that led to Local Reconstruction Codes."
-   - Bad: "A deep dive into erasure coding for distributed storage."
+2. **Summary**: One plain sentence explaining what the post covers — like how you'd describe it to a colleague. Not a list of jargon, not a marketing hook.
+   - Good: "How S3 lets browsers upload files directly without proxying through your server, and the HMAC signature chain that makes it secure."
+   - Good: "How distributed systems survive disk failures using math instead of replication."
+   - Bad: "Galois Field arithmetic, Vandermonde vs Cauchy matrices, ISA-L SIMD encoding at 40 GB/s..." (reads like a keyword dump, not a summary)
 
 3. **Tags**: Pick 2-5 relevant tags. Use existing tag conventions from the portfolio:
    - `"Distributed Systems"`, `"Database Transactions"`, `"Networking"`, `"Redis"`, `"System Design"`
@@ -42,7 +46,7 @@ Transform the deep-dive output into MDX. The content stays at maximum depth — 
    - Use markdown headers (`##`, `###`) for sections.
    - Code blocks with language hints (```c, ```python, ```sql, ```bash, etc.) for EVERY code/protocol/config snippet.
    - Tables for EVERY comparison between alternatives — quantified, not qualitative.
-   - ASCII sequence diagrams for multi-party protocol flows.
+   - Excalidraw diagrams (MANDATORY) for every visual — flows, architecture, sequences, comparisons. No ASCII art, no mermaid. See Step 3.5.
    - Use `<details><summary>` for tangential deep dives that support the main argument but would break flow (matches existing blog style).
    - Cite papers, RFCs, source code paths. If you reference how Linux handles fsync, cite the kernel path. If you reference a Google paper, cite the section number.
    - **NO FILLER**: No "Let's explore...", no "In this post, we'll...", no "As we all know...". Start the body with the first technical fact. End with the last insight. Zero ceremony.
@@ -56,6 +60,17 @@ Use the `GenerateImage` tool to create a hero image:
 - **Size**: Landscape orientation, suitable for blog hero (will be displayed at ~1200x630)
 - **Filename**: Match the slug, e.g., `erasure-coding.png`
 - **Save to**: `/Users/harrykp/Documents/portfolio/public/{slug}.png`
+
+### Step 3.5: Create Excalidraw Diagrams
+
+**Every blog post MUST have at least one Excalidraw diagram.** Use Excalidraw for ALL visual content — sequence diagrams, architecture visuals, flowcharts, protocol flows, comparison diagrams. Never use ASCII art, mermaid, or plain-text diagrams in blog posts.
+
+**Read and follow the `excalidraw-diagram` skill** at `~/.cursor/skills/excalidraw-diagram/SKILL.md` (or `.cursor/skills/excalidraw-diagram/SKILL.md` in the portfolio repo). It handles the full pipeline: MCP design, Whiteboard Marker theme, `.excalidraw` source, Kroki SVG export.
+
+**Blog-specific paths:**
+- Source files: `content/diagrams/{slug}.excalidraw` (not public, not served)
+- Display files: `public/diagrams/{slug}.svg` (only SVGs in this directory)
+- Embed in MDX as: `![Description](/diagrams/{slug}.svg)`
 
 ### Step 4: Write the MDX File
 
@@ -84,10 +99,14 @@ badge: "draft"
 After creating the file, tell the user:
 
 1. The file path created
-2. The image path created  
-3. How to preview: `cd /Users/harrykp/Documents/portfolio && npm run dev` then visit `http://localhost:3000/blog/{slug}`
-4. Note: The post won't appear in the blog listing because it's in draft. To view it directly, navigate to the URL.
-5. To publish: Remove the `badge: "draft"` line from the frontmatter.
+2. The hero image path created
+3. The Excalidraw diagram assets created (all automated):
+   - `.excalidraw` source file (for future editing in excalidraw.com)
+   - `.svg` display file (embedded in the blog)
+   - `.png` fallback file (for social sharing / fallback)
+4. How to preview: `cd /Users/harrykp/Documents/portfolio && npm run dev` then visit `http://localhost:3000/blog/{slug}`
+5. Note: The post won't appear in the blog listing because it's in draft. To view it directly, navigate to the URL.
+6. To publish: Remove the `badge: "draft"` line from the frontmatter.
 
 ## Important Rules
 

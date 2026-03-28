@@ -1,4 +1,4 @@
-import { getPostBySlug, getAllSlugs, getAllPosts } from "@/lib/mdx";
+import { getPostBySlug, getAllSlugs, getAllPosts, isDev } from "@/lib/mdx";
 import { notFound } from "next/navigation";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -20,7 +20,7 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  const slugs = getAllSlugs();
+  const slugs = getAllSlugs(isDev);
   return slugs.map((slug) => ({ slug }));
 }
 
@@ -28,7 +28,7 @@ export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const post = getPostBySlug(slug, isDev);
 
   if (!post) {
     return { title: "Post Not Found" };
@@ -47,7 +47,7 @@ export async function generateMetadata({
 
 export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const post = getPostBySlug(slug, isDev);
 
   if (!post) {
     notFound();
@@ -72,6 +72,16 @@ export default async function BlogPostPage({ params }: PageProps) {
       <ReadingProgress />
       <main className="min-h-screen pt-28 pb-16 px-6">
         <article className="max-w-3xl mx-auto">
+          {post.isDraft && (
+            <div className="mb-6 px-4 py-3 rounded-xl border border-amber-500/30 bg-amber-500/5">
+              <p className="text-sm text-amber-400 font-mono">
+                Draft — This post is not visible on the published site. Remove{" "}
+                <code className="px-1.5 py-0.5 rounded bg-amber-500/10 text-xs">badge: &quot;draft&quot;</code>{" "}
+                from frontmatter to publish.
+              </p>
+            </div>
+          )}
+
           <div className="mb-12">
             <Link
               href="/blog"

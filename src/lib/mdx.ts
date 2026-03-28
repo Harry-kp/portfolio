@@ -4,6 +4,16 @@ import matter from "gray-matter";
 import readingTime from "reading-time";
 
 const contentDirectory = path.join(process.cwd(), "content");
+const isDev = process.env.NODE_ENV === "development";
+
+function isDraftPost(data: Record<string, unknown>): boolean {
+  const badge = data.badge as string | undefined;
+  const tags = data.tags as string[] | undefined;
+  return (
+    !!badge?.toLowerCase().includes("draft") ||
+    !!tags?.some((t) => t.toLowerCase() === "draft")
+  );
+}
 
 export interface BlogPost {
   slug: string;
@@ -14,6 +24,7 @@ export interface BlogPost {
   tags?: string[];
   readingTime: string;
   content: string;
+  isDraft?: boolean;
 }
 
 export interface BlogPostMeta {
@@ -25,15 +36,16 @@ export interface BlogPostMeta {
   tags?: string[];
   readingTime: string;
   badge?: string;
+  isDraft?: boolean;
 }
 
-export function getAllPosts(): BlogPostMeta[] {
+export function getAllPosts(includeDrafts = false): BlogPostMeta[] {
   if (!fs.existsSync(contentDirectory)) {
     return [];
   }
 
   const files = fs.readdirSync(contentDirectory);
-  
+
   const posts = files
     .filter((file) => file.endsWith(".mdx"))
     .map((file) => {
@@ -52,14 +64,10 @@ export function getAllPosts(): BlogPostMeta[] {
         tags: data.tags || [],
         readingTime: stats.text,
         badge: data.badge,
+        isDraft: isDraftPost(data),
       };
     })
-    .filter((post) => {
-      const isDraft =
-        post.badge?.toLowerCase().includes("draft") ||
-        post.tags?.some((t: string) => t.toLowerCase() === "draft");
-      return !isDraft;
-    })
+    .filter((post) => includeDrafts || !post.isDraft)
     .sort((a, b) => {
       if (!a.publishedAt || !b.publishedAt) return 0;
       return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
@@ -68,9 +76,9 @@ export function getAllPosts(): BlogPostMeta[] {
   return posts;
 }
 
-export function getPostBySlug(slug: string): BlogPost | null {
+export function getPostBySlug(slug: string, includeDrafts = false): BlogPost | null {
   const filePath = path.join(contentDirectory, `${slug}.mdx`);
-  
+
   if (!fs.existsSync(filePath)) {
     return null;
   }
@@ -78,10 +86,8 @@ export function getPostBySlug(slug: string): BlogPost | null {
   const fileContent = fs.readFileSync(filePath, "utf-8");
   const { data, content } = matter(fileContent);
 
-  const isDraft =
-    data.badge?.toLowerCase().includes("draft") ||
-    data.tags?.some((t: string) => t.toLowerCase() === "draft");
-  if (isDraft) {
+  const draft = isDraftPost(data);
+  if (draft && !includeDrafts) {
     return null;
   }
 
@@ -96,10 +102,11 @@ export function getPostBySlug(slug: string): BlogPost | null {
     tags: data.tags || [],
     readingTime: stats.text,
     content,
+    isDraft: draft,
   };
 }
 
-export function getAllSlugs(): string[] {
+export function getAllSlugs(includeDrafts = false): string[] {
   if (!fs.existsSync(contentDirectory)) {
     return [];
   }
@@ -108,14 +115,14 @@ export function getAllSlugs(): string[] {
     .readdirSync(contentDirectory)
     .filter((file) => file.endsWith(".mdx"))
     .filter((file) => {
+      if (includeDrafts) return true;
       const filePath = path.join(contentDirectory, file);
       const fileContent = fs.readFileSync(filePath, "utf-8");
       const { data } = matter(fileContent);
-      const isDraft =
-        data.badge?.toLowerCase().includes("draft") ||
-        data.tags?.some((t: string) => t.toLowerCase() === "draft");
-      return !isDraft;
+      return !isDraftPost(data);
     })
     .map((file) => file.replace(".mdx", ""));
 }
+
+export { isDev };
 
