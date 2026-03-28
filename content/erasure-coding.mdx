@@ -233,7 +233,7 @@ Encoding is the critical hot path — every write must encode before acknowledgi
 
 **Why ISA-L is fast**: Cauchy matrices reduce all GF(2^8) multiplications to XOR operations. XOR is SIMD-friendly — AVX-512 processes 64 bytes per instruction. For RS(10,4), encoding one stripe requires ~40 XOR passes on 512-bit vectors:
 
-```
+```text
 Encoding rate = (512 bits/XOR * effective_clock) / (XOR_passes * bits_per_chunk)
              ~= 40+ GB/s on a single Xeon core with AVX-512
 ```
@@ -318,7 +318,7 @@ If fragment A is silently corrupted and the corruption isn't detected before fra
 
 Standard RS requires reading **k fragments from k different nodes** for ANY reconstruction — even a single fragment loss. LRC (Huang et al., USENIX ATC 2012) organizes fragments into local groups, each with its own local parity:
 
-```
+```text
 Global:        [D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 D10 D11 | GP0 GP1]
                                                            ^-- global parity
 
@@ -352,7 +352,7 @@ RS codes operate on **stripes** — each stripe is k chunks of size S. The chunk
 
 Most teams monitor disk failures. Few monitor **reconstruction queue depth** — how many objects are waiting to be reconstructed.
 
-```
+```text
 Time to vulnerability = (queue_depth * avg_reconstruction_time) / parallelism
 ```
 

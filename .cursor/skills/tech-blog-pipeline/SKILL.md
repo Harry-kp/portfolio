@@ -44,7 +44,7 @@ Transform the deep-dive output into MDX. The content stays at maximum depth — 
 4. **Body requirements — NON-NEGOTIABLE**:
    - The blog body IS the staff-engineer deep dive. Do not water it down for "readability."
    - Use markdown headers (`##`, `###`) for sections.
-   - Code blocks with language hints (```c, ```python, ```sql, ```bash, etc.) for EVERY code/protocol/config snippet.
+   - Code blocks with language hints (` ```c `, ` ```python `, ` ```sql `, ` ```bash `, ` ```text `, etc.) for EVERY code block. **NEVER use untagged code fences** (bare ` ``` ` without a language). The blog's MDX renderer treats untagged code blocks as inline code, collapsing all lines into a single line. Use ` ```text ` for data layouts, formulas, and pseudocode that aren't a specific programming language.
    - Tables for EVERY comparison between alternatives — quantified, not qualitative.
    - Excalidraw diagrams (MANDATORY) for every visual — flows, architecture, sequences, comparisons. No ASCII art, no mermaid. See Step 3.5.
    - Use `<details><summary>` for tangential deep dives that support the main argument but would break flow (matches existing blog style).
