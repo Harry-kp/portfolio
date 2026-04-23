@@ -1,0 +1,117 @@
+---
+title: "I Reverse-Engineered UPPCL's API Because I Was Tired of Guessing My Electricity Balance"
+summary: "How I built a self-hosted analytics dashboard for UPPCL SMART prepaid meters — cracking encrypted APIs, running on a Raspberry Pi Zero 2, and finally answering 'will my balance last till Friday?'"
+publishedAt: "2026-04-24"
+image: "https://raw.githubusercontent.com/Harry-kp/uppcl-pro/main/docs/screenshots/home-dark.png"
+tags: ["Python", "FastAPI", "Next.js", "Reverse Engineering", "Self-hosted", "Raspberry Pi"]
+---
+
+> "How much balance do I have left?" — Me, every night, opening the UPPCL SMART app, squinting at a number with no context whatsoever.
+
+## The Problem
+
+I have a UPPCL SMART prepaid electricity meter. For the uninitiated — it's a prepaid meter installed by UPPCL (Uttar Pradesh Power Corporation Limited) across UP, running on Jio's infrastructure. You recharge it like a phone. When it hits zero, your power cuts off.
+
+The official app shows you a balance. That's it.
+
+No trend. No forecast. No "hey, at your current consumption rate you'll run out in 3 days." Just a number. A lonely, contextless number sitting there while you try to mentally calculate whether ₹800 is enough to survive the weekend with the AC running.
+
+I wanted to know:
+- *Will my balance last till Friday?*
+- *Did yesterday's spike come from the AC or was it a slab crossing?*
+- *What's my real per-unit rate after FPPA, duty, and subsidy?*
+- *How long did my last ₹2,000 recharge actually last?*
+- *Which day of the week do we use the most power?*
+
+The app answers none of these. So I did what any reasonable engineer does — I opened Wireshark and started sniffing traffic.
+
+## Down the Rabbit Hole: Reverse Engineering the API
+
+The UPPCL SMART app talks to `uppcl.sem.jio.com`. Simple enough. Except it wasn't.
+
+**Layer 1: ALTCHA Proof-of-Work**
+
+Every request is gated behind an ALTCHA challenge — a proof-of-work mechanism where the client has to compute a SHA-256 hash that satisfies a difficulty target before the server will respond. It's designed to slow down automated scraping. I had to implement a solver that brute-forces the nonce in Python before every request batch.
+
+**Layer 2: RSA-OAEP + AES-256-GCM Envelope Encryption**
+
+The request payload isn't plain JSON. It's wrapped in a two-layer encryption envelope:
+1. A random AES-256-GCM session key encrypts the actual payload
+2. That session key is then encrypted with the server's RSA-OAEP public key
+3. Both are bundled together and sent as a single encrypted blob
+
+The response comes back the same way — AES-256-GCM encrypted, with the IV prepended. Every. Single. Request.
+
+**Layer 3: 60-Day JWT Auth**
+
+Login returns a JWT that expires every 60 days. Fine — but the login flow itself goes through the encryption pipeline above, so you can't even authenticate without cracking layers 1 and 2 first.
+
+Once I had all three layers working, the API opened up like a book. 23 endpoints. Daily consumption, monthly bills, recharge history, balance queries, complaint status — all of it sitting there, perfectly structured, just waiting to be visualized.
+
+## Building the Dashboard
+
+I built two things:
+
+**A FastAPI proxy** running on `:8000` that handles all the crypto ugliness. It takes plain JSON requests from the dashboard and does the ALTCHA + RSA-OAEP + AES-GCM dance transparently. Your credentials never leave your machine.
+
+**A Next.js 16 dashboard** running on `:3000` with Tailwind v4 and SWR. Dark-first, keyboard-driven (full command palette with `⌘K`, page shortcuts with `g h/u/b/r/m`), and dense — I wanted every pixel to earn its place.
+
+![UPPCL Pro dashboard — home view](https://raw.githubusercontent.com/Harry-kp/uppcl-pro/main/docs/screenshots/home-dark.png)
+
+The features I'm most proud of:
+
+**Runway Forecast** — A fitness-ring gauge showing how many days your current balance will last at your historical burn rate, with an ETA date. This is the one thing I always wanted from the app.
+
+**Anomaly Detection** — Flags days where consumption is more than 1.5σ above your 30-day average, with a side panel explaining the math. Great for catching the day you left the geyser on accidentally.
+
+**Recharge Sweet-Spot** — Interactive sliders that recommend the optimal recharge amount and frequency based on your historical consumption to hit a target runway. Surprisingly useful.
+
+**Cost Breakdown** — Effective ₹/unit trend, stacked charge composition (energy / fixed / duty / FPPA / subsidy / rebate), tariff slab usage. Finally understand what you're actually paying for.
+
+**1912 Complaint History** — Live status of every complaint you've filed, with the full JE/AE/XEN officer chain and one-tap call buttons. One-click "Report outage" with pre-filled complaint text.
+
+## Running on a Raspberry Pi Zero 2
+
+The whole stack — FastAPI proxy + Next.js dashboard — runs comfortably on a Raspberry Pi Zero 2 W. 512 MB RAM, $15 board, always-on, always available on your home network.
+
+The proxy idles at ~30 MB RAM. The dashboard serves static exports, so once built, the Pi is just serving files. Total power draw: under 1W.
+
+Setup is three commands:
+
+```bash
+git clone https://github.com/Harry-kp/uppcl-pro.git
+cd uppcl-pro
+make setup && make dev
+```
+
+## Zero Hardcoded Values
+
+One thing I'm genuinely proud of: there is nothing hardcoded per user. No `connectionId`, no `deviceId`, no `tenantId`. Everything is discovered at runtime via the `/site/search` endpoint using your credentials.
+
+This means — in theory — all five UPPCL DISCOMs should work:
+
+| DISCOM | Region | Status |
+|---|---|---|
+| **PVVNL** | West UP | ✅ Tested end-to-end |
+| MVVNL | Central UP | 🟡 Same API, needs verification |
+| PuVVNL | East UP | 🟡 Same API, needs verification |
+| DVVNL | South UP | 🟡 Same API, needs verification |
+| KESCo | Kanpur | 🟡 Same API, needs verification |
+
+If you're on one of the unverified DISCOMs, I've opened [GitHub issues for each one](https://github.com/Harry-kp/uppcl-pro/issues) — drop a comment with your results and I'll mark it verified.
+
+## What's Next
+
+A few things on the roadmap:
+- **Tariff change alerts** — notify when UPPCL revises slabs or FPPA rates
+- **Low balance push notifications** via ntfy or Telegram
+- **Multi-connection support** — for people managing meters at multiple properties
+- **Home Assistant integration** — expose balance and consumption as HA sensors
+
+## Try It
+
+The project is open source under MIT: **[github.com/Harry-kp/uppcl-pro](https://github.com/Harry-kp/uppcl-pro)**
+
+If you have a UPPCL SMART prepaid meter and have been squinting at that balance number wondering what it actually means — this is for you.
+
+And if you're on MVVNL, PuVVNL, DVVNL, or KESCo and try it out, please [file an issue](https://github.com/Harry-kp/uppcl-pro/issues) with your results. It would mean a lot.
