@@ -220,6 +220,21 @@ export const DATA: Data = {
         "https://raw.githubusercontent.com/Harry-kp/mercury/master/website/static/img/screenshot.png",
     },
     {
+      title: "UPPCL Pro",
+      href: "https://github.com/Harry-kp/uppcl-pro",
+      dates: "Apr 2026 - Present",
+      active: true,
+      description:
+        "Self-hosted analytics dashboard for UPPCL SMART prepaid electricity meters — reverse-engineered FastAPI proxy handling ALTCHA proof-of-work, RSA-OAEP + AES-256-GCM encryption, and 60-day JWT auth. Features runway forecasting, anomaly detection, cost breakdown, and 1912 complaint tracking. Runs on a Raspberry Pi Zero 2.",
+      technologies: ["Python", "FastAPI", "Next.js", "Tailwind CSS", "Raspberry Pi"],
+      links: [
+        { type: "GitHub", href: "https://github.com/Harry-kp/uppcl-pro" },
+        { type: "Website", href: "https://harry-kp.github.io/uppcl-pro/" },
+      ],
+      video:
+        "https://raw.githubusercontent.com/Harry-kp/uppcl-pro/main/docs/screenshots/home-dark.png",
+    },
+    {
       title: "Nebula",
       href: "https://github.com/Harry-kp/nebula",
       dates: "Aug 2024",
