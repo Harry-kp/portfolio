@@ -4,10 +4,10 @@ import { motion } from "framer-motion";
 import { Target, Briefcase, MapPin, Zap } from "lucide-react";
 
 const TARGET_ROLES = [
-  "Senior/Staff Backend Engineer",
-  "AI/ML Infrastructure Engineer",
+  "Backend Engineer — AI / LLM",
+  "Senior Backend Engineer",
   "Distributed Systems Engineer",
-  "Platform Engineer",
+  "Developer Tooling / Platform Engineer",
 ];
 
 const PREFERENCES = [
@@ -23,8 +23,8 @@ const PREFERENCES = [
   },
   {
     icon: Zap,
-    title: "Focus Areas",
-    items: ["AI/LLM infrastructure", "Developer tooling", "Distributed systems"],
+    title: "Company Stage",
+    items: ["Series A – C startup", "Product-led company", "Relocation support welcome"],
   },
 ];
 
