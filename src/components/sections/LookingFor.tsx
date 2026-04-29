@@ -14,12 +14,12 @@ const PREFERENCES = [
   {
     icon: Briefcase,
     title: "Work Style",
-    items: ["Remote-first", "Hybrid acceptable", "US timezone friendly"],
+    items: ["Remote-first", "Hybrid (EU / India)", "EU timezone overlap"],
   },
   {
     icon: MapPin,
     title: "Location",
-    items: ["US-based startups", "FAANG/MANGA", "Remote-first companies"],
+    items: ["Germany · Netherlands", "India (Bangalore / Mumbai)", "EU remote-first"],
   },
   {
     icon: Zap,
@@ -123,9 +123,12 @@ export default function LookingFor() {
         >
           <p className="text-text-secondary">
             Actively exploring opportunities for{" "}
-            <span className="text-accent font-medium">Q2 2026</span>. Open to
-            discussing roles that align with my expertise in Rust, Go, and AI
-            infrastructure.
+            <span className="text-accent font-medium">Q2–Q3 2026</span>. Open to
+            roles in{" "}
+            <span className="text-accent font-medium">Germany, Netherlands</span>{" "}
+            (EU Blue Card) or{" "}
+            <span className="text-accent font-medium">India</span> that align
+            with my expertise in Rust, Go, and AI infrastructure.
           </p>
         </motion.div>
       </div>

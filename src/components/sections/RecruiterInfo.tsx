@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Globe, Clock, FileText, DollarSign, Code, AlertCircle } from "lucide-react";
+import { Globe, Clock, FileText, DollarSign, Code, BadgeCheck } from "lucide-react";
 import { DATA } from "@/data/resume";
 
 export default function RecruiterInfo() {
@@ -14,13 +14,13 @@ export default function RecruiterInfo() {
     {
       icon: Clock,
       label: "Work Hours",
-      value: "Flexible for US/UK timezone overlap",
+      value: "Flexible for EU (CET/CEST) & IST overlap",
     },
     {
-      icon: AlertCircle,
+      icon: BadgeCheck,
       label: "Work Authorization",
-      value: `${DATA.recruiter.workAuth}${DATA.recruiter.visaRequired ? " • Requires visa sponsorship" : ""}`,
-      highlight: true,
+      value: `${DATA.recruiter.workAuth} · EU Blue Card eligible (DE/NL) · India local hire`,
+      highlight: false,
     },
     {
       icon: DollarSign,

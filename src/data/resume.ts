@@ -166,10 +166,10 @@ export const DATA: Data = {
     },
   ],
   recruiter: {
-    timezone: "Mumbai, India (IST/UTC+5:30)",
+    timezone: "Mumbai, India · Open to EU relocation",
     workAuth: "Indian Citizen",
     visaRequired: true,
-    salary: "$150-180k USD",
+    salary: "Competitive — let's discuss",
     leetcode: "https://leetcode.com/u/Harrykp/",
     leetcodeProblems: 700,
   },
