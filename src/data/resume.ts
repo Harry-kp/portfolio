@@ -94,6 +94,9 @@ export const DATA: Data = {
     "LLM Pipelines",
     "Prompt Engineering",
     "VertexAI",
+    "LangChain",
+    "LangGraph",
+    "Langfuse",
   ],
   contact: {
     email: "chaudharyharshit9@gmail.com",

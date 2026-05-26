@@ -12,7 +12,7 @@ const SKILL_CATEGORIES = [
   {
     title: "AI/ML",
     icon: Brain,
-    skills: ["LLM Pipelines", "Prompt Engineering", "VertexAI"],
+    skills: ["LLM Pipelines", "Prompt Engineering", "VertexAI", "LangChain", "LangGraph", "Langfuse"],
   },
   {
     title: "Infrastructure",
