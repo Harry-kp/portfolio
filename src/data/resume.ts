@@ -69,7 +69,7 @@ export const DATA: Data = {
     "Backend engineer building AI accessibility agents at BrowserStack covering 40+ WCAG criteria. I ship open-source tools in Rust and Go, contribute to Grafana Tempo, Maybe Finance & Lima VM, and have solved 700+ problems on LeetCode.",
   resumeUrl: "/resume.pdf",
   summary:
-    "Backend Software Engineer at BrowserStack, architecting AI accessibility agents covering 40+ WCAG criteria across web, mobile, and design. Previously led ERP integrations and core platform development at Procol. Passionate about distributed systems, infrastructure automation, and developer tooling. Open-source contributor to Grafana Tempo, Maybe Finance, Lima VM, and RubyForGood with 12 merged PRs across 8 repos. Creator of Vortix (395+ GitHub stars) and AFK — developer tools built in Rust and Tauri.",
+    "Backend Software Engineer at BrowserStack, architecting AI accessibility agents covering 40+ WCAG criteria across web, mobile, and design. Previously led ERP integrations and core platform development at Procol. Passionate about distributed systems, infrastructure automation, and developer tooling. Open-source contributor to Grafana Tempo, Maybe Finance, Lima VM, and RubyForGood with 12 merged PRs across 8 repos. Creator of Vortix (395+ GitHub stars) and AFK - developer tools built in Rust and Tauri.",
   avatarUrl: "/me.jpg",
   skills: [
     "Go",
@@ -126,12 +126,12 @@ export const DATA: Data = {
       badges: ["AI"],
       href: "https://www.browserstack.com/",
       location: "Mumbai, India",
-      title: "Software Engineer — Backend (AI)",
+      title: "Software Engineer - Backend (AI)",
       logoUrl: "/bstack.png",
       start: "Dec 2024",
       end: "Present",
       description:
-        "Architected and built BrowserStack's AI accessibility agents — Issue Detection, Remediation, and Design A11y Color Contrast Agent on the Spectra™ rule engine, covering 40+ WCAG criteria across web, mobile, and design. Designed multi-model LLM inference pipelines (Gemini, GPT-4, Claude) with semantic DOM chunking, achieving 87.69% heading detection accuracy. Built App A11y Issue Detection Agent, reducing false-positives by 64% and cutting P90 latency from 20s to 10.1s. Led TestOps observability integration across 7 AI features with Redis-based phased rollout and K8s Kafka consumers with auto-scaling.",
+        "Architected and built BrowserStack's AI accessibility agents - Issue Detection, Remediation, and Design A11y Color Contrast Agent on the Spectra™ rule engine, covering 40+ WCAG criteria across web, mobile, and design. Designed multi-model LLM inference pipelines (Gemini, GPT-4, Claude) with semantic DOM chunking, achieving 87.69% heading detection accuracy. Built App A11y Issue Detection Agent, reducing false-positives by 64% and cutting P90 latency from 20s to 10.1s. Led TestOps observability integration across 7 AI features with Redis-based phased rollout and K8s Kafka consumers with auto-scaling.",
     },
     {
       company: "Procol",
@@ -172,7 +172,7 @@ export const DATA: Data = {
     timezone: "Mumbai, India · Open to EU relocation",
     workAuth: "Indian Citizen",
     visaRequired: true,
-    salary: "Competitive — let's discuss",
+    salary: "Competitive - let's discuss",
     leetcode: "https://leetcode.com/u/Harrykp/",
     leetcodeProblems: 700,
   },
@@ -183,7 +183,7 @@ export const DATA: Data = {
       dates: "Jan 2026 - Present",
       active: true,
       description:
-        "Terminal UI for WireGuard and OpenVPN — real-time throughput/latency monitoring, IPv6/DNS leak detection, kill switch, and geo-location tracking. 395+ GitHub stars, published on crates.io.",
+        "Terminal UI for WireGuard and OpenVPN - real-time throughput/latency monitoring, IPv6/DNS leak detection, kill switch, and geo-location tracking. 395+ GitHub stars, published on crates.io.",
       technologies: ["Rust", "Ratatui", "WireGuard", "OpenVPN"],
       links: [
         { type: "GitHub", href: "https://github.com/Harry-kp/vortix" },
@@ -198,7 +198,7 @@ export const DATA: Data = {
       dates: "Jan 2026 - Present",
       active: true,
       description:
-        "Break reminder for developers who forget to blink — follows the 20-20-20 rule with fullscreen reminders, statistics dashboard, health exercises, and global shortcuts. Under 5 MB, built with Tauri + Rust.",
+        "Break reminder for developers who forget to blink - follows the 20-20-20 rule with fullscreen reminders, statistics dashboard, health exercises, and global shortcuts. Under 5 MB, built with Tauri + Rust.",
       technologies: ["Rust", "Tauri", "React", "TypeScript", "Tailwind CSS"],
       links: [
         { type: "GitHub", href: "https://github.com/Harry-kp/afk" },
@@ -213,7 +213,7 @@ export const DATA: Data = {
       dates: "Feb 2026 - Present",
       active: true,
       description:
-        "A blazing-fast API client for purists — 5 MB binary, 50ms cold start (vs Postman's 300 MB / 3s). Keyboard-driven workflows, collection management, and environment variables. Zero Electron overhead.",
+        "A blazing-fast API client for purists - 5 MB binary, 50ms cold start (vs Postman's 300 MB / 3s). Keyboard-driven workflows, collection management, and environment variables. Zero Electron overhead.",
       technologies: ["Rust", "TUI", "HTTP", "REST"],
       links: [
         { type: "GitHub", href: "https://github.com/Harry-kp/mercury" },
@@ -228,7 +228,7 @@ export const DATA: Data = {
       dates: "Apr 2026 - Present",
       active: true,
       description:
-        "Self-hosted analytics dashboard for UPPCL SMART prepaid electricity meters — reverse-engineered FastAPI proxy handling ALTCHA proof-of-work, RSA-OAEP + AES-256-GCM encryption, and 60-day JWT auth. Features runway forecasting, anomaly detection, cost breakdown, and 1912 complaint tracking. Runs on a Raspberry Pi Zero 2.",
+        "Self-hosted analytics dashboard for UPPCL SMART prepaid electricity meters - reverse-engineered FastAPI proxy handling ALTCHA proof-of-work, RSA-OAEP + AES-256-GCM encryption, and 60-day JWT auth. Features runway forecasting, anomaly detection, cost breakdown, and 1912 complaint tracking. Runs on a Raspberry Pi Zero 2.",
       technologies: ["Python", "FastAPI", "Next.js", "Tailwind CSS", "Raspberry Pi"],
       links: [
         { type: "GitHub", href: "https://github.com/Harry-kp/uppcl-pro" },
@@ -243,7 +243,7 @@ export const DATA: Data = {
       dates: "Jun 2026 - Present",
       active: true,
       description:
-        "Multi-tenant approval workflows for Rails, as a mountable engine — an immutable Approval → Track → Step ledger, dynamic JSON-Logic routing, consensus (any / all / majority / N), sequential layers plus parallel scatter-gather, time-bound delegation, and a transactional outbox. Consensus-aware rejection, and SLA timeouts that never auto-approve (silence isn't consent). No Redis or Sidekiq required. Published on RubyGems.",
+        "Multi-tenant approval workflows for Rails, as a mountable engine - an immutable Approval → Track → Step ledger, dynamic JSON-Logic routing, consensus (any / all / majority / N), sequential layers plus parallel scatter-gather, time-bound delegation, and a transactional outbox. Consensus-aware rejection, and SLA timeouts that never auto-approve (silence isn't consent). No Redis or Sidekiq required. Published on RubyGems.",
       technologies: ["Ruby", "Rails", "PostgreSQL", "RubyGems"],
       links: [
         { type: "GitHub", href: "https://github.com/Harry-kp/approval_engine" },
@@ -257,7 +257,7 @@ export const DATA: Data = {
       dates: "May 2025 - Present",
       active: true,
       description:
-        "AI-powered career advancement platform — tracks achievements, generates data-driven performance reviews, and builds promotion cases. Uses OpenAI and Gemini for intelligent summarization with PostgreSQL-backed persistence.",
+        "AI-powered career advancement platform - tracks achievements, generates data-driven performance reviews, and builds promotion cases. Uses OpenAI and Gemini for intelligent summarization with PostgreSQL-backed persistence.",
       technologies: ["Next.js", "PostgreSQL", "OpenAI", "Gemini"],
       links: [
         { type: "GitHub", href: "https://github.com/Harry-kp/okayri" },
@@ -271,7 +271,7 @@ export const DATA: Data = {
       dates: "2025",
       active: true,
       description:
-        "Visual debugger for Google's A2A protocol — provides real-time tracing and visualization of inter-agent communication flows. Helps debug complex multi-agent orchestrations by capturing task lifecycle, message payloads, and agent state transitions.",
+        "Visual debugger for Google's A2A protocol - provides real-time tracing and visualization of inter-agent communication flows. Helps debug complex multi-agent orchestrations by capturing task lifecycle, message payloads, and agent state transitions.",
       technologies: ["Go", "A2A Protocol", "Agents", "Visualization"],
       links: [
         { type: "GitHub", href: "https://github.com/Harry-kp/a2a-trace" },
@@ -284,7 +284,7 @@ export const DATA: Data = {
       dates: "Feb 2024 - Apr 2024",
       active: true,
       description:
-        "Published Python package on PyPI — automates Chegg Expert workflows with session management, keyword-based question filtering, and structured data extraction. Installable via pip with a clean CLI interface.",
+        "Published Python package on PyPI - automates Chegg Expert workflows with session management, keyword-based question filtering, and structured data extraction. Installable via pip with a clean CLI interface.",
       technologies: ["Python", "PyPI", "REST API", "Automation"],
       links: [
         { type: "PyPI", href: "https://pypi.org/project/cheggpy/" },

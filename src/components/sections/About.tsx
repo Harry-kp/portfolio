@@ -20,7 +20,7 @@ const metrics: Metric[] = [
 const currentFocus = [
   "Building AI accessibility agents at BrowserStack (40+ WCAG criteria)",
   "Shipping developer tools in Rust (Vortix, Mercury, AFK)",
-  "Contributing to open source — Grafana Tempo, Maybe Finance, Lima VM",
+  "Contributing to open source - Grafana Tempo, Maybe Finance, Lima VM",
 ];
 
 function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {

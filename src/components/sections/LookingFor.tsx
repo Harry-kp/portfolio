@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Target, Briefcase, MapPin, Zap } from "lucide-react";
 
 const TARGET_ROLES = [
-  "Backend Engineer — AI / LLM",
+  "Backend Engineer - AI / LLM",
   "Senior Backend Engineer",
   "Distributed Systems Engineer",
   "Developer Tooling / Platform Engineer",

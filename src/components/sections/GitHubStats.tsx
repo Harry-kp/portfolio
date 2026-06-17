@@ -28,7 +28,7 @@ export default function GitHubStats({ stars, prs, contributions }: GitHubStatsPr
           <stat.icon className={`w-4 h-4 ${stat.color}`} />
           <div>
             <span className="text-lg font-bold text-text-primary">
-              {stat.value?.toLocaleString() ?? "—"}
+              {stat.value?.toLocaleString() ?? "-"}
             </span>
             <span className="text-xs text-text-secondary ml-1">{stat.label}</span>
           </div>

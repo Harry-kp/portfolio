@@ -75,7 +75,7 @@ export default async function BlogPostPage({ params }: PageProps) {
           {post.isDraft && (
             <div className="mb-6 px-4 py-3 rounded-xl border border-amber-500/30 bg-amber-500/5">
               <p className="text-sm text-amber-400 font-mono">
-                Draft — This post is not visible on the published site. Remove{" "}
+                Draft - This post is not visible on the published site. Remove{" "}
                 <code className="px-1.5 py-0.5 rounded bg-amber-500/10 text-xs">badge: &quot;draft&quot;</code>{" "}
                 from frontmatter to publish.
               </p>
