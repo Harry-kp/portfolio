@@ -238,15 +238,16 @@ export const DATA: Data = {
         "https://raw.githubusercontent.com/Harry-kp/uppcl-pro/main/docs/screenshots/home-dark.png",
     },
     {
-      title: "Nebula",
-      href: "https://github.com/Harry-kp/nebula",
-      dates: "Aug 2024",
+      title: "ApprovalEngine",
+      href: "https://github.com/Harry-kp/approval_engine",
+      dates: "Jun 2026 - Present",
       active: true,
       description:
-        "BitTorrent client built from scratch in Go — implements the full protocol: bencode parsing, HTTP tracker communication, peer handshakes, concurrent piece downloads across multiple peers, and SHA-1 integrity verification.",
-      technologies: ["Go", "BitTorrent", "Networking", "Concurrency"],
+        "Multi-tenant approval workflows for Rails, as a mountable engine — an immutable Approval → Track → Step ledger, dynamic JSON-Logic routing, consensus (any / all / majority / N), sequential layers plus parallel scatter-gather, time-bound delegation, and a transactional outbox. Consensus-aware rejection, and SLA timeouts that never auto-approve (silence isn't consent). No Redis or Sidekiq required. Published on RubyGems.",
+      technologies: ["Ruby", "Rails", "PostgreSQL", "RubyGems"],
       links: [
-        { type: "GitHub", href: "https://github.com/Harry-kp/nebula" },
+        { type: "GitHub", href: "https://github.com/Harry-kp/approval_engine" },
+        { type: "RubyGems", href: "https://rubygems.org/gems/approval_engine" },
       ],
       video: "",
     },
