@@ -22,7 +22,7 @@ tags: ["Distributed Systems", "Replication", "Multi Leader Replication"]
 
 - In a single-leader database, the second writer will either block and wait for the first write to complete, or abort the second write transaction, forcing the user to retry the write.
 - On the other hand, in a multi-leader setup, both writes are successful, and the conflict is only detected asynchronously at some later point in time. At that time, it may be too late to ask the user to resolve the conflict.
-- In principle, you could make the conflict detection synchronous—i.e., wait for the write to be replicated to all replicas before telling the user that the write was successful.
+- In principle, you could make the conflict detection synchronous-i.e., wait for the write to be replicated to all replicas before telling the user that the write was successful.
   - However, by doing so, you would lose the main advantage of multi-leader replication: allowing each replica to accept writes independently. If you want synchronous conflict detection, you might as well just use single-leader replication.
 
 ## Conflict avoidance
@@ -30,7 +30,7 @@ tags: ["Distributed Systems", "Replication", "Multi Leader Replication"]
 - The simplest strategy for dealing with conflicts is to avoid them: if the application can ensure that all writes for a particular record go through the same leader, then conflicts cannot occur. - - > Since many implementations of multi-leader replication handle conflicts quite poorly, avoiding conflicts is a frequently recommended approach
 - For example, in an application where a user can edit their own data, you can ensure that requests from a particular user are always routed to the same datacenter and use the leader in that datacenter for reading and writing.
   - Different users may have different “home” datacenters (perhaps picked based on geographic proximity to the user), but from any one user’s point of view the configuration is essentially single-leader.
-  - However, sometimes you might want to change the designated leader for a record— perhaps because one datacenter has failed and you need to reroute traffic to another datacenter, or perhaps because a user has moved to a different location and is now closer to a different datacenter.
+  - However, sometimes you might want to change the designated leader for a record- perhaps because one datacenter has failed and you need to reroute traffic to another datacenter, or perhaps because a user has moved to a different location and is now closer to a different datacenter.
   - In this situation, conflict avoidance breaks down, and you have to deal with the possibility of concurrent writes on different leaders.
 
 ## Converging toward a consistent state
@@ -49,7 +49,7 @@ tags: ["Distributed Systems", "Replication", "Multi Leader Replication"]
   - **If a timestamp is used, this technique is known as last write wins (LWW)**.
   - Although this approach is popular, it is dangerously prone to data loss.
 - Give each replica a unique ID, and let writes that originated at a higher numbered replica always take precedence over writes that originated at a lower numbered replica. This approach also implies data loss.
-- Somehow merge the values together—e.g., order them alphabetically and then concatenate them (in Figure the merged title might be something like “B/C”).
+- Somehow merge the values together-e.g., order them alphabetically and then concatenate them (in Figure the merged title might be something like “B/C”).
 - Record the conflict in an explicit data structure that preserves all information, and write application code that resolves the conflict at some later time (perhaps by prompting the user).
 
 ## Custom conflict resolution logic

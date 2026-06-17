@@ -1,5 +1,5 @@
 ---
-title: "Redlock — Distributed Lock Manager"
+title: "Redlock - Distributed Lock Manager"
 summary: "How the Redlock algorithm solves distributed locking across multiple Redis instances, its safety guarantees, and Martin Kleppmann's critique."
 publishedAt: "2025-08-08"
 image: "/redlock.jpg"
@@ -49,7 +49,7 @@ Without this uniqueness, the following problem could occur:
 2. The TTL for Client A’s lock expires.
 3. Client B acquires the lock.
 4. Client A, unaware that its lock has expired, attempts to release it. Since the value is not validated, it unintentionally releases Client B’s lock.
-5. Client C acquires the lock, even though Client B is still working on the resource—causing unexpected behavior.
+5. Client C acquires the lock, even though Client B is still working on the resource-causing unexpected behavior.
 
 By using a random unique value, only the client that originally acquired the lock can release it, preventing this kind of accidental lock release.
 

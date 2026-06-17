@@ -41,7 +41,7 @@ Arrows:
 ```json
 {"roughness": 1, "strokeWidth": 2, "endArrowhead": "arrow", "fontFamily": 1}
 ```
-Arrows use roughness 1 (not 2) — roughness 2 makes arrows too wobbly to follow.
+Arrows use roughness 1 (not 2) - roughness 2 makes arrows too wobbly to follow.
 
 Dashed lifelines:
 ```json
@@ -64,12 +64,12 @@ fontFamily 1 = Virgil (Excalidraw's hand-written font). Minimum fontSize 14 for 
 | Annotation / Note | `#e67700` | `#fff3bf` | Callouts, processing steps |
 | Success / Direct path | `#2b8a3e` | `#b2f2bb` | Direct connections, positive flows |
 | Warning / Callout | `#c92a2a` | `#ffc9c9` | Warnings, important notes |
-| Arrows (request) | `#1e1e1e` | — | Primary flow arrows |
-| Arrows (response) | `#5c940d` | — | Return / response arrows |
-| Arrows (internal) | `#6741d9` | — | Backend-to-service arrows |
-| Lifelines | `#adb5bd` | — | Dashed vertical sequence lines |
+| Arrows (request) | `#1e1e1e` | - | Primary flow arrows |
+| Arrows (response) | `#5c940d` | - | Return / response arrows |
+| Arrows (internal) | `#6741d9` | - | Backend-to-service arrows |
+| Lifelines | `#adb5bd` | - | Dashed vertical sequence lines |
 
-Strokes are always dark (`#1e1e1e` or a deep color). Fills are light pastels rendered as hachure. This mimics marker coloring — dark outline, lighter cross-hatched interior.
+Strokes are always dark (`#1e1e1e` or a deep color). Fills are light pastels rendered as hachure. This mimics marker coloring - dark outline, lighter cross-hatched interior.
 
 ### Layout Guidelines
 
@@ -86,7 +86,7 @@ After creating the diagram, save a **standard Excalidraw JSON file** as the edit
 - Source files: `/Users/harrykp/Documents/portfolio/content/diagrams/{name}.excalidraw`
 - If a caller provides a different path, use that instead
 - Can be re-opened in excalidraw.com via File → Open anytime for future edits
-- Source files are NOT in `public/` — they are not served to the browser
+- Source files are NOT in `public/` - they are not served to the browser
 
 ### Excalidraw Format for Kroki Compatibility
 
@@ -109,7 +109,7 @@ File format:
 
 ## Step 3: Auto-Export to SVG via Kroki
 
-Use **Kroki.io** (free diagram rendering API) to convert the `.excalidraw` file to SVG. One curl command — fully automated, zero installs.
+Use **Kroki.io** (free diagram rendering API) to convert the `.excalidraw` file to SVG. One curl command - fully automated, zero installs.
 
 ```bash
 curl -s https://kroki.io/excalidraw/svg \
@@ -125,7 +125,7 @@ rsvg-convert -w 1200 --background-color white \
   -o {output_path}/{name}.png
 ```
 
-### Directory Convention — Keep `public/diagrams/` Clean
+### Directory Convention - Keep `public/diagrams/` Clean
 
 | Directory | Contains | Served to browser? |
 |-----------|----------|--------------------|

@@ -58,7 +58,7 @@ tags: ["Snapshot Isolation", "Database Transactions"]
 - Say Alice has $1,000 of savings at a bank, split across two accounts with $500 each.
 - Now a transaction transfers $100 from one of her accounts to the other.
 - If she is unlucky enough to look at her list of account balances in the same moment as that transaction is being processed, she may see one account balance at a time before the incoming payment has arrived (with a balance of $500), and the other account after the outgoing transfer has been made (the new balance being $400).
-- To Alice it now appears as though she only has a total of $900 in her accounts—it seems that $100 has vanished into thin air.
+- To Alice it now appears as though she only has a total of $900 in her accounts-it seems that $100 has vanished into thin air.
 - This anomaly is called a nonrepeatable read or read skew. In Alice’s case, this is not a lasting problem, because she will most likely see consistent account balances if she reloads the online banking website a few seconds later.
 - However, some situations cannot tolerate such temporary inconsistency:”
 
@@ -73,7 +73,7 @@ tags: ["Snapshot Isolation", "Database Transactions"]
     - These queries are likely to return nonsensical results if they observe parts of the database at different points in time.
 
 - Snapshot isolation is the most common solution to this problem.
-  - The idea is that each transaction reads from a consistent snapshot of the database—that is, the transaction sees all the data that was committed in the database at the start of the transaction. - Even if the data is subsequently changed by another transaction, each transaction sees only the old data from that particular point in time.
+  - The idea is that each transaction reads from a consistent snapshot of the database-that is, the transaction sees all the data that was committed in the database at the start of the transaction. - Even if the data is subsequently changed by another transaction, each transaction sees only the old data from that particular point in time.
 
 #### Implementing snapshot isolation
 

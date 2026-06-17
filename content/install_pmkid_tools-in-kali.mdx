@@ -12,7 +12,7 @@ By default, Kali does **not** ship with **hcxpcapngtool** and **hcxdumptool**, w
 
 ---
 
-## Quick Install — One Command Setup
+## Quick Install - One Command Setup
 
 If you just want to get everything installed **fast**, you can run my ready-made installation script directly from GitHub Gist:
 > Make sure to run this script as root or with sudo privileges. You can use `Root Terminal Emulator`.
@@ -43,14 +43,14 @@ It’s particularly useful because it chains together various tools under the ho
 
 If you prefer to install manually(if you are the one who don't want to run the unknown bash file 🕵️‍♂️) or want to understand the process, follow these steps:
 
-### **Step 1 — Update Package Lists and Install Dependencies**
+### **Step 1 - Update Package Lists and Install Dependencies**
 
 ```bash
 sudo apt-get update
 sudo apt-get install libcurl4-openssl-dev libssl-dev zlib1g-dev libpcap-dev -y
 ```
 
-### **Step 2 — Install hcxpcapngtool**
+### **Step 2 - Install hcxpcapngtool**
 
 ```bash
 git clone https://github.com/ZerBea/hcxtools.git
@@ -58,7 +58,7 @@ cd hcxtools
 sudo make && sudo make install
 ```
 
-### **Step 3 — Install hcxdumptool**
+### **Step 3 - Install hcxdumptool**
 
 ```bash
 cd ..
@@ -67,7 +67,7 @@ cd hcxdumptool
 sudo make && sudo make install
 ```
 
-### **Step 4 — Verify Installation**
+### **Step 4 - Verify Installation**
 
 ```bash
 hcxdumptool -h
@@ -94,6 +94,6 @@ If your wireless card supports monitor mode and packet injection, Wifite will no
 
 ---
 
-💡 *Pro Tip:* Keep an eye on the official repos — both tools are actively updated, so pulling the latest commits regularly ensures you have new features and bug fixes.
+💡 *Pro Tip:* Keep an eye on the official repos - both tools are actively updated, so pulling the latest commits regularly ensures you have new features and bug fixes.
 
 ---

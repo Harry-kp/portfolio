@@ -38,12 +38,12 @@ tags: ["Storage", "Log-Structured Storage", "Page-Oriented Storage", "B-Tree"]
 ![Storing a log of key-value pairs in a CSV-like format, indexed with an in- memory hash map.](https://user-images.githubusercontent.com/55315065/226100969-c9750c25-3b5f-48ed-bf3f-4fb657e4be0c.png)
 
 - Let’s say our data storage consists only of appending to a file
-  - Then the simplest indexing strategy is to keep an in-memory hash map where every key is mapped to a byte offset in the data file—the location at which the value can be found
+  - Then the simplest indexing strategy is to keep an in-memory hash map where every key is mapped to a byte offset in the data file-the location at which the value can be found
   - Whenever you insert new key-value and for updating existing keys, you also update the hash map to reflect the offset of the data you just wrote.
   - When you want to look up a value, use the hash map to find the offset ,seek to that location, and read the value.
 - This is essentially what Bitcask (the default storage engine in Riak) does.
   - A storage engine like Bitcask is well suited to situations where the value for each key is updated frequently.
-    - For example, the key might be the URL of a cat video, and the value might be the number of times it has been played (incremented every time someone hits the play button). In this kind of workload, there are a lot of writes, but there are not too many distinct keys—you have a large number of writes per key, but it’s feasible to keep all keys in memory.
+    - For example, the key might be the URL of a cat video, and the value might be the number of times it has been played (incremented every time someone hits the play button). In this kind of workload, there are a lot of writes, but there are not too many distinct keys-you have a large number of writes per key, but it’s feasible to keep all keys in memory.
 
 ![image](https://user-images.githubusercontent.com/55315065/226101143-3e1f0234-e648-48bf-b1ad-3f04063c9710.png)
 
@@ -56,7 +56,7 @@ tags: ["Storage", "Log-Structured Storage", "Page-Oriented Storage", "B-Tree"]
 - Since compaction often makes segments much smaller (assuming that a key is overwritten several times on average within one segment), we can also merge several segments together at the same time as performing the compaction
 - Segments are never modified after they have been written, so the merged segment is written to a new file.
 - The merging and compaction of frozen segments can be done in a background thread, and while it is going on, we can still continue to serve read and write requests as normal, using the old segment files.
-- After the merging process is complete, we switch read requests to using the new merged segment instead of the old segments—and then **the old segment files can simply be deleted.**
+- After the merging process is complete, we switch read requests to using the new merged segment instead of the old segments-and then **the old segment files can simply be deleted.**
 
 ### ISSUES IN IMPLEMENTATION
 
@@ -101,7 +101,7 @@ tags: ["Storage", "Log-Structured Storage", "Page-Oriented Storage", "B-Tree"]
   - You could maintain a hash map on disk, but unfortunately it is difficult to make an on-disk hash map perform well.
   - It requires a lot of random access I/O, it is expensive to grow when it becomes full, and hash collisions require fiddly logic.
 - Range queries are not efficient.
-  - For example, you cannot easily scan over all keys between kitty00000 and kitty99999—you’d have to look up each key individually in the hash maps.
+  - For example, you cannot easily scan over all keys between kitty00000 and kitty99999-you’d have to look up each key individually in the hash maps.
 
 ## <u>SSTABLES AND LSM-TREES [SORTED STRING TABLE AND LOG_STRUCTURED MERGE TREES]</u>
 >
@@ -115,7 +115,7 @@ tags: ["Storage", "Log-Structured Storage", "Page-Oriented Storage", "B-Tree"]
 There are plenty of well-known tree data structures that you can use, such as red-black trees or AVL trees. With these data structures, you can insert keys in any order and read them back in sorted order.
 
 - When a write comes in, add it to an in-memory balanced tree data structure(sometimes called a memtable).
-- When the memtable gets bigger than some threshold—typically a few megabytes —write it out to disk as an SSTable file.
+- When the memtable gets bigger than some threshold-typically a few megabytes -write it out to disk as an SSTable file.
   - This can be done efficiently because the tree already maintains the key-value pairs sorted by key.
   - The new SSTable file becomes the most recent segment of the database.
   - While the SSTable is being written out to disk, writes can continue to a new memtable instance.
@@ -131,7 +131,7 @@ There are plenty of well-known tree data structures that you can use, such as re
   - The most common options are size-tiered and leveled compaction. LevelDB and RocksDB use leveled compaction (hence the name of LevelDB), HBase uses size-tiered, and Cassandra supports both.
   - In size-tiered compaction, newer and smaller SSTables are successively merged into older and larger SSTables.
   - In leveled compaction, the key range is split up into smaller SSTables and older data is moved into separate “levels,” which allows the compaction to proceed more incrementally and use less disk space.
-Even though there are many subtleties, the basic idea of LSM-trees—keeping a cascade of SSTables that are merged in the background—is simple and effective.
+Even though there are many subtleties, the basic idea of LSM-trees-keeping a cascade of SSTables that are merged in the background-is simple and effective.
 - You can efficiently perform range queries (scanning all keys above some minimum and up to some maximum), and because the disk writes are sequential the LSM-tree can support remarkably high write throughput.
 
 ### ADVANTAGES OF SSTables OVER LOG SEGMENT WITH HASH INDEX
@@ -155,7 +155,7 @@ A page-oriented storage engine is more common than a log-structured storage engi
 
 - The log-structured indexes we saw earlier break the database down into variable-size segments, typically several megabytes or more in size, and always write a segment sequentially.
 - By contrast, B-trees break the database down into fixed-size blocks or pages, traditionally 4 KB in size (sometimes bigger), and read or write one page at a time. This design corresponds more closely to the underlying hardware, as disks are also arranged in fixed-size blocks.
-- Each page can be identified using an address or location, which allows one page to refer to another—similar to a pointer, but on disk instead of in memory.
+- Each page can be identified using an address or location, which allows one page to refer to another-similar to a pointer, but on disk instead of in memory.
 - One page is designated as the root of the B-tree; whenever you want to look up a key in the index, you start here.
   - The page contains several keys and references to child pages.
   - Each child is responsible for a continuous range of keys, and the keys between the references indicate where the boundaries between those ranges lie.
@@ -185,7 +185,7 @@ However, benchmarks are often inconclusive and sensitive to details of the workl
 ### ADVANTAGES OF LSM TREES
 
 - A B-tree index must write every piece of data at least twice: once to the **write-ahead log**, and once to the tree page itself (and perhaps again as pages are split). There is also overhead from having to write an entire page at a time, even if only a few bytes in that page changed. Some storage engines even overwrite the same page twice in order to avoid ending up with a partially updated page in the event of a power failure.
-- Log-structured indexes also rewrite data multiple times due to repeated compaction and merging of SSTables. This effect—one write to the database resulting in multiple writes to the disk over the course of the database’s lifetime—is known as **write ampli‐ fication**.
+- Log-structured indexes also rewrite data multiple times due to repeated compaction and merging of SSTables. This effect-one write to the database resulting in multiple writes to the disk over the course of the database’s lifetime-is known as **write ampli‐ fication**.
 
 > It is of particular concern on SSDs, which can only overwrite blocks a limited number of times before wearing out.
 

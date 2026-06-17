@@ -68,7 +68,7 @@ In the example, the replication to follower 1 is **synchronous**: the leader wai
 
 You can set up a new follower by following these steps:
 
-1. Take a consistent snapshot of the leader’s database at some point in time—if possible, without taking a lock on the entire database. Most databases have this feature, as it is also required for backups. In some cases, third-party tools are needed, such as innobackupex for MySQL.
+1. Take a consistent snapshot of the leader’s database at some point in time-if possible, without taking a lock on the entire database. Most databases have this feature, as it is also required for backups. In some cases, third-party tools are needed, such as innobackupex for MySQL.
 2. Copy the snapshot to the new follower node.
 3. The follower connects to the leader and requests all the data changes that have happened since the snapshot was taken. This requires that the snapshot is associated with an exact position in the leader’s replication log. That position has various names: for example, PostgreSQL calls it the **log sequence number**, and MySQL calls it the **binlog coordinates**.
 4. When the follower has processed the backlog of data changes since the snapshot, we say it has **caught up**. It can now continue to process data changes from the leader as they happen.
@@ -160,7 +160,7 @@ This method of replication is used in PostgreSQL and Oracle, among others.
 
 - Unfortunately, if an application reads from an asynchronous follower, it may see outdated information if the follower has fallen behind.
 - This leads to apparent inconsistencies in the database: if you run the same query on the leader and a follower at the same time, you may get different results, because not all writes have been reflected in the follower.
-- This inconsistency is just a temporary state—if you stop writing to the database and wait a while, the followers will eventually catch up and become consistent with the leader. For that reason, this effect is known as **eventual consistency**
+- This inconsistency is just a temporary state-if you stop writing to the database and wait a while, the followers will eventually catch up and become consistent with the leader. For that reason, this effect is known as **eventual consistency**
 - In general, there is no limit to how far a replica can fall behind. In normal operation, the replication lag may be only a fraction of a second, and not noticeable in practice or if there is a problem in the network, the lag can easily increase to several seconds or even minutes.
 - In this section we will highlight three examples of problems that are likely to occur when there is replication lag and outline some approaches to solving them.
 
@@ -199,7 +199,7 @@ With asynchronous replication, there is a problem, if the user views the data sh
   - Let say, the first query returns a comment that was recently added by user , but the second query doesn’t return anything because the lagging follower has not yet picked up that write.
   - In effect, the second query is observing the system at an earlier point in time than the first query.
 - **Monotonic reads** is a guarantee that this kind of anomaly does not happen.
-  > It’s a lesser guarantee than strong consistency, but a stronger guarantee than eventual consistency. When you read data, you may see an old value; monotonic reads only means that if one user makes several reads in sequence, they will not see time go backward— i.e., they will not read older data after having previously read newer data.
+  > It’s a lesser guarantee than strong consistency, but a stronger guarantee than eventual consistency. When you read data, you may see an old value; monotonic reads only means that if one user makes several reads in sequence, they will not see time go backward- i.e., they will not read older data after having previously read newer data.
 - One way of achieving monotonic reads is to make sure that each user always makes their reads from the same replica (different users can read from different replicas).
   - For example, the replica can be chosen based on a hash of the user ID, rather than randomly. However, if that replica fails, the user’s queries will need to be rerouted to another replica.
 

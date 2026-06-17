@@ -1,6 +1,6 @@
 ---
 title: "Approvals Are a Mechanism, Not a Feature: Building ApprovalEngine"
-summary: "Why I built a Rails engine for approvals from first principles — an immutable ledger, consensus that isn't a veto, timeouts that never forge a yes, and a transactional outbox that can't lie."
+summary: "Why I built a Rails engine for approvals from first principles - an immutable ledger, consensus that isn't a veto, timeouts that never forge a yes, and a transactional outbox that can't lie."
 publishedAt: "2026-06-18"
 tags: ["Ruby", "Rails", "Open Source", "Architecture", "PostgreSQL"]
 ---
@@ -13,19 +13,19 @@ At some point your app grows a sentence like this: *"a manager has to approve ex
 
 So someone adds a `status` column. Then an `approved_by_id`. Then a `before_save` callback with three `if`s. Six months later it's a 400-line `ApprovalsService` that nobody understands, there's no audit trail anyone trusts, two people can approve the same thing in a race, and "who approved this and why" is answered by reading `updated_at` and guessing.
 
-Approvals *feel* like a feature. They're not. They're a **mechanism** — the same shape in every domain: someone proposes, some set of people decide, the decision is recorded, side-effects fire. The *policy* (who, when, what the thresholds are) changes per company. The *mechanism* never does.
+Approvals *feel* like a feature. They're not. They're a **mechanism** - the same shape in every domain: someone proposes, some set of people decide, the decision is recorded, side-effects fire. The *policy* (who, when, what the thresholds are) changes per company. The *mechanism* never does.
 
-So I built the mechanism and left the policy to you. That single distinction — borrowed shamelessly from DHH's "mechanism, not policy" instinct — drove every decision in [ApprovalEngine](https://github.com/Harry-kp/approval_engine).
+So I built the mechanism and left the policy to you. That single distinction - borrowed shamelessly from DHH's "mechanism, not policy" instinct - drove every decision in [ApprovalEngine](https://github.com/Harry-kp/approval_engine).
 
 ## The ledger: Approval → Track → Step
 
 Everything is an append-only ledger of three nested records:
 
-- **Approval** — one run. Your `Invoice` fans out into one or more parallel **Tracks**.
-- **Track** — one parallel path (Finance, Legal, Logistics…), each a sequence of layers.
-- **Step** — one person's slot. `approve!`, `reject!`, `request_changes!`.
+- **Approval** - one run. Your `Invoice` fans out into one or more parallel **Tracks**.
+- **Track** - one parallel path (Finance, Legal, Logistics…), each a sequence of layers.
+- **Step** - one person's slot. `approve!`, `reject!`, `request_changes!`.
 
-It's append-only on purpose. You never *edit* history — requesting changes opens a fresh iteration instead of mutating the old one. When an auditor asks "what happened here," the answer is the table, not a reconstruction.
+It's append-only on purpose. You never *edit* history - requesting changes opens a fresh iteration instead of mutating the old one. When an auditor asks "what happened here," the answer is the table, not a reconstruction.
 
 ```ruby
 class Invoice < ApplicationRecord
@@ -48,29 +48,29 @@ That's the whole integration surface. Routing rules live in the database as JSON
 
 ### 1. Rejection isn't a veto
 
-Naively, one "no" kills the approval. But if your rule is "any 2 of 5 reviewers," one person rejecting shouldn't sink it while three others can still say yes. So rejection is **consensus-aware**: a layer fails only once the required approvals become *unreachable* — not on the first no. The same `:any / :all / :majority / "60%" / N` vocabulary that decides approval also decides failure. One concept, used at the layer level *and* across parallel tracks ("2 of 3 departments must sign off").
+Naively, one "no" kills the approval. But if your rule is "any 2 of 5 reviewers," one person rejecting shouldn't sink it while three others can still say yes. So rejection is **consensus-aware**: a layer fails only once the required approvals become *unreachable* - not on the first no. The same `:any / :all / :majority / "60%" / N` vocabulary that decides approval also decides failure. One concept, used at the layer level *and* across parallel tracks ("2 of 3 departments must sign off").
 
 ### 2. The engine never auto-approves. Ever.
 
-This is the one place the gem is deliberately opinionated. A step can time out — but a timeout **never** becomes a yes. It can deny (`expire!`), escalate, or remind, but it will not forge approval. "Approved by Bob because he was on vacation" is a corrupt record, and corruption is fatal for a system whose entire value is trustworthiness. **Silence is not consent.** If you want auto-approval, that's your policy, in your model — the engine won't do it behind your back.
+This is the one place the gem is deliberately opinionated. A step can time out - but a timeout **never** becomes a yes. It can deny (`expire!`), escalate, or remind, but it will not forge approval. "Approved by Bob because he was on vacation" is a corrupt record, and corruption is fatal for a system whose entire value is trustworthiness. **Silence is not consent.** If you want auto-approval, that's your policy, in your model - the engine won't do it behind your back.
 
 ### 3. A side-effect can never roll back an approval
 
 When an approval completes, you want to disburse funds, email people, hit three APIs. If the payment gateway is down, should the approval *un-happen*? Obviously not. So state transitions commit instantly and synchronously, and every side-effect is written to a **transactional outbox** in the same transaction, then relayed asynchronously. A down mailer can't roll back a decision; a crashed worker can't silently drop one. Delivery is at-least-once (make your callbacks idempotent) and now dead-lettered, so a permanently-failing callback can't retry forever.
 
-Concurrency is handled by locking the *aggregate root* (the Approval) around every transition — two people clicking "Approve" on the last needed step can't both win.
+Concurrency is handled by locking the *aggregate root* (the Approval) around every transition - two people clicking "Approve" on the last needed step can't both win.
 
 ## What I deliberately left out
 
-The hardest part of a library like this is saying no. ApprovalEngine does **not** decide who your approvers are, what "late" means, how to send notifications, or what your record's status column should say. It hands you the seams — a tenant resolver, an actor resolver, lifecycle callbacks, notification events — and stays out of your domain. That restraint is the feature.
+The hardest part of a library like this is saying no. ApprovalEngine does **not** decide who your approvers are, what "late" means, how to send notifications, or what your record's status column should say. It hands you the seams - a tenant resolver, an actor resolver, lifecycle callbacks, notification events - and stays out of your domain. That restraint is the feature.
 
 ## Shipped
 
 It's live: `gem install approval_engine`. Postgres-backed, Rails ≥ 7, MIT-licensed, with a mountable read-only ops dashboard, a generator, and a cookbook of copy-paste recipes.
 
-It went through two rounds of brutal self-review before 1.0 — completing the lifecycle (`cancel!` to withdraw, `reassign!` to escalate), hardening the outbox, and ruthlessly deleting anything speculative. The result is something I'd actually drop into a production app without flinching.
+It went through two rounds of brutal self-review before 1.0 - completing the lifecycle (`cancel!` to withdraw, `reassign!` to escalate), hardening the outbox, and ruthlessly deleting anything speculative. The result is something I'd actually drop into a production app without flinching.
 
 - **RubyGems:** [rubygems.org/gems/approval_engine](https://rubygems.org/gems/approval_engine)
 - **Source:** [github.com/Harry-kp/approval_engine](https://github.com/Harry-kp/approval_engine)
 
-If you've ever rebuilt approvals from scratch — and you have — give it a look. The next time that sentence shows up in a spec, you won't have to write the 400-line service.
+If you've ever rebuilt approvals from scratch - and you have - give it a look. The next time that sentence shows up in a spec, you won't have to write the 400-line service.

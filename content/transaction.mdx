@@ -24,7 +24,7 @@ tags: ["Distributed Systems", "Database Transactions","ACID"]
 - The word means similar but subtly different things in different branches of computing.
   - For example, in multi-threaded programming, if one thread executes an atomic operation, that means there is no way that another thread could see the half-finished result of the operation.
   - The system can only be in the state it was before the operation or after the operation, not something in between.
-- ACID atomicity describes what happens if a client wants to make several writes, but a fault occurs after some of the writes have been processed—for example, a process crashes, a network connection is interrupted, a disk becomes full, or some integrity constraint is violated.
+- ACID atomicity describes what happens if a client wants to make several writes, but a fault occurs after some of the writes have been processed-for example, a process crashes, a network connection is interrupted, a disk becomes full, or some integrity constraint is violated.
 - If the writes are grouped together into an atomic transaction, and the transaction cannot be completed (committed) due to a fault, then the transaction is aborted and the database must discard or undo any writes it has made so far in that transaction.
 - The ability to abort a transaction on error and have all writes from that transaction discarded is the defining feature of ACID atomicity.
 - Perhaps abortability would have been a better term than atomicity, but we will stick with atomicity since that’s the usual word.
@@ -85,7 +85,7 @@ transaction
 - A key feature of a transaction is that it can be aborted and safely retried if an error occurred.
 - ACID databases are based on this philosophy: if the database is in danger of violating its guarantee of atomicity, isolation, or durability, it would rather abandon the transaction entirely than allow it to remain half-finished.
 
-> Not all systems follow that philosophy, though. In particular, datastores with leaderless replication (see “Leaderless Replication”) work much more on a “best effort” basis, which could be summarized as “the database will do as much as it can, and if it runs into an error, it won’t undo something it has already done”—so it’s the application’s responsibility to recover from errors.
+> Not all systems follow that philosophy, though. In particular, datastores with leaderless replication (see “Leaderless Replication”) work much more on a “best effort” basis, which could be summarized as “the database will do as much as it can, and if it runs into an error, it won’t undo something it has already done”-so it’s the application’s responsibility to recover from errors.
 
 - Although retrying an aborted transaction is a simple and effective error handling mechanism, it isn’t perfect:
   - If transaction succeeded but client thinks it failed, retrying causes duplication unless deduplication mechanism is in place.

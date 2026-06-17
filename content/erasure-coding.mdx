@@ -9,11 +9,11 @@ aiGenerated: true
 
 ## TL;DR
 
-Erasure coding splits data into **k data fragments**, computes **m parity fragments** using linear algebra over Galois Fields (GF(2^8)), and distributes all k+m fragments across storage nodes. **Any k of the k+m total fragments can reconstruct the original data.** RS(10,4) achieves the same durability as triple replication at 1.4x storage overhead instead of 3x — at S3's scale (~280 exabytes), that delta is hundreds of millions of dollars per year in hardware.
+Erasure coding splits data into **k data fragments**, computes **m parity fragments** using linear algebra over Galois Fields (GF(2^8)), and distributes all k+m fragments across storage nodes. **Any k of the k+m total fragments can reconstruct the original data.** RS(10,4) achieves the same durability as triple replication at 1.4x storage overhead instead of 3x - at S3's scale (~280 exabytes), that delta is hundreds of millions of dollars per year in hardware.
 
 ## The Problem: Replication Doesn't Scale
 
-Traditional replication stores N identical copies. To survive 2 disk failures, you need 3 copies — **3x storage overhead**. At exabyte scale, the math is brutal:
+Traditional replication stores N identical copies. To survive 2 disk failures, you need 3 copies - **3x storage overhead**. At exabyte scale, the math is brutal:
 
 | Strategy | Storage for 100 PB of data | Tolerated failures |
 |----------|---------------------------|-------------------|
@@ -21,9 +21,9 @@ Traditional replication stores N identical copies. To survive 2 disk failures, y
 | RS(10,4) | 140 PB | 4 |
 | LRC(12,4,2) | 150 PB | 6 |
 
-Erasure coding replaces copies with math. Instead of storing the same data 3 times, you compute parity fragments that encode the mathematical relationships between data fragments. Any sufficiently large subset of fragments — data or parity — can reconstruct the original.
+Erasure coding replaces copies with math. Instead of storing the same data 3 times, you compute parity fragments that encode the mathematical relationships between data fragments. Any sufficiently large subset of fragments - data or parity - can reconstruct the original.
 
-## Reed-Solomon Codes — The Workhorse
+## Reed-Solomon Codes - The Workhorse
 
 The dominant erasure code in production storage (S3, Azure Blob, HDFS, Ceph) is **Reed-Solomon (RS)**. An RS(k, m) code splits an object into k data fragments and computes m parity fragments.
 
@@ -33,11 +33,11 @@ The dominant erasure code in production storage (S3, Azure Blob, HDFS, Ceph) is 
 - **Any k out of n fragments can reconstruct the original data**
 - Tolerates up to **m simultaneous fragment losses**
 
-![Reed-Solomon Erasure Coding — encoding and reconstruction flow](/diagrams/erasure-coding.svg)
+![Reed-Solomon Erasure Coding - encoding and reconstruction flow](/diagrams/erasure-coding.svg)
 
-## Galois Field Arithmetic — GF(2^8)
+## Galois Field Arithmetic - GF(2^8)
 
-Reed-Solomon operates over a **finite field**, specifically GF(2^w) where w is typically 8. In GF(2^8), every element maps to exactly one byte (values 0–255), and every non-zero element has a multiplicative inverse — which is required for the decoding step.
+Reed-Solomon operates over a **finite field**, specifically GF(2^w) where w is typically 8. In GF(2^8), every element maps to exactly one byte (values 0–255), and every non-zero element has a multiplicative inverse - which is required for the decoding step.
 
 **Addition** = XOR. No carries. `a + b = a XOR b`.
 
@@ -53,7 +53,7 @@ uint8_t gf_mul(uint8_t a, uint8_t b) {
 }
 ```
 
-This converts multiplication to two table lookups, one addition, and one modulo — constant time, no branches, no timing side-channels.
+This converts multiplication to two table lookups, one addition, and one modulo - constant time, no branches, no timing side-channels.
 
 ## Encoding: Generator Matrix Multiplication
 
@@ -75,7 +75,7 @@ G = [
 # Last 2 rows: coding matrix   --> parity is computed
 ```
 
-The top k rows are an **identity matrix** — this makes it a **systematic code**, meaning the original data appears unmodified in the output. The bottom m rows form the **coding matrix**. Each parity fragment is a linear combination of all data fragments:
+The top k rows are an **identity matrix** - this makes it a **systematic code**, meaning the original data appears unmodified in the output. The bottom m rows form the **coding matrix**. Each parity fragment is a linear combination of all data fragments:
 
 ```python
 P0 = gf_mul(g00, D0) ^ gf_mul(g01, D1) ^ gf_mul(g02, D2) ^ gf_mul(g03, D3)
@@ -102,11 +102,11 @@ Most production implementations use **Cauchy matrices** because XOR-only encodin
 When fragments are lost, reconstruction works by solving a linear system:
 
 1. Select any **k available fragments** (data or parity)
-2. Extract the corresponding k rows from the generator matrix G — call this submatrix G'
+2. Extract the corresponding k rows from the generator matrix G - call this submatrix G'
 3. Compute **G'^(-1)** (inverse of the k×k submatrix) via Gaussian elimination over GF(2^8)
 4. Multiply: `[D0, D1, ..., Dk-1] = G'^(-1) × [selected fragments]`
 
-This works because G was constructed so that **every k×k submatrix is invertible** — the Maximum Distance Separable (MDS) property. The Vandermonde and Cauchy constructions both guarantee this.
+This works because G was constructed so that **every k×k submatrix is invertible** - the Maximum Distance Separable (MDS) property. The Vandermonde and Cauchy constructions both guarantee this.
 
 Matrix inversion is O(k^3) in fragment count, but k is typically small (6–16), so inversion takes ~5 μs. The real cost is I/O: reading k fragments from k different storage nodes.
 
@@ -138,7 +138,7 @@ P1 = gf_mul(198, 0xAB) ^ gf_mul(29, 0xCD) ^ gf_mul(51, 0xEF) ^ gf_mul(240, 0x01)
 AWS hasn't published exact RS parameters, but the durability math constrains the design. S3 Standard promises **99.999999999% (11 nines) durability**. Based on AWS re:Invent 2023 talks and public documentation:
 
 - Data is split across a minimum of **3 Availability Zones**
-- Likely RS(11,6) or similar — ~17 total shards
+- Likely RS(11,6) or similar - ~17 total shards
 - Each shard stored on a different storage node, spread across AZs
 - Storage overhead: **~1.5x** (vs 3x for triple replication)
 - S3 One Zone-IA uses replication within a single AZ (no cross-AZ erasure coding)
@@ -148,36 +148,36 @@ The key design choice: shards are distributed **across AZs**, not just across di
 #### S3 Write Path (PUT Object)
 
 1. Client sends PUT to the S3 frontend (HTTP endpoint behind a load balancer).
-2. The frontend's **placement engine** selects which storage nodes across which AZs will hold the fragments — ensuring fragments land on different racks, different power domains, across at least 3 AZs.
-3. The object body is split into k data shards, and m parity shards are computed using Reed-Solomon. Encoding uses ISA-L (SIMD-optimized) — ~25 μs/MB, not the bottleneck.
+2. The frontend's **placement engine** selects which storage nodes across which AZs will hold the fragments - ensuring fragments land on different racks, different power domains, across at least 3 AZs.
+3. The object body is split into k data shards, and m parity shards are computed using Reed-Solomon. Encoding uses ISA-L (SIMD-optimized) - ~25 μs/MB, not the bottleneck.
 4. **All n shards are written in parallel** to their assigned storage nodes. Each shard is written with a CRC32c checksum and a **shard index** (0 through n-1). The frontend waits for a **write quorum** (e.g., at least 12 of 17 acknowledging) before returning `200 OK`.
 5. **Metadata is written** to the metadata service (DynamoDB-based): object key → shard locations, shard indices, version, checksums, ETag. The `200 OK` only goes back after both the shard quorum AND the metadata write succeed.
 
-Because it's a systematic code, shards 0 through k-1 ARE the original data (identity rows). No transformation needed for those — just chunking. Only the m parity shards require GF(2^8) computation.
+Because it's a systematic code, shards 0 through k-1 ARE the original data (identity rows). No transformation needed for those - just chunking. Only the m parity shards require GF(2^8) computation.
 
 #### S3 Read Path (GET Object)
 
-**Normal case — no failures:**
+**Normal case - no failures:**
 
 1. Client sends GET. The frontend looks up the metadata to find shard locations and their indices.
-2. Since it's a systematic code, the frontend **reads just the k data shards** — these ARE the original data. No decoding needed. Concatenate in order and stream back to the client.
+2. Since it's a systematic code, the frontend **reads just the k data shards** - these ARE the original data. No decoding needed. Concatenate in order and stream back to the client.
 3. In practice, S3 sends read requests to **k+1 or k+2 shards** (hedged reads), using the first k that respond to cut tail latency.
 
-**Degraded case — some shards unavailable:**
+**Degraded case - some shards unavailable:**
 
-1. If data shards are missing (node down, disk failed), the frontend reads **any k available shards** — mixing data and parity shards.
+1. If data shards are missing (node down, disk failed), the frontend reads **any k available shards** - mixing data and parity shards.
 2. It extracts the corresponding k rows from the generator matrix (using each shard's index), inverts the submatrix (~5 μs), and decodes the original data.
-3. The client has no idea a reconstruction happened — the S3 API returns the same response either way.
+3. The client has no idea a reconstruction happened - the S3 API returns the same response either way.
 4. A **background repair** is triggered to replace the missing shard on a new storage node, restoring full fault tolerance.
 
 #### How the System Knows Data from Parity
 
 Every shard carries a **shard index** stored in the metadata service. When the frontend wrote shard #3 to Node B, it recorded that mapping. On read, when the first k responses arrive, the frontend checks their indices:
 
-- **All indices in [0, k-1]?** Fast path — these are identity rows. Concatenate in order, zero math.
-- **Mix of data and parity indices?** Slow path — pull those rows from the generator matrix, invert the k x k submatrix, multiply to recover the original k data fragments.
+- **All indices in [0, k-1]?** Fast path - these are identity rows. Concatenate in order, zero math.
+- **Mix of data and parity indices?** Slow path - pull those rows from the generator matrix, invert the k x k submatrix, multiply to recover the original k data fragments.
 
-There's no guessing. The shard index is how the decoder knows which row of G each shard represents — without it, you wouldn't know which linear equation each shard encodes, and decoding would be impossible. The "systematic" property is purely a **read-path optimization**, not a mathematical requirement. Reed-Solomon treats all shards uniformly at the algebra level.
+There's no guessing. The shard index is how the decoder knows which row of G each shard represents - without it, you wouldn't know which linear equation each shard encodes, and decoding would be impossible. The "systematic" property is purely a **read-path optimization**, not a mathematical requirement. Reed-Solomon treats all shards uniformly at the algebra level.
 
 ### Azure Blob Storage
 
@@ -190,12 +190,12 @@ Azure publishes their design (Huang et al., "Erasure Coding in Windows Azure Sto
 ### HDFS (Hadoop 3.0+)
 
 - Default **RS(6,3)**: 6 data + 3 parity = 1.5x overhead
-- Previously used 3x replication — switching saved Yahoo **~47% storage** (HDFS-7285)
+- Previously used 3x replication - switching saved Yahoo **~47% storage** (HDFS-7285)
 - Uses ISA-L for SIMD-accelerated encoding
 
 ## Security & Data Integrity
 
-Erasure coding provides **no confidentiality** — fragments are not encrypted. But it has critical integrity properties.
+Erasure coding provides **no confidentiality** - fragments are not encrypted. But it has critical integrity properties.
 
 ### Silent Data Corruption (Bit Rot)
 
@@ -209,20 +209,20 @@ Any single bit flip in a fragment will produce incorrect reconstruction. The def
 
 S3's scrubbing process runs continuously, checking a fraction of objects each hour. Typical enterprise scrub intervals: weekly to monthly.
 
-### Erasure vs Error Correction — A Critical Distinction
+### Erasure vs Error Correction - A Critical Distinction
 
 RS codes in storage are used as **erasure codes**, not **error-correcting codes**:
 
 - **Erasure**: The system knows **which** fragments are missing (the disk is dead, the node is unreachable). Positions are known.
-- **Error**: The system does **not** know which fragments are corrupted — it must detect AND correct.
+- **Error**: The system does **not** know which fragments are corrupted - it must detect AND correct.
 
 An RS(k, m) code can correct up to **m erasures** but only **⌊m/2⌋ errors**. In storage, checksums convert errors into erasures: detect corruption → mark fragment as missing → reconstruct. This doubles the effective fault tolerance.
 
-## Scaling & Performance — With Numbers
+## Scaling & Performance - With Numbers
 
 ### Encoding Throughput
 
-Encoding is the critical hot path — every write must encode before acknowledging:
+Encoding is the critical hot path - every write must encode before acknowledging:
 
 | Implementation | Throughput | CPU | Method |
 |---------------|-----------|-----|--------|
@@ -231,7 +231,7 @@ Encoding is the critical hot path — every write must encode before acknowledgi
 | Ceph Jerasure | ~2 GB/s | Single core | Optimized Cauchy |
 | Go `klauspost/reedsolomon` | ~10 GB/s | AVX2, 8 cores | Hand-written assembly kernels |
 
-**Why ISA-L is fast**: Cauchy matrices reduce all GF(2^8) multiplications to XOR operations. XOR is SIMD-friendly — AVX-512 processes 64 bytes per instruction. For RS(10,4), encoding one stripe requires ~40 XOR passes on 512-bit vectors:
+**Why ISA-L is fast**: Cauchy matrices reduce all GF(2^8) multiplications to XOR operations. XOR is SIMD-friendly - AVX-512 processes 64 bytes per instruction. For RS(10,4), encoding one stripe requires ~40 XOR passes on 512-bit vectors:
 
 ```text
 Encoding rate = (512 bits/XOR * effective_clock) / (XOR_passes * bits_per_chunk)
@@ -254,18 +254,18 @@ AWS re:Invent sessions report p99 GET latency increases by **~30%** during AZ ma
 
 ### The Tail Latency Problem: Degraded Reads
 
-When a fragment is unavailable, the system must fan out to k nodes instead of reading 1 (as described in the S3 read path above). This is strictly slower than reading from a replica. The **hedged read** strategy mitigates this even in the normal case: send requests to k+1 or k+2 fragments, use the first k that respond. This trades bandwidth for latency — and the shard index on each response tells the decoder exactly which rows of G it's working with.
+When a fragment is unavailable, the system must fan out to k nodes instead of reading 1 (as described in the S3 read path above). This is strictly slower than reading from a replica. The **hedged read** strategy mitigates this even in the normal case: send requests to k+1 or k+2 fragments, use the first k that respond. This trades bandwidth for latency - and the shard index on each response tells the decoder exactly which rows of G it's working with.
 
 <details>
-<summary>Hedged reads — the math</summary>
+<summary>Hedged reads - the math</summary>
 
 If each fragment read has latency drawn from a distribution with p99 = 10ms, reading k=10 fragments in parallel means you're waiting for the **slowest** of 10 reads (order statistic). The expected max of 10 draws from a 10ms-p99 distribution is significantly higher than 10ms.
 
-By reading k+2=12 fragments and using the first 10, you're waiting for the **10th order statistic of 12** — which is much closer to the median. Dean & Barroso, "The Tail at Scale" (CACM 2013), showed this technique reduces tail latency by 40–60% in practice.
+By reading k+2=12 fragments and using the first 10, you're waiting for the **10th order statistic of 12** - which is much closer to the median. Dean & Barroso, "The Tail at Scale" (CACM 2013), showed this technique reduces tail latency by 40–60% in practice.
 
 </details>
 
-## Failure Modes — Concrete Scenarios
+## Failure Modes - Concrete Scenarios
 
 ### 1. Reconstruction Storm After Node Failure
 
@@ -294,13 +294,13 @@ A batch of 1000 disks with a firmware bug that triggers after 40,000 power-on ho
 
 The mapping "object X → fragments [f0@node1, f1@node7, f2@node15, ...]" is stored in a metadata database. If this mapping is lost or corrupted, the system **cannot locate the fragments** for reconstruction.
 
-You have all the fragments but can't find them. This is operationally worse than losing the data. S3 stores this mapping in a DynamoDB-based metadata service with its own replication — the metadata layer is the most critical component.
+You have all the fragments but can't find them. This is operationally worse than losing the data. S3 stores this mapping in a DynamoDB-based metadata service with its own replication - the metadata layer is the most critical component.
 
 ### 4. Silent Corruption Without Scrubbing
 
 If fragment A is silently corrupted and the corruption isn't detected before fragment B is also lost, reconstruction produces **garbage data silently**. The reconstructed data may pass fragment-level CRC checks (because the CRC was computed on the corrupted fragment), but the content is wrong.
 
-**Detection**: End-to-end checksums at the **object level** (not fragment level). S3 computes Content-MD5 and Content-SHA256 at the object level. Early HDFS-EC deployments only had fragment-level checksums — this was a known gap (fixed in HDFS-14768).
+**Detection**: End-to-end checksums at the **object level** (not fragment level). S3 computes Content-MD5 and Content-SHA256 at the object level. Early HDFS-EC deployments only had fragment-level checksums - this was a known gap (fixed in HDFS-14768).
 
 ## Trade-offs & Alternatives
 
@@ -316,7 +316,7 @@ If fragment A is silently corrupted and the corruption isn't detected before fra
 
 ### Local Reconstruction Codes (LRC)
 
-Standard RS requires reading **k fragments from k different nodes** for ANY reconstruction — even a single fragment loss. LRC (Huang et al., USENIX ATC 2012) organizes fragments into local groups, each with its own local parity:
+Standard RS requires reading **k fragments from k different nodes** for ANY reconstruction - even a single fragment loss. LRC (Huang et al., USENIX ATC 2012) organizes fragments into local groups, each with its own local parity:
 
 ```text
 Global:        [D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 D10 D11 | GP0 GP1]
@@ -342,7 +342,7 @@ If D3 is lost, only **5 fragments from local group 1** are needed (not all 12). 
 
 ### The Config Everyone Gets Wrong: Chunk Size
 
-RS codes operate on **stripes** — each stripe is k chunks of size S. The chunk size dramatically affects performance:
+RS codes operate on **stripes** - each stripe is k chunks of size S. The chunk size dramatically affects performance:
 
 - **Too small** (64 KB): Many stripes per object → more metadata → more I/O. HDFS-EC originally defaulted to 64 KB and users reported **4x latency degradation** for small random reads (HDFS-10301).
 - **Too large** (64 MB): A 1 KB file with RS(10,4) would occupy 640 MB of space. Wasted.
@@ -350,7 +350,7 @@ RS codes operate on **stripes** — each stripe is k chunks of size S. The chunk
 
 ### The Monitoring Gap: Reconstruction Queue Depth
 
-Most teams monitor disk failures. Few monitor **reconstruction queue depth** — how many objects are waiting to be reconstructed.
+Most teams monitor disk failures. Few monitor **reconstruction queue depth** - how many objects are waiting to be reconstructed.
 
 ```text
 Time to vulnerability = (queue_depth * avg_reconstruction_time) / parallelism
@@ -360,14 +360,14 @@ If this queue grows faster than the system can drain it, you're in a race: anoth
 
 ### The Version Upgrade That Broke Everything
 
-HDFS 3.0 introduced erasure coding. The initial implementation (HDFS-7285) used a **Java-based RS codec** that was 10x slower than ISA-L. Hadoop deployments that upgraded to 3.0 saw write throughput collapse because encoding was CPU-bound in the JVM. The fix: ISA-L native codec (HDFS-7320) — but operators had to explicitly enable it and install the native library. It wasn't the default.
+HDFS 3.0 introduced erasure coding. The initial implementation (HDFS-7285) used a **Java-based RS codec** that was 10x slower than ISA-L. Hadoop deployments that upgraded to 3.0 saw write throughput collapse because encoding was CPU-bound in the JVM. The fix: ISA-L native codec (HDFS-7320) - but operators had to explicitly enable it and install the native library. It wasn't the default.
 
 ### References
 
-1. **Reed & Solomon**, "Polynomial Codes Over Certain Finite Fields," *J. SIAM*, 1960 — the original paper
-2. **Huang et al.**, "Erasure Coding in Windows Azure Storage," *USENIX ATC*, 2012 — LRC design and production deployment at Azure
-3. **Muralidhar et al.**, "f4: Facebook's Warm BLOB Storage System," *OSDI*, 2014 — RS at Facebook scale for photo/video storage
+1. **Reed & Solomon**, "Polynomial Codes Over Certain Finite Fields," *J. SIAM*, 1960 - the original paper
+2. **Huang et al.**, "Erasure Coding in Windows Azure Storage," *USENIX ATC*, 2012 - LRC design and production deployment at Azure
+3. **Muralidhar et al.**, "f4: Facebook's Warm BLOB Storage System," *OSDI*, 2014 - RS at Facebook scale for photo/video storage
 4. **Plank**, "Erasure Codes for Storage Systems: A Brief Primer," *;login: USENIX Magazine*, 2013
-5. **Dean & Barroso**, "The Tail at Scale," *CACM*, 2013 — hedged reads and tail latency mitigation
-6. **ISA-L source**: https://github.com/intel/isa-l — Intel's SIMD-optimized RS implementation
-7. **HDFS-7285**: https://issues.apache.org/jira/browse/HDFS-7285 — HDFS erasure coding feature JIRA
+5. **Dean & Barroso**, "The Tail at Scale," *CACM*, 2013 - hedged reads and tail latency mitigation
+6. **ISA-L source**: https://github.com/intel/isa-l - Intel's SIMD-optimized RS implementation
+7. **HDFS-7285**: https://issues.apache.org/jira/browse/HDFS-7285 - HDFS erasure coding feature JIRA

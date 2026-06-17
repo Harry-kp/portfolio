@@ -22,7 +22,7 @@ tags: ["Distributed Systems", "Database", "Partitioning"]
 ## Partitioning of Key-Value Data
 
 - Our goal with partitioning is to spread the data and the query load evenly across nodes.
-- If every node takes a fair share, then—in theory—10 nodes should be able to handle 10 times as much data and 10 times the read and write throughput of a single node (ignoring replication for now).
+- If every node takes a fair share, then-in theory-10 nodes should be able to handle 10 times as much data and 10 times the read and write throughput of a single node (ignoring replication for now).
 - If the partitioning is unfair, so that some partitions have more data or queries than others, we
 call it **skewed**.
 
@@ -45,7 +45,7 @@ call it **skewed**.
 #### Downside of Key Range Partitioning
 
 - Certain access patterns can lead to hot spots.
-  - If the key is a timestamp, then the partitions correspond to ranges of time—e.g., one partition per day.
+  - If the key is a timestamp, then the partitions correspond to ranges of time-e.g., one partition per day.
   - Unfortunately, because we write data from the sensors to the database as the measurements happen, all the writes end up going to the same partition (the one for today), so that partition can be overloaded with writes while others sit idle.
 
 ### Partitioning by Hash of Key
@@ -166,7 +166,7 @@ moving load from one node in the cluster to another is called **rebalancing**.
 
 - Only entire partitions are moved between nodes. The number of partitions does not change, nor does the assignment of keys to partitions.
 - The only thing that changes is the assignment of partitions to nodes.
-  - This change of assignment is not immediate—it takes some time to transfer a large amount of data over the network—so the old assignment of partitions is used for any reads and writes that happen while the transfer is in progress.
+  - This change of assignment is not immediate-it takes some time to transfer a large amount of data over the network-so the old assignment of partitions is used for any reads and writes that happen while the transfer is in progress.
 
 > This approach to rebalancing is used in Riak ,Elasticsearch, Couchbas, and Voldemort.
 
@@ -203,7 +203,7 @@ volume.
 - Such automation can be dangerous in combination with automatic failure detection.
   - For example, say one node is overloaded and is temporarily slow to respond to requests.
   - The other nodes conclude that the overloaded node is dead, and automatically rebalance the cluster to move load away from it.
-  - This puts additional load on the overloaded node, other nodes, and the network—making the situation worse and potentially causing a cascading failure.
+  - This puts additional load on the overloaded node, other nodes, and the network-making the situation worse and potentially causing a cascading failure.
 
 > For that reason, it can be a good thing to have a human in the loop for rebalancing. It’s slower than a fully automatic process, but it can help prevent operational surprises.
 
