@@ -183,11 +183,12 @@ export const DATA: Data = {
       dates: "Jan 2026 - Present",
       active: true,
       description:
-        "Terminal UI for WireGuard and OpenVPN - real-time throughput/latency monitoring, IPv6/DNS leak detection, kill switch, and geo-location tracking. 395+ GitHub stars, published on crates.io.",
+        "Terminal UI for WireGuard and OpenVPN - real-time throughput/latency monitoring, IPv6/DNS leak detection, kill switch, and geo-location tracking. 395+ GitHub stars, published on crates.io. Spun out the animation engine into a standalone widget, ratatui-flip-panel, also published on crates.io.",
       technologies: ["Rust", "Ratatui", "WireGuard", "OpenVPN"],
       links: [
         { type: "GitHub", href: "https://github.com/Harry-kp/vortix" },
         { type: "Crates.io", href: "https://crates.io/crates/vortix" },
+        { type: "Widget", href: "https://crates.io/crates/ratatui-flip-panel" },
       ],
       video:
         "https://raw.githubusercontent.com/Harry-kp/vortix/refs/heads/main/assets/demo.gif",
