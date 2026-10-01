@@ -129,7 +129,7 @@ export const DATA: Data = {
       start: "Dec 2024",
       end: "Present",
       description:
-        "Architected and built BrowserStack's AI accessibility agents - Issue Detection, Remediation, and Design A11y Color Contrast Agent on the Spectra™ rule engine, covering 40+ WCAG criteria across web, mobile, and design. Designed multi-model LLM inference pipelines (Gemini 3, GPT-5, Claude) with semantic DOM chunking, achieving 87.69% heading detection accuracy. Built App A11y Issue Detection Agent, reducing false-positives by 64% and cutting P90 latency from 20s to 10.1s. Built agent-orchestration microservices, Kafka consumers and workers in Node.js, autoscaled on Kubernetes, and internal LLM observability pipelines with Langfuse evals across 7 AI features, shipped behind Redis-based phased rollouts.",
+        "Built BrowserStack's AI accessibility agents covering 40+ WCAG criteria across web, mobile and design; they serve 360+ customer accounts and ~270k jobs a day. Owned the beta-to-GA launch from a one-line brief: designed the metrics, built the Prometheus pipeline, Zenduty alerts and one Grafana dashboard for 10+ agents, and ran GA readiness checks for each. Designed multi-provider LLM inference pipelines (Gemini 3, GPT-5, Claude) with semantic DOM chunking (87.69% heading-detection accuracy); cut false positives 64% and P90 latency from 20s to 10.1s on the mobile reading-order agent; cut LLM spend ~50% by caching recurring scans. Built orchestration microservices, Kafka consumers and workers in Node.js on Kubernetes, with Terraform for IAM, S3, Redis and Kafka. Built an Ops triage agent and a Claude Code harness our PM now ships code with. Led on-call and wrote RCAs; 2 internal awards in a year.",
     },
     {
       company: "Procol",
