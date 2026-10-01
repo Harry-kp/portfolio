@@ -66,14 +66,15 @@ export const DATA: Data = {
   location: "Mumbai, India",
   locationLink: "",
   description:
-    "Senior backend engineer building AI accessibility agents at BrowserStack covering 40+ WCAG criteria. I ship open-source tools in Rust that people install from Homebrew, and contribute upstream to Grafana Tempo and Lima.",
+    "Senior backend engineer: 4+ years of Ruby on Rails in production, now building AI accessibility agents at BrowserStack. On the side I ship open-source tools in Rust that people install from Homebrew, and contribute upstream to Grafana Tempo and Lima.",
   resumeUrl: "/resume.pdf",
   summary:
     "Senior Software Engineer at BrowserStack, building AI accessibility agents covering 40+ WCAG criteria across web, mobile, and design, and owning their reliability: evals, rollouts, Kafka, Kubernetes. Previously led ERP integrations and core platform development at Procol. Open-source contributor to Grafana Tempo, Lima, CocoIndex, Maybe Finance and Ruby for Good. Creator of Vortix (700+ GitHub stars, in Homebrew core), kitz, Mercury and ApprovalEngine.",
   avatarUrl: "/me.jpg",
   skills: [
-    "Rust",
     "Ruby",
+    "Rails",
+    "Rust",
     "Python",
     "TypeScript",
     "Kubernetes",

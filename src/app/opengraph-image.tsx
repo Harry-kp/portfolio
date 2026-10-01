@@ -63,7 +63,7 @@ export default async function OGImage() {
           }}
         >
           Backend engineer building scalable distributed systems and AI-powered
-          products. Rust, Ruby on Rails.
+          products. Ruby on Rails, Rust.
         </p>
 
         <div
