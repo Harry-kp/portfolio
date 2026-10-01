@@ -14,12 +14,12 @@ export default function RecruiterInfo() {
     {
       icon: Clock,
       label: "Work Hours",
-      value: "Flexible for EU (CET/CEST) & IST overlap",
+      value: "Flexible - overlap with US or EU hours",
     },
     {
       icon: BadgeCheck,
       label: "Work Authorization",
-      value: `${DATA.recruiter.workAuth} · EU Blue Card eligible (DE/NL) · India local hire`,
+      value: `${DATA.recruiter.workAuth} · Remote contractor or employee · EU Blue Card eligible`,
       highlight: false,
     },
     {
@@ -85,14 +85,14 @@ export default function RecruiterInfo() {
           className="mt-6 flex flex-wrap justify-center gap-4"
         >
           <a
-            href={DATA.recruiter.leetcode}
+            href={DATA.contact.social.GitHub.url}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border bg-background hover:border-accent/40 hover:bg-accent/5 transition-all"
           >
             <Code className="w-4 h-4 text-accent" />
             <span className="text-sm text-text-primary">
-              {DATA.recruiter.leetcodeProblems}+ LeetCode Problems
+              GitHub - Harry-kp
             </span>
           </a>
           <a

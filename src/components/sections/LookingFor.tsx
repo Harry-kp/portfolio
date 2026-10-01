@@ -14,12 +14,12 @@ const PREFERENCES = [
   {
     icon: Briefcase,
     title: "Work Style",
-    items: ["Remote-first", "Hybrid (EU / India)", "EU timezone overlap"],
+    items: ["Remote-first", "US or EU timezone overlap", "Async-friendly teams"],
   },
   {
     icon: MapPin,
     title: "Location",
-    items: ["Germany · Netherlands", "India (Bangalore / Mumbai)", "EU remote-first"],
+    items: ["Remote (anywhere)", "EU relocation (Germany, Netherlands)", "India (Bangalore / Mumbai)"],
   },
   {
     icon: Zap,
@@ -122,12 +122,11 @@ export default function LookingFor() {
           className="mt-8 p-6 rounded-2xl border border-accent/20 bg-accent/5 text-center"
         >
           <p className="text-text-secondary">
-            Actively exploring opportunities for{" "}
-            <span className="text-accent font-medium">Q2–Q3 2026</span>. Open to
-            roles in{" "}
-            <span className="text-accent font-medium">Germany, Netherlands</span>{" "}
-            (EU Blue Card) or{" "}
-            <span className="text-accent font-medium">India</span> that align
+            Actively exploring{" "}
+            <span className="text-accent font-medium">remote roles anywhere</span>{" "}
+            or{" "}
+            <span className="text-accent font-medium">relocation to the EU</span>{" "}
+            (EU Blue Card) that align
             with my expertise in Rust, Go, and AI infrastructure.
           </p>
         </motion.div>

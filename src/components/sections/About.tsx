@@ -12,15 +12,15 @@ interface Metric {
 
 const metrics: Metric[] = [
   { numericValue: 4, suffix: "+", label: "Years Experience" },
-  { numericValue: 700, suffix: "+", label: "LeetCode Solved" },
+  { numericValue: 700, suffix: "+", label: "Stars on Vortix" },
   { numericValue: DATA.projects.length, suffix: "+", label: "Projects Shipped" },
   { numericValue: DATA.work.length, suffix: "", label: "Companies" },
 ];
 
 const currentFocus = [
   "Building AI accessibility agents at BrowserStack (40+ WCAG criteria)",
-  "Shipping developer tools in Rust (Vortix, Mercury, AFK)",
-  "Contributing to open source - Grafana Tempo, Maybe Finance, Lima VM",
+  "Shipping developer tools in Rust (Vortix, kitz, Mercury)",
+  "Contributing to open source - Grafana Tempo, Lima, CocoIndex",
 ];
 
 function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {

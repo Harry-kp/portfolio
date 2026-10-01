@@ -66,17 +66,16 @@ export const DATA: Data = {
   location: "Mumbai, India",
   locationLink: "",
   description:
-    "Backend engineer building AI accessibility agents at BrowserStack covering 40+ WCAG criteria. I ship open-source tools in Rust and Go, contribute to Grafana Tempo, Maybe Finance & Lima VM, and have solved 700+ problems on LeetCode.",
+    "Senior backend engineer building AI accessibility agents at BrowserStack covering 40+ WCAG criteria. I ship open-source tools in Rust that people install from Homebrew and nixpkgs, and contribute upstream to Grafana Tempo and Lima.",
   resumeUrl: "/resume.pdf",
   summary:
-    "Backend Software Engineer at BrowserStack, architecting AI accessibility agents covering 40+ WCAG criteria across web, mobile, and design. Previously led ERP integrations and core platform development at Procol. Passionate about distributed systems, infrastructure automation, and developer tooling. Open-source contributor to Grafana Tempo, Maybe Finance, Lima VM, and RubyForGood with 12 merged PRs across 8 repos. Creator of Vortix (395+ GitHub stars) and AFK - developer tools built in Rust and Tauri.",
+    "Senior Software Engineer at BrowserStack, building AI accessibility agents covering 40+ WCAG criteria across web, mobile, and design, and owning their reliability: evals, rollouts, Kafka, Kubernetes. Previously led ERP integrations and core platform development at Procol. Open-source contributor to Grafana Tempo, Lima, CocoIndex, Maybe Finance and Ruby for Good. Creator of Vortix (700+ GitHub stars, in Homebrew core and nixpkgs), kitz, Mercury and ApprovalEngine.",
   avatarUrl: "/me.jpg",
   skills: [
     "Go",
     "Rust",
     "Ruby",
     "Python",
-    "C++",
     "TypeScript",
     "Kubernetes",
     "Docker",
@@ -126,7 +125,7 @@ export const DATA: Data = {
       badges: ["AI"],
       href: "https://www.browserstack.com/",
       location: "Mumbai, India",
-      title: "Software Engineer - Backend (AI)",
+      title: "Senior Software Engineer - Backend (AI)",
       logoUrl: "/bstack.png",
       start: "Dec 2024",
       end: "Present",
@@ -143,7 +142,7 @@ export const DATA: Data = {
       start: "Jun 2022",
       end: "Dec 2024",
       description:
-        "Led a team of 3 to productise ERP integrations (SAP, Oracle), resulting in a 25% increase in product value and enterprise client onboarding. Core engineer on the Lighthouse and Checkmate team, responsible for architectural decisions and quality assurance. Designed a form system as the core data source layer for all Procol microservices. Developed Flexi data source and view, inspired by Notion, eliminating repetitive development. Set up RSpec testing framework achieving 52% code coverage. Launched internationalization, time zone localization, approval flows, and reporting. Tech Stack: Ruby on Rails, PostgreSQL.",
+        "Led a team of 3 to productise ERP integrations (SAP, Oracle), turning them into a paid add-on that raised the per-customer contract price 25% and won enterprise clients. Core engineer on the Lighthouse and Checkmate team, responsible for architectural decisions and quality assurance. Designed a form system as the core data source layer for all Procol microservices. Developed Flexi data source and view, inspired by Notion, eliminating repetitive development. Set up RSpec testing framework achieving 52% code coverage. Launched internationalization, time zone localization, approval flows, and reporting. Tech Stack: Ruby on Rails, PostgreSQL.",
     },
     {
       company: "Hashedin by Deloitte",
@@ -169,7 +168,7 @@ export const DATA: Data = {
     },
   ],
   recruiter: {
-    timezone: "Mumbai, India · Open to EU relocation",
+    timezone: "Mumbai, India · Remote anywhere or EU relocation",
     workAuth: "Indian Citizen",
     visaRequired: true,
     salary: "Competitive - let's discuss",
@@ -183,7 +182,7 @@ export const DATA: Data = {
       dates: "Jan 2026 - Present",
       active: true,
       description:
-        "Terminal UI for WireGuard and OpenVPN - real-time throughput/latency monitoring, IPv6/DNS leak detection, kill switch, and geo-location tracking. 395+ GitHub stars, published on crates.io. Spun out the animation engine into a standalone widget, ratatui-flip-panel, also published on crates.io.",
+        "Terminal UI for WireGuard and OpenVPN - real-time throughput/latency monitoring, IPv6/DNS leak detection, kill switch, and geo-location tracking. 700+ GitHub stars, 31 forks; shipped via Homebrew core, nixpkgs and crates.io. Spun out the animation engine into a standalone widget, ratatui-flip-panel, also published on crates.io.",
       technologies: ["Rust", "Ratatui", "WireGuard", "OpenVPN"],
       links: [
         { type: "GitHub", href: "https://github.com/Harry-kp/vortix" },
@@ -194,19 +193,15 @@ export const DATA: Data = {
         "https://raw.githubusercontent.com/Harry-kp/vortix/refs/heads/main/assets/demo.gif",
     },
     {
-      title: "AFK",
-      href: "https://github.com/Harry-kp/afk",
-      dates: "Jan 2026 - Present",
+      title: "kitz",
+      href: "https://github.com/Harry-kp/kitz",
+      dates: "Jul 2026 - Present",
       active: true,
       description:
-        "Break reminder for developers who forget to blink - follows the 20-20-20 rule with fullscreen reminders, statistics dashboard, health exercises, and global shortcuts. Under 5 MB, built with Tauri + Rust.",
-      technologies: ["Rust", "Tauri", "React", "TypeScript", "Tailwind CSS"],
-      links: [
-        { type: "GitHub", href: "https://github.com/Harry-kp/afk" },
-        { type: "Website", href: "https://afk-app.vercel.app" },
-      ],
-      video:
-        "https://raw.githubusercontent.com/Harry-kp/afk/main/landing/assets/demo.gif",
+        "Terminal UI for AWS MSK Kafka with native IAM auth (SASL OAUTHBEARER / SigV4) - hot-switch between environments without restarting, live topic and consumer-group inspection, event peeking with pretty-printed JSON, and a `kitz doctor` command that diagnoses connectivity layer by layer.",
+      technologies: ["Rust", "Kafka", "AWS MSK", "Ratatui"],
+      links: [{ type: "GitHub", href: "https://github.com/Harry-kp/kitz" }],
+      video: "",
     },
     {
       title: "Mercury",
@@ -224,16 +219,16 @@ export const DATA: Data = {
         "https://raw.githubusercontent.com/Harry-kp/mercury/master/website/static/img/screenshot.png",
     },
     {
-      title: "UPPCL Pro",
-      href: "https://github.com/Harry-kp/uppcl-pro",
+      title: "Bijli Saathi (UPPCL Pro)",
+      href: "https://github.com/Harry-kp/uppcl-pro-app",
       dates: "Apr 2026 - Present",
       active: true,
       description:
-        "Self-hosted analytics dashboard for UPPCL SMART prepaid electricity meters - reverse-engineered FastAPI proxy handling ALTCHA proof-of-work, RSA-OAEP + AES-256-GCM encryption, and 60-day JWT auth. Features runway forecasting, anomaly detection, cost breakdown, and 1912 complaint tracking. Runs on a Raspberry Pi Zero 2.",
-      technologies: ["Python", "FastAPI", "Next.js", "Tailwind CSS", "Raspberry Pi"],
+        "Android app for UPPCL smart meters, English and Hindi - bill and balance on the first screen, in-app bill payment, usage forecasting and one-tap outage complaints. Built on a reverse-engineered FastAPI proxy handling ALTCHA proof-of-work, RSA-OAEP + AES-256-GCM encryption and JWT auth. v0.1 released; Play Store launch in progress.",
+      technologies: ["React Native", "Expo", "TypeScript", "FastAPI"],
       links: [
-        { type: "GitHub", href: "https://github.com/Harry-kp/uppcl-pro" },
-        { type: "Website", href: "https://harry-kp.github.io/uppcl-pro/" },
+        { type: "GitHub", href: "https://github.com/Harry-kp/uppcl-pro-app" },
+        { type: "APK", href: "https://github.com/Harry-kp/uppcl-pro-app/releases/latest" },
       ],
       video:
         "https://raw.githubusercontent.com/Harry-kp/uppcl-pro/main/docs/screenshots/home-dark.png",
@@ -253,18 +248,19 @@ export const DATA: Data = {
       video: "",
     },
     {
-      title: "OkayrAI",
-      href: "https://okayrai.harrykp.live/",
-      dates: "May 2025 - Present",
+      title: "AFK",
+      href: "https://github.com/Harry-kp/afk",
+      dates: "Jan 2026 - Present",
       active: true,
       description:
-        "AI-powered career advancement platform - tracks achievements, generates data-driven performance reviews, and builds promotion cases. Uses OpenAI and Gemini for intelligent summarization with PostgreSQL-backed persistence.",
-      technologies: ["Next.js", "PostgreSQL", "OpenAI", "Gemini"],
+        "Break reminder for developers who forget to blink - follows the 20-20-20 rule with fullscreen reminders, statistics dashboard, health exercises, and global shortcuts. Under 5 MB, built with Tauri + Rust.",
+      technologies: ["Rust", "Tauri", "React", "TypeScript", "Tailwind CSS"],
       links: [
-        { type: "GitHub", href: "https://github.com/Harry-kp/okayri" },
-        { type: "Live", href: "https://okayrai.harrykp.live/" },
+        { type: "GitHub", href: "https://github.com/Harry-kp/afk" },
+        { type: "Website", href: "https://afk-app.vercel.app" },
       ],
-      video: "",
+      video:
+        "https://raw.githubusercontent.com/Harry-kp/afk/main/landing/assets/demo.gif",
     },
     {
       title: "A2A Trace",
@@ -278,21 +274,6 @@ export const DATA: Data = {
         { type: "GitHub", href: "https://github.com/Harry-kp/a2a-trace" },
       ],
       video: "",
-    },
-    {
-      title: "CheggPy",
-      href: "https://github.com/Harry-kp/cheggpy",
-      dates: "Feb 2024 - Apr 2024",
-      active: true,
-      description:
-        "Published Python package on PyPI - automates Chegg Expert workflows with session management, keyword-based question filtering, and structured data extraction. Installable via pip with a clean CLI interface.",
-      technologies: ["Python", "PyPI", "REST API", "Automation"],
-      links: [
-        { type: "PyPI", href: "https://pypi.org/project/cheggpy/" },
-        { type: "GitHub", href: "https://github.com/Harry-kp/cheggpy" },
-      ],
-      video:
-        "https://github.com/user-attachments/assets/0cf7f8fa-3805-4068-beab-a1510bb4c256",
     },
   ],
 };

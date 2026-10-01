@@ -138,15 +138,19 @@ export async function fetchOpenSourceContributions(): Promise<{
       };
     });
 
+    // Awesome-list submissions aren't code contributions
+    const listPRs = prs.filter((pr) => pr.repo_name.startsWith("awesome"));
+    const codePRs = prs.filter((pr) => !pr.repo_name.startsWith("awesome"));
+
     // Calculate stats
-    const uniqueRepos = [...new Set(prs.map((pr) => pr.repo_full_name))];
+    const uniqueRepos = [...new Set(codePRs.map((pr) => pr.repo_full_name))];
     const stats: ContributionStats = {
-      totalPRs: data.total_count,
-      mergedPRs: prs.length,
+      totalPRs: data.total_count - listPRs.length,
+      mergedPRs: codePRs.length,
       repos: uniqueRepos,
     };
 
-    return { prs, stats };
+    return { prs: codePRs, stats };
   } catch (error) {
     console.error("Error fetching GitHub contributions:", error);
     return { prs: [], stats: { totalPRs: 0, mergedPRs: 0, repos: [] } };
