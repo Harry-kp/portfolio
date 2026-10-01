@@ -7,7 +7,7 @@ const SKILL_CATEGORIES = [
   {
     title: "Languages",
     icon: Code2,
-    skills: ["Rust", "Go", "Python", "Ruby", "TypeScript", "C++"],
+    skills: ["Rust", "Ruby", "Python", "TypeScript", "SQL"],
   },
   {
     title: "AI/ML",

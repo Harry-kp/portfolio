@@ -72,7 +72,6 @@ export const DATA: Data = {
     "Senior Software Engineer at BrowserStack, building AI accessibility agents covering 40+ WCAG criteria across web, mobile, and design, and owning their reliability: evals, rollouts, Kafka, Kubernetes. Previously led ERP integrations and core platform development at Procol. Open-source contributor to Grafana Tempo, Lima, CocoIndex, Maybe Finance and Ruby for Good. Creator of Vortix (700+ GitHub stars, in Homebrew core), kitz, Mercury and ApprovalEngine.",
   avatarUrl: "/me.jpg",
   skills: [
-    "Go",
     "Rust",
     "Ruby",
     "Python",

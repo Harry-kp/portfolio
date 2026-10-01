@@ -127,7 +127,7 @@ export default function LookingFor() {
             or{" "}
             <span className="text-accent font-medium">relocation to the EU</span>{" "}
             (EU Blue Card) that align
-            with my expertise in Rust, Go, and AI infrastructure.
+            with my expertise in Rust, Ruby on Rails and AI infrastructure.
           </p>
         </motion.div>
       </div>
