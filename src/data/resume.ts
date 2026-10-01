@@ -219,7 +219,7 @@ export const DATA: Data = {
         "https://raw.githubusercontent.com/Harry-kp/mercury/master/website/static/img/screenshot.png",
     },
     {
-      title: "Bijli Saathi (UPPCL Pro)",
+      title: "UPPCL Pro",
       href: "https://github.com/Harry-kp/uppcl-pro-app",
       dates: "Apr 2026 - Present",
       active: true,
