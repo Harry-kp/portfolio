@@ -129,7 +129,7 @@ export const DATA: Data = {
       start: "Dec 2024",
       end: "Present",
       description:
-        "Architected and built BrowserStack's AI accessibility agents - Issue Detection, Remediation, and Design A11y Color Contrast Agent on the Spectra™ rule engine, covering 40+ WCAG criteria across web, mobile, and design. Designed multi-model LLM inference pipelines (Gemini 3, GPT-5, Claude) with semantic DOM chunking, achieving 87.69% heading detection accuracy. Built App A11y Issue Detection Agent, reducing false-positives by 64% and cutting P90 latency from 20s to 10.1s. Led TestOps observability integration across 7 AI features with Redis-based phased rollout and K8s Kafka consumers with auto-scaling.",
+        "Architected and built BrowserStack's AI accessibility agents - Issue Detection, Remediation, and Design A11y Color Contrast Agent on the Spectra™ rule engine, covering 40+ WCAG criteria across web, mobile, and design. Designed multi-model LLM inference pipelines (Gemini 3, GPT-5, Claude) with semantic DOM chunking, achieving 87.69% heading detection accuracy. Built App A11y Issue Detection Agent, reducing false-positives by 64% and cutting P90 latency from 20s to 10.1s. Built agent-orchestration microservices, Kafka consumers and workers in Node.js, autoscaled on Kubernetes, and internal LLM observability pipelines with Langfuse evals across 7 AI features, shipped behind Redis-based phased rollouts.",
     },
     {
       company: "Procol",
