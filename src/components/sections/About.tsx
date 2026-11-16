@@ -11,7 +11,7 @@ interface Metric {
 }
 
 const metrics: Metric[] = [
-  { numericValue: 4, suffix: "+", label: "Years Experience" },
+  { numericValue: 3, suffix: "+", label: "Years in Production" },
   { numericValue: 700, suffix: "+", label: "Stars on Vortix" },
   { numericValue: DATA.projects.length, suffix: "+", label: "Projects Shipped" },
   { numericValue: DATA.work.length, suffix: "", label: "Companies" },

@@ -66,7 +66,7 @@ export const DATA: Data = {
   location: "Meerut, India",
   locationLink: "",
   description:
-    "Senior backend engineer: 4+ years of Ruby on Rails and Node.js in production, now building AI accessibility agents at BrowserStack. On the side I ship open-source tools in Rust that people install from Homebrew, and contribute upstream to Grafana Tempo and Lima.",
+    "Senior backend engineer shipping Ruby on Rails and Node.js in production since 2022, now building AI accessibility agents at BrowserStack. On the side I ship open-source tools in Rust that people install from Homebrew, and contribute upstream to Grafana Tempo and Lima.",
   resumeUrl: "/resume.pdf",
   summary:
     "Senior Software Engineer at BrowserStack, building AI accessibility agents covering 40+ WCAG criteria across web, mobile, and design, and owning their reliability: evals, rollouts, Kafka, Kubernetes. Previously led ERP integrations and core platform development at Procol. Open-source contributor to Grafana Tempo, Lima, CocoIndex, Maybe Finance and Ruby for Good. Creator of Vortix (700+ GitHub stars, in Homebrew core), kitz, Mercury and ApprovalEngine.",
@@ -136,7 +136,7 @@ export const DATA: Data = {
       badges: ["Backend"],
       href: "https://www.procol.io/",
       location: "Gurugram, India",
-      title: "Software Engineer → Senior Software Engineer",
+      title: "Software Engineer → Software Engineer II",
       logoUrl: "/procol.png",
       start: "Jun 2022",
       end: "Dec 2024",
