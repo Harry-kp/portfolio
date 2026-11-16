@@ -63,7 +63,7 @@ export const DATA: Data = {
   name: "Harshit Chaudhary",
   initials: "HC",
   url: "https://harrykp.vercel.app",
-  location: "Mumbai, India",
+  location: "Meerut, India",
   locationLink: "",
   description:
     "Senior backend engineer: 4+ years of Ruby on Rails and Node.js in production, now building AI accessibility agents at BrowserStack. On the side I ship open-source tools in Rust that people install from Homebrew, and contribute upstream to Grafana Tempo and Lima.",
@@ -123,7 +123,7 @@ export const DATA: Data = {
       company: "BrowserStack",
       badges: ["AI"],
       href: "https://www.browserstack.com/",
-      location: "Mumbai, India",
+      location: "Remote, India",
       title: "Software Engineer → Senior Software Engineer, Backend (AI)",
       logoUrl: "/bstack.png",
       start: "Dec 2024",
@@ -167,7 +167,7 @@ export const DATA: Data = {
     },
   ],
   recruiter: {
-    timezone: "Mumbai, India · Remote anywhere or EU relocation",
+    timezone: "Meerut, India (IST) · Remote anywhere or EU/UK relocation",
     workAuth: "Indian Citizen",
     visaRequired: true,
     salary: "Competitive - let's discuss",

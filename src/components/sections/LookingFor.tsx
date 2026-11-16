@@ -19,7 +19,7 @@ const PREFERENCES = [
   {
     icon: MapPin,
     title: "Location",
-    items: ["Remote (anywhere)", "EU relocation (Germany, Netherlands)", "India (Bangalore / Mumbai)"],
+    items: ["Remote (anywhere)", "EU/UK relocation (Germany, Netherlands, UK)", "India (Bengaluru / Delhi NCR / Hyderabad)"],
   },
   {
     icon: Zap,
